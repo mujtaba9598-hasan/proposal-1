@@ -348,6 +348,20 @@ h6 {
         border: 1px solid var(--accent);
         box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.4);
         background: rgba(11, 43, 64, 0.95);
+
+        /* Horizontal Scroll for Mobile */
+        overflow-x: auto;
+        justify-content: flex-start;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scroll iOS */
+        scrollbar-width: none;
+        /* Firefox hide scrollbar */
+    }
+
+    .control-bar::-webkit-scrollbar {
+        display: none;
+        /* Chrome hide scrollbar */
     }
 
     .nav-prefix {

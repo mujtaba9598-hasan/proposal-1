@@ -166,6 +166,7 @@ img {
 .gradient-text {
     background: linear-gradient(90deg, #fff, var(--text-muted));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;
 }
@@ -404,6 +405,20 @@ p {
     flex-wrap: nowrap;
 }
 
+.stats-bar-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.stats-item {
+    padding: 0 1rem;
+    border-right: 1px solid var(--line);
+}
+
+.stats-item:last-child {
+    border-right: none;
+}
+
 .h-scroll-wrapper {
     overflow: hidden;
     position: relative;
@@ -413,6 +428,7 @@ p {
 /* Service Card in Scroll */
 .service-card-modern {
     min-width: 400px;
+    /* Desktop default */
     height: 500px;
     margin-right: 40px;
     display: flex;
@@ -585,4 +601,45 @@ footer {
 .lightbox-close:hover {
     color: var(--brand-accent);
     transform: rotate(90deg);
+}
+
+/* --- MOBILE RESPONSIVENESS (Poco X3 Pro & Others) --- */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 1.5rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    /* Stats Grid */
+    .stats-bar-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+    }
+
+    .stats-item {
+        padding: 1rem;
+        border-right: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+        text-align: center;
+    }
+
+    .stats-item:nth-child(2n) {
+        border-right: none;
+    }
+
+    .stats-item:nth-last-child(-n+2) {
+        border-bottom: none;
+    }
+
+    /* Service Cards */
+    .service-card-modern {
+        min-width: 85vw;
+        /* Responsive width */
+        margin-right: 20px;
+        height: 400px;
+    }
 }
