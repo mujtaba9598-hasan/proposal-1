@@ -1,0 +1,588 @@
+/* 
+   [Company Name] - Project-01 Redesign
+   Theme: Industrial Premium (Dark & Glass)
+   Font: Outfit (Google Fonts)
+   Tech: CSS Variables + GSAP Hook classes
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&display=swap');
+
+:root {
+    /* --- COLOR PALETTE (PREMIUM INDUSTRIAL) --- */
+    --bg-0: #070A12;
+    /* Deepest Black/Blue */
+    --bg-1: #0F141E;
+    /* Elevated Surface */
+    --bg-2: #1A202C;
+    /* Card Surface */
+
+    --brand-primary: #3B82F6;
+    /* Electric Blue Accent */
+    --brand-accent: #F59E0B;
+    /* Industrial Gold/Orange */
+
+    --text-main: #F1F5F9;
+    --text-muted: #94A3B8;
+    --text-dim: #64748B;
+
+    /* --- GLASS --- */
+    --glass-surface: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-highlight: rgba(255, 255, 255, 0.08);
+    --glass-blur: blur(20px);
+
+    /* --- METRICS --- */
+    --container-width: 1400px;
+    --header-height: 90px;
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 32px;
+
+    /* --- ANIMATION --- */
+    --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+    --ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* RTL Support via Variables calculated in JS if needed, but using logical properties mostly */
+[dir="rtl"] {
+    --font-family: 'Outfit', sans-serif;
+    /* Could switch to Arabic font if available */
+}
+
+/* --- RESET & BASE --- */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--bg-0);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-0);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bg-2);
+    border-radius: 10px;
+    border: 1px solid var(--glass-border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--brand-primary);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: 0.3s var(--ease-out);
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+/* --- UTILITIES --- */
+.container {
+    width: 100%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+.section-pad {
+    padding: 120px 0;
+    position: relative;
+}
+
+.relative {
+    position: relative;
+}
+
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.gap-4 {
+    gap: 1rem;
+}
+
+.grid {
+    display: grid;
+}
+
+.hidden-mobile {
+    display: block;
+}
+
+@media (max-width: 900px) {
+    .hidden-mobile {
+        display: none !important;
+    }
+}
+
+/* Glitch Text Effect Support */
+.gradient-text {
+    background: linear-gradient(90deg, #fff, var(--text-muted));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+}
+
+/* --- TYPOGRAPHY --- */
+h1 {
+    font-size: clamp(3rem, 6vw, 6rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+h3 {
+    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-weight: 600;
+}
+
+p {
+    font-size: 1.125rem;
+    color: var(--text-muted);
+}
+
+/* --- BUTTONS (Magnetic Style) --- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 40px;
+    border-radius: 100px;
+    font-weight: 600;
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    transition: transform 0.3s var(--ease-out), box-shadow 0.3s;
+}
+
+.btn-primary {
+    background: var(--text-main);
+    color: var(--bg-0);
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--brand-accent);
+    z-index: -1;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s var(--ease-out);
+}
+
+.btn-primary:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+}
+
+.btn-secondary:hover {
+    background: var(--glass-highlight);
+    border-color: var(--text-main);
+}
+
+/* --- GLASSMORPHISM CARD --- */
+.glass-panel {
+    background: var(--glass-surface);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    padding: 40px;
+    transition: 0.4s var(--ease-out);
+}
+
+.glass-panel:hover {
+    background: var(--glass-highlight);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+}
+
+/* --- HEADER --- */
+.header-main {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 20px 0;
+    transition: 0.4s;
+    mix-blend-mode: difference;
+    /* Innovative overlay */
+    color: white;
+}
+
+.header-main.scrolled {
+    padding: 10px 0;
+    mix-blend-mode: normal;
+    background: rgba(7, 10, 18, 0.8);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo img {
+    height: 40px;
+    filter: brightness(100);
+}
+
+.desktop-menu {
+    display: flex;
+    gap: 40px;
+}
+
+.desktop-menu a {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    opacity: 0.8;
+}
+
+.desktop-menu a:hover {
+    opacity: 1;
+}
+
+.desktop-menu a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: currentColor;
+    transition: 0.3s;
+}
+
+.desktop-menu a:hover::after {
+    width: 100%;
+}
+
+/* Mobile Menu */
+.mobile-nav-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg-0);
+    z-index: 999;
+    padding: 20px;
+    transform: translateY(-100%);
+    transition: 0.6s var(--ease-elastic);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.mobile-nav-overlay.active {
+    transform: translateY(0);
+}
+
+.mobile-nav-overlay a {
+    font-size: 2.5rem;
+    margin: 10px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* --- HERO --- */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 100px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.4;
+    transition: transform 0.2s ease-out;
+    /* For parallax cursor */
+}
+
+.hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0) contrast(1.2);
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 0%, var(--bg-0) 90%);
+    z-index: 0;
+}
+
+.hero-content {
+    z-index: 2;
+    text-align: center;
+    max-width: 900px;
+}
+
+/* --- HORIZONTAL SCROLL SECTION --- */
+/* We will use a wrapper that is sticky */
+.h-scroll-container {
+    overscroll-behavior: none;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+.h-scroll-wrapper {
+    overflow: hidden;
+    position: relative;
+}
+
+/* Service Card in Scroll */
+/* Service Card in Scroll */
+.service-card-modern {
+    min-width: 400px;
+    height: 500px;
+    margin-right: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 40px;
+    background: var(--bg-1);
+    border: 1px solid var(--glass-border);
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.service-card-modern::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    transition: 0.5s;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.4;
+    filter: grayscale(100%);
+}
+
+.service-card-modern:hover::before {
+    opacity: 0.8;
+    filter: grayscale(0%);
+    transform: scale(1.1);
+}
+
+.service-card-modern:hover {
+    border-color: var(--brand-accent);
+}
+
+.service-card-modern .card-content {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.service-card-modern i {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: var(--brand-primary);
+}
+
+.service-card-modern h4 {
+    font-size: 1.8rem;
+    color: white;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.service-card-modern p {
+    color: rgba(255, 255, 255, 0.8);
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.8);
+}
+
+/* Contact Banner */
+.contact-banner {
+    background: var(--brand-accent);
+    color: var(--bg-0);
+    text-align: center;
+    padding: 100px 20px;
+    clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%);
+    /* Angled cut */
+}
+
+/* Footer */
+footer {
+    background: var(--black);
+    border-top: 1px solid var(--glass-border);
+    color: var(--text-dim);
+    padding: 80px 0 40px;
+}
+
+/* RTL Helpers */
+[dir="rtl"] .desktop-menu a::after {
+    left: auto;
+    right: 0;
+}
+
+[dir="rtl"] .service-card-modern {
+    margin-right: 0;
+    margin-left: 40px;
+}
+
+[dir="rtl"] .text-left {
+    text-align: right;
+}
+
+[dir="rtl"] .ml-auto {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+/* WA Float */
+.wa-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: #25D366;
+    color: white;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 1.8rem;
+    z-index: 999;
+    box-shadow: 0 0 0 10px rgba(37, 211, 102, 0.1);
+}
+
+[dir="rtl"] .wa-float {
+    right: auto;
+    left: 30px;
+}
+
+/* Utility Grid for Bento */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+/* --- LIGHTBOX (For Services Page) --- */
+.lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(7, 10, 18, 0.85);
+    backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.4s var(--ease-out);
+}
+
+.lightbox-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.lightbox-img {
+    max-width: 90%;
+    max-height: 90vh;
+    border-radius: var(--radius-md);
+    box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.8);
+    transform: scale(0.9);
+    transition: 0.5s var(--ease-out);
+}
+
+.lightbox-overlay.active .lightbox-img {
+    transform: scale(1);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.lightbox-close:hover {
+    color: var(--brand-accent);
+    transform: rotate(90deg);
+}

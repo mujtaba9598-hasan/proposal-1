@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Company Name] | Precision Engineering</title>
+    
+    <!-- Font: Outfit (Modern Tech) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome & Lucide Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* --- 1. CORE VARIABLES (Ocean & Coral Theme) --- */
+        :root {
+            --brand-dark: #0e3742;  /* Deep Ocean */
+            --brand-accent: #ff6b6b; /* Coral Red */
+            --brand-soft: #e3f6f5;  /* Soft Teal */
+            
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            
+            --text-main: #1a2a30;
+            --text-light: #5c7c85;
+            
+            --border-placeholder: #1a2a30; /* Black/Dark for placeholders */
+            
+            --radius-xl: 30px;
+            --radius-md: 12px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: #f0f4f8; 
+            color: var(--text-main); 
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a, button, label, input[type="submit"] { cursor: pointer; }
+        img { display: block; width: 100%; height: 100%; object-fit: cover; }
+        
+        /* GLOBAL UTILITIES */
+        .wrapper { max-width: 1400px; margin: 0 auto; padding: 0 4%; }
+        .section-pad { padding: 100px 0; }
+        .hidden { display: none !important; }
+
+        /* --- 2. HEADER (Floating Bar) --- */
+        header {
+            padding: 20px 4%;
+            position: absolute; 
+            top: 0; left: 0; width: 100%;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: var(--glass-bg);
+            padding: 8px 25px 8px 8px;
+            border-radius: 100px; 
+            backdrop-filter: blur(10px);
+            box-shadow: var(--glass-shadow);
+            border: var(--glass-border);
+        }
+
+        /* LOGO UPLOAD */
+        .logo-box {
+            width: 60px; height: 60px;
+            background: #fff;
+            border-radius: 50%; 
+            border: 2px dashed var(--border-placeholder);
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+            transition: 0.3s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .logo-box:hover { border-color: var(--brand-accent); transform: rotate(-5deg); }
+        
+        .logo-box span {
+            font-size: 0.6rem; font-weight: 800; text-align: center; color: var(--text-light); line-height: 1.2;
+        }
+        .logo-box input { position: absolute; width: 100%; height: 100%; opacity: 0; z-index: 2; cursor: pointer; }
+        .logo-box img { display: none; position: absolute; inset: 0; }
+        .logo-box.has-image img { display: block; }
+        .logo-box.has-image span { display: none; }
+        
+        .company-name {
+            display: flex; flex-direction: column; justify-content: center;
+        }
+        .company-name h1 { font-size: 1.4rem; font-weight: 800; color: var(--brand-dark); line-height: 1; margin-bottom: 2px; }
+        .company-name span { font-size: 0.75rem; color: var(--brand-accent); letter-spacing: 1.5px; font-weight: 600; text-transform: uppercase; }
+
+        /* Navigation */
+        nav {
+            background: var(--glass-bg);
+            padding: 15px 30px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            align-items: center;
+        }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a {
+            font-weight: 600; color: var(--brand-dark); font-size: 0.95rem; position: relative; text-decoration: none; transition: 0.3s;
+        }
+        nav a::after {
+            content: ''; position: absolute; bottom: -5px; left: 0; width: 0; height: 2px;
+            background: var(--brand-accent); transition: 0.3s;
+        }
+        nav a:hover { color: var(--brand-accent); }
+        nav a:hover::after { width: 100%; }
+
+        .mobile-toggle { display: none; font-size: 1.5rem; margin-left: auto; color: var(--brand-dark); cursor: pointer; }
+
+        .cta-btn {
+            background: var(--brand-dark); color: white; padding: 12px 30px; 
+            border-radius: 50px; font-weight: 600; text-decoration: none; 
+            transition: 0.3s; box-shadow: 0 10px 20px rgba(14, 55, 66, 0.2);
+        }
+        .cta-btn:hover { background: var(--brand-accent); transform: translateY(-2px); }
+
+        /* --- 3. HERO SECTION --- */
+        .hero-section {
+            position: relative;
+            height: 100vh;
+            min-height: 800px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: #e0e7ea; 
+        }
+
+        .hero-uploader-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+            display: flex; align-items: center; justify-content: center;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 30px 30px; 
+            transition: 0.5s;
+            cursor: pointer;
+        }
+        
+        .hero-uploader-bg input { position: absolute; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10; }
+        .hero-placeholder-text {
+            text-align: center; border: 3px dashed #94a3b8; padding: 40px; border-radius: 20px;
+            background: rgba(255,255,255,0.6); color: var(--text-light); font-weight: 700; pointer-events: none;
+            backdrop-filter: blur(5px);
+        }
+        .hero-uploader-bg img { position: absolute; width: 100%; height: 100%; object-fit: cover; display: none; z-index: 5; }
+        .hero-uploader-bg.has-image img { display: block; }
+        .hero-uploader-bg.has-image .hero-placeholder-text { display: none; }
+
+        /* Glass Card Content */
+        .hero-content-card {
+            position: relative; z-index: 10;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.9);
+            padding: 50px;
+            border-radius: 40px;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 20px;
+            box-shadow: 0 20px 80px rgba(0,0,0,0.15);
+            transform: translateY(30px);
+            opacity: 0;
+            animation: floatUp 0.8s ease forwards 0.3s;
+        }
+
+        .hero-content-card h2 {
+            font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px;
+            background: -webkit-linear-gradient(45deg, var(--brand-dark), #2c7da0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+        .hero-content-card p { font-size: 1.25rem; color: var(--text-main); margin-bottom: 35px; max-width: 700px; margin-left: auto; margin-right: auto; }
+
+        /* Why Us Grid (Ocean Style) */
+        .why-us-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+            margin-bottom: 40px; text-align: left;
+        }
+        .why-item {
+            background: rgba(255,255,255,0.6); 
+            border: 1px solid white;
+            padding: 20px; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+        .why-item:hover { transform: translateY(-5px); background: white; box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+        .why-item h4 { font-size: 1.1rem; font-weight: 700; color: var(--brand-dark); margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+        .why-item p { font-size: 0.85rem; color: var(--text-light); line-height: 1.4; }
+
+        .hero-btns { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
+        .btn-glow {
+            padding: 15px 40px; border-radius: 50px; background: var(--brand-accent); color: white;
+            font-weight: 700; border: none; box-shadow: 0 10px 25px rgba(255, 107, 107, 0.4);
+            transition: 0.3s; text-decoration: none; display: inline-block;
+        }
+        .btn-glow:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 20px 40px rgba(255, 107, 107, 0.6); }
+        .btn-glass {
+            padding: 15px 40px; border-radius: 50px; background: rgba(14, 55, 66, 0.05); color: var(--brand-dark);
+            font-weight: 700; border: 1px solid rgba(14, 55, 66, 0.2); transition: 0.3s; text-decoration: none; display: inline-block;
+        }
+        .btn-glass:hover { background: var(--brand-dark); color: white; transform: translateY(-2px); }
+
+        /* --- 4. BENTO GRID SERVICES --- */
+        .bento-section { padding: 120px 0; background: #fff; }
+        .section-head { text-align: center; margin-bottom: 60px; }
+        .section-head h3 { font-size: 3rem; color: var(--brand-dark); margin-bottom: 10px; }
+        .section-head p { color: var(--text-light); font-size: 1.1rem; }
+        .section-head .bar { width: 60px; height: 6px; background: var(--brand-accent); margin: 20px auto; border-radius: 10px; }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .bento-item {
+            background: #f8fafc;
+            padding: 35px;
+            border-radius: 24px;
+            transition: 0.4s;
+            border: 1px solid #e2e8f0;
+            display: flex; flex-direction: column; justify-content: space-between;
+            position: relative; overflow: hidden;
+        }
+        .bento-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            border-color: var(--brand-accent);
+        }
+
+        .span-2 { grid-column: span 2; background: var(--brand-dark); color: white; border: none; }
+        .span-2 h4 { color: white !important; }
+        .span-2 p { color: rgba(255,255,255,0.7) !important; }
+        .span-2 i { color: var(--brand-accent) !important; }
+        
+        /* Specific accent card */
+        .card-accent { background: var(--brand-accent); color: white; border: none; }
+        .card-accent h4 { color: white !important; }
+        .card-accent p { color: rgba(255,255,255,0.9) !important; }
+        .card-accent i { color: white !important; }
+        .card-accent .badge { background: white; color: var(--brand-accent); }
+
+        .bento-icon { font-size: 2.2rem; margin-bottom: 20px; }
+        .bento-item h4 { font-size: 1.5rem; margin-bottom: 12px; font-weight: 700; }
+        .bento-item p { font-size: 0.95rem; line-height: 1.5; }
+        
+        .badge { 
+            display: inline-block; font-size: 0.7rem; text-transform: uppercase; 
+            font-weight: 800; letter-spacing: 1px; margin-top: 20px; align-self: flex-start;
+            padding: 6px 12px; border-radius: 8px; background: #e2e8f0; color: var(--brand-dark);
+        }
+
+        /* --- 5. THE [BRAND] ADVANTAGE (Flip Cards - Ocean Style) --- */
+        .flip-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px;
+        }
+        .flip-container {
+            perspective: 1000px; height: 380px; cursor: pointer;
+        }
+        .flip-inner {
+            position: relative; width: 100%; height: 100%;
+            text-align: center; transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-container:hover .flip-inner { transform: rotateY(180deg); }
+        
+        .flip-front, .flip-back {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden;
+            border-radius: 24px; padding: 40px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .flip-front { background: white; }
+        .flip-back { 
+            background: var(--brand-dark); color: white;
+            transform: rotateY(180deg); 
+            border: 1px solid var(--brand-accent);
+        }
+
+        .flip-icon-red { color: #ef4444; margin-bottom: 16px; }
+        .flip-icon-green { color: #4ade80; margin-bottom: 16px; }
+        
+        .flip-title { font-size: 1.25rem; font-weight: 700; margin-bottom: 16px; }
+        .flip-list { text-align: left; width: 100%; font-size: 0.9rem; opacity: 0.8; }
+        .flip-list li { margin-bottom: 12px; display: flex; gap: 10px; align-items: flex-start; }
+
+        /* --- 6. GALLERY (Film Strip) --- */
+        .gallery-strip {
+            overflow: hidden; padding: 100px 0; background: #f0f4f8;
+        }
+        .gallery-track-container {
+            width: 100%; overflow-x: auto; 
+            padding-bottom: 40px; /* Space for shadow */
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+        }
+        .gallery-track-container::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+        .film-strip {
+            display: flex; gap: 30px; padding: 0 4%; width: max-content;
+        }
+
+        .film-card {
+            width: 320px; height: 420px;
+            background: #fff; border-radius: 20px;
+            position: relative; overflow: hidden;
+            flex-shrink: 0; transition: 0.3s;
+            border: 2px dashed var(--border-placeholder); /* Dark Border Request */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .film-card:hover { transform: scale(1.02); box-shadow: 0 20px 50px rgba(0,0,0,0.15); border-style: solid; border-color: var(--brand-accent); }
+
+        .film-upload-btn {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: white; padding: 15px 25px; border-radius: 50px;
+            font-weight: 700; color: var(--brand-dark); z-index: 2;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); pointer-events: none;
+            text-align: center; width: 80%;
+        }
+        .film-card input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 3; }
+        .film-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: none; z-index: 1; }
+        .film-card.has-image img { display: block; }
+        .film-card.has-image .film-upload-btn { display: none; }
+        .film-card.has-image { border-style: solid; border-color: white; border-width: 4px; }
+        
+        .film-caption {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            color: white; padding: 30px 20px 20px; z-index: 4; 
+            transform: translateY(100%); transition: 0.3s;
+        }
+        .film-card:hover .film-caption { transform: translateY(0); }
+        .film-caption h5 { font-size: 1.2rem; margin-bottom: 5px; }
+        .film-caption p { font-size: 0.8rem; opacity: 0.8; }
+
+        /* --- 7. ABOUT (Owner Section) --- */
+        .owner-section {
+            background: var(--brand-dark); color: white; padding: 120px 0;
+            position: relative; overflow: hidden;
+        }
+        .circle-decor {
+            position: absolute; width: 500px; height: 500px; border: 2px solid rgba(255,255,255,0.05);
+            border-radius: 50%; top: -150px; right: -150px;
+        }
+
+        .owner-layout {
+            display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; align-items: center;
+        }
+
+        .owner-photo-frame {
+            width: 100%; aspect-ratio: 1/1;
+            border-radius: 40px; background: rgba(255,255,255,0.05);
+            position: relative; overflow: hidden; border: 2px dashed rgba(255,255,255,0.3);
+            transition: 0.3s;
+        }
+        .owner-photo-frame:hover { border-color: var(--brand-accent); border-style: solid; }
+        .owner-photo-frame input { position: absolute; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 5; }
+        .owner-placeholder {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            text-align: center; color: rgba(255,255,255,0.4); pointer-events: none;
+        }
+        .owner-photo-frame img { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: contain; }
+        .owner-photo-frame.has-image img { display: block; }
+        .owner-photo-frame.has-image .owner-placeholder { display: none; }
+
+        .owner-bio h2 { font-size: 3.5rem; margin-bottom: 10px; color: var(--brand-accent); line-height: 1; }
+        .owner-bio h4 { font-weight: 400; letter-spacing: 3px; margin-bottom: 30px; opacity: 0.8; text-transform: uppercase; font-size: 0.9rem; }
+        .owner-bio p { font-size: 1.1rem; line-height: 1.8; opacity: 0.9; margin-bottom: 40px; max-width: 600px; }
+
+        .stats-grid { display: flex; gap: 60px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; }
+        .stat h5 { font-size: 2.5rem; font-weight: 800; color: white; margin-bottom: 5px; }
+        .stat span { text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1.5px; opacity: 0.6; }
+
+        /* --- 8. CONTACT SECTION (New Style) --- */
+        .contact-section-wrapper { padding-bottom: 100px; background: #f0f4f8; }
+        .contact-grid {
+            display: grid; grid-template-columns: 1fr 1fr;
+            background: white; border-radius: 40px; overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.08);
+            margin-top: -80px; 
+            position: relative; z-index: 10;
+        }
+
+        .contact-left { padding: 80px; background: #fff; }
+        .contact-right { padding: 80px; background: #f8fafc; border-left: 1px solid #f1f5f9; }
+
+        .form-input, .form-textarea {
+            width: 100%; padding: 20px; margin-bottom: 20px;
+            background: #f0f4f8; border: 2px solid transparent; border-radius: 12px;
+            font-family: inherit; font-weight: 600; color: var(--brand-dark);
+            transition: 0.3s;
+        }
+        .form-textarea { height: 150px; resize: none; }
+        .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--brand-accent); background: white; }
+        
+        .submit-big {
+            width: 100%; padding: 20px; background: var(--brand-dark); color: white;
+            font-weight: 800; border-radius: 12px; border: none; transition: 0.3s;
+        }
+        .submit-big:hover { background: var(--brand-accent); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3); }
+
+        /* Contact Detail Item (Revised Layout) */
+        .contact-detail-item {
+            display: flex; align-items: flex-start; gap: 20px; margin-bottom: 40px;
+        }
+        /* The Pink Icon Box */
+        .icon-box-sm {
+            width: 56px; height: 56px; 
+            background: rgba(255, 107, 107, 0.15); /* Pink Background */
+            color: var(--brand-accent); /* Red/Coral Icon */
+            border-radius: 16px; 
+            display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+        .contact-detail-item h5 { 
+            font-size: 1.2rem; color: var(--brand-dark); font-weight: 800; margin-bottom: 8px; 
+        }
+        .contact-detail-item p { 
+            color: var(--text-light); font-size: 1rem; line-height: 1.5; margin: 0; 
+        }
+        .contact-detail-item a { 
+            color: var(--text-main); text-decoration: none; font-weight: 600; transition: 0.2s; 
+        }
+        .contact-detail-item a:hover { color: var(--brand-accent); }
+        
+        /* Contact Buttons */
+        .contact-btn-row { display: flex; gap: 12px; margin-top: 8px; }
+        
+        .btn-call-grey {
+            background: #e2e8f0; color: var(--brand-dark);
+            padding: 10px 20px; border-radius: 8px;
+            text-decoration: none; font-weight: 700; font-size: 0.9rem;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: 0.2s;
+        }
+        .btn-call-grey:hover { background: #cbd5e1; }
+
+        .btn-wa-green {
+            background: #25D366; color: white;
+            padding: 10px 20px; border-radius: 8px;
+            text-decoration: none; font-weight: 700; font-size: 0.9rem;
+            display: inline-flex; align-items: center; gap: 8px;
+            transition: 0.2s;
+        }
+        .btn-wa-green:hover { background: #128C7E; transform: translateY(-2px); }
+
+        /* --- 9. FOOTER --- */
+        footer { background: #fff; padding: 80px 0 40px; text-align: center; border-top: 1px solid #e2e8f0; }
+        .footer-logo-area { 
+            width: 80px; height: 80px; margin: 0 auto 20px; 
+            border: 2px dashed var(--border-placeholder); border-radius: 50%; position: relative; 
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            transition: 0.3s;
+        }
+        .footer-logo-area:hover { border-color: var(--brand-accent); transform: scale(1.05); }
+        .footer-logo-area span { font-size: 0.6rem; color: #94a3b8; text-align: center; }
+        .footer-logo-area input { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+        .footer-logo-area img { display: none; position: absolute; inset: 0; }
+        .footer-logo-area.has-image img { display: block; }
+        .footer-logo-area.has-image span { display: none; }
+
+        .socials { margin-top: 30px; display: flex; justify-content: center; gap: 15px; }
+        .social-link { width: 45px; height: 45px; background: #f0f4f8; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--brand-dark); transition: 0.3s; text-decoration: none; }
+        .social-link:hover { background: var(--brand-accent); color: white; transform: translateY(-3px); }
+
+        /* --- EXTRAS --- */
+        .wa-float {
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
+            background: #25d366; border-radius: 20px; color: white;
+            display: flex; align-items: center; justify-content: center; font-size: 2rem;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4); z-index: 999;
+            transition: 0.3s; text-decoration: none;
+        }
+        .wa-float:hover { transform: translateY(-5px); }
+
+        @keyframes floatUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* Mobile Responsive */
+        @media(max-width: 900px) {
+            .bento-grid { grid-template-columns: 1fr; }
+            .span-2 { grid-column: span 1; }
+            .owner-layout, .contact-grid { grid-template-columns: 1fr; }
+            header { position: relative; background: white; padding: 15px 4%; }
+            .hero-content-card { padding: 40px 20px; margin: 0 20px; }
+            .hero-content-card h2 { font-size: 2.5rem; }
+            .why-us-grid, .flip-grid { grid-template-columns: 1fr; }
+            nav { display: none; position: absolute; top: 100%; left: 0; width: 100%; flex-direction: column; background: white; padding: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); z-index: 99; }
+            nav.active { display: flex; }
+            .mobile-toggle { display: block; }
+            .contact-right { border-left: none; border-top: 1px solid #f1f5f9; }
+        }
+    </style>
+    <link rel="stylesheet" href="css/theme-config.css">
+</head>
+<body>
+
+    <!-- 1. HEADER -->
+    <header>
+        <div class="wrapper" style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+            
+            <div class="brand-area">
+                <!-- Logo Upload -->
+                <label class="logo-box" title="Click to Upload Logo">
+                    <span>LOGO<br>ADD +</span>
+                    <img src="" alt="[BRAND] Logo">
+                    <input type="file" class="unified-upload" accept="image/*">
+                </label>
+                <div class="company-name">
+                    <h1>[BRAND]</h1>
+                    <span>Technical Services</span>
+                </div>
+            </div>
+
+            <nav id="main-nav">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#gallery">Projects</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <a href="#contact" class="cta-btn hidden-mobile">Get Quote</a>
+            
+            <div class="mobile-toggle"><i class="fa-solid fa-bars"></i></div>
+        </div>
+    </header>
+
+    <!-- 2. HERO SECTION -->
+    <section id="home" class="hero-section">
+        <!-- Background Uploader -->
+        <label class="hero-uploader-bg">
+            <input type="file" class="unified-upload" accept="image/*">
+            <img src="" alt="Hero Background">
+            <div class="hero-placeholder-text">
+                <i class="fa-solid fa-panorama" style="font-size: 3rem; margin-bottom: 10px; color: var(--brand-accent);"></i><br>
+                CLICK ANYWHERE TO UPLOAD<br>HERO BANNER
+            </div>
+        </label>
+
+        <!-- Content -->
+        <div class="hero-content-card">
+            <h2>Innovative Technical Solutions</h2>
+            <p>Crafting durable and visually appealing products for residential, commercial, and industrial needs across the UAE. Specializing in Glass, Metal, and Custom Fabrication.</p>
+            
+            <!-- Why Us Grid (Glass Cards) -->
+            <div class="why-us-grid">
+                <div class="why-item">
+                    <h4><i class="fa-solid fa-shield-halved" style="color: var(--brand-accent);"></i> Unmatched Quality</h4>
+                    <p>Certified high-grade materials for lasting durability.</p>
+                </div>
+                <div class="why-item">
+                    <h4><i class="fa-solid fa-clock" style="color: var(--brand-dark);"></i> On-Time Delivery</h4>
+                    <p>Optimized workflows ensuring we respect your deadlines.</p>
+                </div>
+                <div class="why-item">
+                    <h4><i class="fa-solid fa-users-gear" style="color: var(--text-light);"></i> Expert Team</h4>
+                    <p>Skilled professionals dedicated to precision craftsmanship.</p>
+                </div>
+            </div>
+
+            <div class="hero-btns">
+                <a href="#contact" class="btn-glow">Get in Touch</a>
+                <a href="#services" class="btn-glass">View Expertise</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. SERVICES (Bento Grid) -->
+    <section id="services" class="section-pad bento-section">
+        <div class="wrapper">
+            <div class="section-head">
+                <h3>Our Expertise</h3>
+                <p>Comprehensive solutions tailored to your unique needs.</p>
+                <div class="bar"></div>
+            </div>
+
+            <div class="bento-grid">
+                <!-- Service 1 -->
+                <div class="bento-item span-2">
+                    <div>
+                        <i class="fa-solid fa-layer-group bento-icon" style="color: var(--brand-accent);"></i>
+                        <h4>Glass Work Solutions</h4>
+                        <p>Elevate your space with custom glass partitions, pool fences, and mirrors. We combine functionality with elegance to create open, modern environments.</p>
+                    </div>
+                    <span class="badge" style="background: rgba(255,255,255,0.2); color: white;">Best Seller</span>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="bento-item">
+                    <i class="fa-solid fa-umbrella-beach bento-icon"></i>
+                    <h4>Pergolas</h4>
+                    <p>Transform outdoor spaces with custom-designed pergolas for relaxation and dining.</p>
+                    <span class="badge">Outdoor</span>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="bento-item">
+                    <i class="fa-solid fa-bezier-curve bento-icon"></i>
+                    <h4>CNC Panels</h4>
+                    <p>Precision-engineered panels with intricate designs for modern architectural aesthetics.</p>
+                    <span class="badge">Design</span>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="bento-item">
+                    <i class="fa-solid fa-road bento-icon"></i>
+                    <h4>Manhole & Gratings</h4>
+                    <p>High-quality covers designed for safety, durability, and heavy loads.</p>
+                    <span class="badge">Industrial</span>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="bento-item">
+                    <i class="fa-solid fa-gears bento-icon"></i>
+                    <h4>Stainless Steel</h4>
+                    <p>Robust fabrication for handrails, industrial components, and custom metal works.</p>
+                    <span class="badge">Metal Work</span>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="bento-item span-2 card-accent">
+                    <div>
+                        <i class="fa-solid fa-car-side bento-icon" style="color: white;"></i>
+                        <h4>Car Parking Shades</h4>
+                        <p>Protect vehicles from harsh weather with our durable and stylish parking shades. Designed for maximum coverage and resilience.</p>
+                    </div>
+                    <span class="badge">Protection</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. THE [BRAND] ADVANTAGE (Ocean Flip Cards) -->
+    <section class="section-pad" style="background: #e3f6f5;">
+        <div class="wrapper">
+            <div class="section-head">
+                <h3>The [BRAND] Advantage</h3>
+                <p>Why leading businesses choose us over generic contractors.</p>
+                <div class="bar"></div>
+            </div>
+
+            <div class="flip-grid">
+                <!-- Card 1 -->
+                <div class="flip-container">
+                    <div class="flip-inner">
+                        <div class="flip-front">
+                            <i class="lucide-alert-circle flip-icon-red" style="width:48px; height:48px;"></i>
+                            <h3 class="flip-title">Market Standard</h3>
+                            <ul class="flip-list">
+                                <li><i class="fa-solid fa-xmark flip-icon-red"></i> Inconsistent Material Quality</li>
+                                <li><i class="fa-solid fa-xmark flip-icon-red"></i> Hidden Costs & Fees</li>
+                                <li><i class="fa-solid fa-xmark flip-icon-red"></i> Missed Deadlines</li>
+                            </ul>
+                        </div>
+                        <div class="flip-back">
+                            <i class="lucide-check-circle-2 flip-icon-green" style="width:48px; height:48px; color:white;"></i>
+                            <h3 class="flip-title" style="color:white;">[BRAND] Excellence</h3>
+                            <ul class="flip-list" style="opacity:1; color:rgba(255,255,255,0.9);">
+                                <li><i class="fa-solid fa-check" style="color:#4ade80;"></i> Certified High-Grade Steel</li>
+                                <li><i class="fa-solid fa-check" style="color:#4ade80;"></i> 100% Transparent Pricing</li>
+                                <li><i class="fa-solid fa-check" style="color:#4ade80;"></i> Guaranteed On-Time</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="flip-container">
+                    <div class="flip-inner">
+                        <div class="flip-front">
+                            <i class="lucide-scissors flip-icon-red" style="width:48px; height:48px;"></i>
+                            <h3 class="flip-title">DIY / Freelance</h3>
+                            <ul class="flip-list">
+                                <li><i class="fa-solid fa-xmark flip-icon-red"></i> Safety Hazards</li>
+                                <li><i class="fa-solid fa-xmark flip-icon-red"></i> No Warranty Support</li>
+                                <li><i class="fa-solid fa-xmark flip-icon-red"></i> Poor Finish Quality</li>
+                            </ul>
+                        </div>
+                        <div class="flip-back">
+                            <i class="lucide-shield-check flip-icon-green" style="width:48px; height:48px; color:white;"></i>
+                            <h3 class="flip-title" style="color:white;">Expert Handling</h3>
+                            <ul class="flip-list" style="opacity:1; color:rgba(255,255,255,0.9);">
+                                <li><i class="fa-solid fa-check" style="color:#4ade80;"></i> Full Safety Compliance</li>
+                                <li><i class="fa-solid fa-check" style="color:#4ade80;"></i> Comprehensive Warranty</li>
+                                <li><i class="fa-solid fa-check" style="color:#4ade80;"></i> Luxury Aesthetic Finish</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="flip-container">
+                    <div class="flip-inner">
+                        <div class="flip-front">
+                            <i class="lucide-clock flip-icon-red" style="width:48px; height:48px;"></i>
+                            <h3 class="flip-title">Common Delays</h3>
+                            <ul class="flip-list">
+                                <li><i class="fa-solid fa-xmark flip-icon-red"></i> Unresponsive Teams</li>
+                                <li><i class="fa-solid fa-xmark flip-icon-red"></i> Project Stalls</li>
+                                <li><i class="fa-solid fa-xmark flip-icon-red"></i> Communication Gaps</li>
+                            </ul>
+                        </div>
+                        <div class="flip-back">
+                            <i class="lucide-zap flip-icon-green" style="width:48px; height:48px; color:white;"></i>
+                            <h3 class="flip-title" style="color:white;">Rapid Execution</h3>
+                            <ul class="flip-list" style="opacity:1; color:rgba(255,255,255,0.9);">
+                                <li><i class="fa-solid fa-check" style="color:#4ade80;"></i> 24/7 Support Team</li>
+                                <li><i class="fa-solid fa-check" style="color:#4ade80;"></i> Dedicated Manager</li>
+                                <li><i class="fa-solid fa-check" style="color:#4ade80;"></i> Efficient Workflow</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. PROJECT GALLERY (Expanded) -->
+    <section id="gallery" class="gallery-strip">
+        <div class="wrapper" style="margin-bottom: 30px; display: flex; justify-content: space-between; align-items: end;">
+            <div>
+                <h3 style="font-size: 2.5rem; color: var(--brand-dark); line-height: 1;">Our Work Gallery</h3>
+                <p style="color: var(--text-light);">Swipe to see our expertise in action</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <i class="fa-solid fa-arrow-left-long" style="font-size: 1.5rem; color: var(--brand-accent);"></i>
+                <i class="fa-solid fa-arrow-right-long" style="font-size: 1.5rem; color: var(--brand-accent);"></i>
+            </div>
+        </div>
+        
+        <div class="gallery-track-container">
+            <div class="film-strip">
+                <!-- 1. PERGOLAS -->
+                <div class="film-card">
+                    <label class="film-upload-btn">Upload PERGOLA Photo</label>
+                    <input type="file" class="unified-upload" accept="image/*">
+                    <img src="" alt="Pergola Work">
+                    <div class="film-caption"><h5>Pergolas</h5><p>Custom Outdoor Shading</p></div>
+                </div>
+                <!-- 2. CNC -->
+                 <div class="film-card">
+                    <label class="film-upload-btn">Upload CNC Photo</label>
+                    <input type="file" class="unified-upload" accept="image/*">
+                    <img src="" alt="CNC Work">
+                    <div class="film-caption"><h5>CNC Panels</h5><p>Intricate Designs</p></div>
+                </div>
+                <!-- 3. PARKING -->
+                 <div class="film-card">
+                    <label class="film-upload-btn">Upload PARKING Photo</label>
+                    <input type="file" class="unified-upload" accept="image/*">
+                    <img src="" alt="Parking Shade">
+                    <div class="film-caption"><h5>Car Parking Shades</h5><p>Durable Protection</p></div>
+                </div>
+                <!-- 4. GLASS -->
+                 <div class="film-card">
+                    <label class="film-upload-btn">Upload GLASS Photo</label>
+                    <input type="file" class="unified-upload" accept="image/*">
+                    <img src="" alt="Glass Work">
+                    <div class="film-caption"><h5>Glass & Glazing</h5><p>Partitions & Mirrors</p></div>
+                </div>
+                <!-- 5. STEEL -->
+                 <div class="film-card">
+                    <label class="film-upload-btn">Upload STEEL Photo</label>
+                    <input type="file" class="unified-upload" accept="image/*">
+                    <img src="" alt="Steel Work">
+                    <div class="film-caption"><h5>Stainless Steel</h5><p>Handrails & Fab</p></div>
+                </div>
+                <!-- 6. CUSTOM/METAL -->
+                 <div class="film-card">
+                    <label class="film-upload-btn">Upload METAL Photo</label>
+                    <input type="file" class="unified-upload" accept="image/*">
+                    <img src="" alt="Metal Work">
+                    <div class="film-caption"><h5>Metal Fencing</h5><p>Industrial</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. ABOUT US -->
+    <section id="about" class="owner-section">
+        <div class="circle-decor"></div>
+        <div class="wrapper">
+            <div class="owner-layout">
+                <label class="owner-photo-frame">
+                    <div class="owner-placeholder">
+                        <i class="fa-solid fa-users-viewfinder" style="font-size: 4rem; margin-bottom: 15px; color: var(--brand-accent);"></i><br>
+                        CLICK TO UPLOAD<br>TEAM / OFFICE PHOTO
+                    </div>
+                    <input type="file" class="unified-upload" accept="image/*">
+                    <img src="" alt="About Us Photo">
+                </label>
+
+                <div class="owner-bio">
+                    <h4>About Us</h4>
+                    <h2>Your Trusted Partner</h2>
+                    <p>[Company Name] is a premier provider of technical solutions in Dubai. We pride ourselves on delivering tailored solutions that combine functionality with aesthetic appeal. From boundary walls to intricate glass installations, our expert team ensures every project meets the highest standards of quality and design.</p>
+                    
+                    <div class="stats-grid">
+                        <div class="stat"><h5>100%</h5><span>Quality</span></div>
+                        <div class="stat"><h5>24/7</h5><span>Support</span></div>
+                        <div class="stat"><h5>UAE</h5><span>Coverage</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. CONTACT SECTION -->
+    <section id="contact" class="contact-section-wrapper">
+        <div class="wrapper">
+            <div class="contact-grid">
+                <!-- Form on Left -->
+                <div class="contact-left">
+                    <h3 style="font-size: 2rem; color: var(--brand-dark); margin-bottom: 10px;">Get a Free Quote</h3>
+                    <p style="color: var(--text-light); margin-bottom: 30px;">Fill out the form below and we will get back to you shortly.</p>
+                    
+                    <form id="[BRAND]-contact-form">
+                        <input type="text" id="c-name" class="form-input" placeholder="Full Name" required>
+                        <input type="text" id="c-phone" class="form-input" placeholder="Phone Number" required>
+                        <input type="email" id="c-email" class="form-input" placeholder="Email Address" required>
+                        <textarea id="c-message" class="form-textarea" placeholder="Tell us about your project requirements..."></textarea>
+                        <input type="submit" class="submit-big" value="Send Request">
+                    </form>
+                </div>
+                
+                <!-- Info on Right (Updated based on your image) -->
+                <div class="contact-right">
+                    <!-- 1. Location -->
+                    <div class="contact-detail-item">
+                        <div class="icon-box-sm"><i class="fa-solid fa-location-dot"></i></div>
+                        <div>
+                            <h5>Our Location</h5>
+                            <p>Shed# 3, Business Bay, Dubai<br>Dubai, United Arab Emirates</p>
+                        </div>
+                    </div>
+
+                    <!-- 2. Contact Us (Phone + Buttons) -->
+                    <div class="contact-detail-item">
+                        <div class="icon-box-sm"><i class="fa-solid fa-phone"></i></div>
+                        <div>
+                            <h5>Contact Us</h5>
+                            <!-- Display Numbers Explicitly -->
+                            <p style="font-size:1.1rem; font-weight:700; color:var(--brand-dark); margin-bottom:8px;">+971 50 000 0000</p>
+                            <div class="contact-btn-row">
+                                <a href="tel:+971 50 000 0000" class="btn-call-grey">
+                                    <i class="fa-solid fa-phone"></i> Call Now
+                                </a>
+                                <a href="https://wa.me/971500000000" target="_blank" class="btn-wa-green">
+                                    <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 3. Email Address -->
+                    <div class="contact-detail-item">
+                        <div class="icon-box-sm"><i class="fa-solid fa-envelope"></i></div>
+                        <div>
+                            <h5>Email Address</h5>
+                            <a href="mailto:contact@company.com" style="font-size:1rem; font-weight:500;">contact@company.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. FOOTER -->
+    <footer>
+        <div class="wrapper">
+            <label class="logo-box" style="width:80px; height:80px; margin:0 auto 20px;">
+                <span>UPLOAD<br>LOGO</span>
+                <input type="file" class="unified-upload" accept="image/*">
+                <img src="" alt="Footer Logo">
+            </label>
+            <h2 style="color: var(--brand-dark); margin-bottom: 5px; font-weight: 800;">[Company Name]</h2>
+            <p style="color: var(--text-light); font-size: 0.9rem;">Precision. Durability. Excellence.</p>
+            
+            <div class="socials">
+                <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/971500000000" class="social-link"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            
+            <p style="margin-top: 30px; font-size: 0.8rem; color: #cbd5e1;">&copy; 2025 [Company Name]. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- FLOATING WHATSAPP -->
+    <a href="https://wa.me/971500000000" class="wa-float" title="Chat on WhatsApp" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Initialize Lucide Icons for the Flip Cards
+        lucide.createIcons();
+
+        // --- 1. UNIFIED IMAGE UPLOAD LOGIC ---
+        const allInputs = document.querySelectorAll('.unified-upload');
+
+        allInputs.forEach(input => {
+            input.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if(file) {
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        const parent = input.parentElement;
+                        // Find image inside the label (sometimes it's direct child, sometimes deeper)
+                        let img = parent.querySelector('img');
+                        
+                        // Special case for hero background uploader
+                        if (parent.classList.contains('hero-uploader-bg')) {
+                            img = parent.querySelector('img'); 
+                        }
+
+                        if(img) {
+                            img.src = ev.target.result;
+                            parent.classList.add('has-image'); 
+                        }
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        // --- 2. CONTACT FORM EMAIL LOGIC ---
+        const contactForm = document.getElementById('[BRAND]-contact-form');
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('c-name').value;
+            const phone = document.getElementById('c-phone').value;
+            const email = document.getElementById('c-email').value;
+            const message = document.getElementById('c-message').value;
+            
+            const subject = `New Inquiry from ${name}`;
+            const body = `Name: ${name}%0D%0APhone: ${phone}%0D%0AEmail: ${email}%0D%0A%0D%0AMessage:%0D%0A${message}`;
+            
+            window.location.href = `mailto:contact@company.com?subject=${subject}&body=${body}`;
+        });
+
+        // --- 3. MOBILE MENU TOGGLE ---
+        const mobileToggle = document.querySelector('.mobile-toggle');
+        const nav = document.querySelector('nav');
+
+        mobileToggle.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            const icon = mobileToggle.querySelector('i');
+            if(nav.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+                // Force display for mobile via JS if CSS class toggle isn't enough
+                nav.style.display = 'flex';
+                nav.style.flexDirection = 'column';
+                nav.style.position = 'absolute';
+                nav.style.top = '100%';
+                nav.style.left = '0';
+                nav.style.width = '100%';
+                nav.style.background = 'white';
+                nav.style.padding = '20px';
+            } else {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+                nav.style.display = 'none';
+            }
+        });
+        
+        // Re-enable nav on desktop resize
+        window.addEventListener('resize', () => {
+            if(window.innerWidth > 900) {
+                nav.style.display = 'flex';
+                nav.style.flexDirection = 'row';
+                nav.style.position = 'static';
+                nav.style.padding = '15px 30px';
+                nav.style.background = 'var(--glass-bg)';
+            } else {
+                if(!nav.classList.contains('active')) nav.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

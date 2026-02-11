@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Company Name] L.L.C - Modern Redesign</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles and Animations -->
+    <style>
+        /* Set base font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; /* Light Gray Background */
+            color: #333;
+            scroll-behavior: smooth;
+        }
+
+        /* NEW: Accent color changed to Indigo */
+        .accent-color { color: #4f46e5; }
+        .bg-accent-color { background-color: #4f46e5; }
+        .hover\:bg-accent-hover:hover { background-color: #4338ca; }
+        .border-accent-color { border-color: #4f46e5; }
+
+        /* Page content class for transitions */
+        .page-content {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 0;
+            padding-top: 80px; /* Offset for sticky nav */
+        }
+        
+        .page-visible {
+            opacity: 1;
+            transform: translateY(0);
+            position: relative;
+        }
+
+        .page-hidden {
+            display: none;
+        }
+        
+        /* UPDATED: Placeholder for Light Mode */
+        .image-placeholder-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed #adb5bd; /* Lighter border */
+            border-radius: 0.5rem;
+            background-color: #e9ecef; /* Light gray bg */
+            color: #6c757d; /* Darker text */
+            min-height: 250px;
+            text-align: center;
+            padding: 1rem;
+            transition: all 0.3s ease-in-out; /* Added transition */
+        }
+        .image-placeholder-box:hover {
+            border-color: #4f46e5; /* Accent color border */
+            background-color: #dee2e6; /* Slightly darker bg */
+            color: #333;
+        }
+        .image-placeholder-box svg {
+            width: 40px;
+            height: 40px;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* UPDATED: Logo Placeholder for Light Mode */
+        .logo-placeholder-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed #adb5bd;
+            border-radius: 0.5rem;
+            background-color: #e9ecef;
+            color: #6c757d;
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 10px;
+            line-height: 1.2;
+            padding: 2px;
+            transition: all 0.3s ease-in-out; /* Added transition */
+        }
+        .logo-placeholder-box:hover {
+            border-color: #4f46e5;
+            background-color: #dee2e6;
+            color: #333;
+        }
+
+        /* Animation for elements fading in (Unchanged) */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        .fade-in-delay-1 { animation-delay: 0.2s; opacity: 0; }
+        .fade-in-delay-2 { animation-delay: 0.4s; opacity: 0; }
+        .fade-in-delay-3 { animation-delay: 0.6s; opacity: 0; }
+        
+        /* UPDATED: Service Card for Light Mode + Hover Effect */
+        .service-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0; /* Light border */
+            border-radius: 0.75rem;
+            transition: all 0.3s ease-in-out; /* Smoother transition */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Subtle shadow */
+        }
+        .service-card:hover {
+            transform: translateY(-8px); /* Lift effect */
+            border-color: #4f46e5; /* Accent border on hover */
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.15); /* Accent shadow */
+        }
+
+        /* UPDATED: Gradient Text with new colors */
+        .gradient-text {
+            background: linear-gradient(90deg, #4f46e5, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* UPDATED: Focus styles with new accent */
+        input:focus, textarea:focus {
+            border-color: #4f46e5 !important;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3) !important;
+            outline: none !important;
+        }
+    </style>
+    <link rel="stylesheet" href="css/theme-config.css">
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- ========== HEADER / NAVIGATION ========== -->
+    <!-- UPDATED: Header for Light Mode with blur effect -->
+    <header class="fixed top-0 left-0 right-0 z-50 w-full">
+        <nav class="bg-white/80 backdrop-blur-lg shadow-sm border-b border-gray-200/50">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    
+                    <!-- Logo Placeholder -->
+                    <a href="#" class="flex-shrink-0 flex items-center gap-2" onclick="showPage('page-home', this)">
+                        <div class="logo-placeholder-box">
+                            <span>Logo</span>
+                            <span>Upload</span>
+                        </div>
+                        <span class="text-gray-900 text-xl font-bold tracking-tight hidden sm:block">[BRAND] Technical</span>
+                    </a>
+                    
+                    <!-- Desktop Navigation -->
+                    <div class="hidden md:flex md:items-center md:space-x-2">
+                        <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition-colors duration-300" onclick="showPage('page-home', this)">Home</a>
+                        <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition-colors duration-300" onclick="showPage('page-about', this)">About Us</a>
+                        <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition-colors duration-300" onclick="showPage('page-services', this)">Our Services</a>
+                        <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition-colors duration-300" onclick="showPage('page-projects', this)">Our Projects</a>
+                        <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition-colors duration-300" onclick="showPage('page-clients', this)">Our Clients</a>
+                        <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 transition-colors duration-300" onclick="showPage('page-contact', this)">Contact Us</a>
+                        <a href="#" class="ml-4 px-4 py-2 rounded-full text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-colors duration-300" onclick="showPage('page-contact', this)">
+                            Get a Quote
+                        </a>
+                    </div>
+                    
+                    <!-- Mobile Menu Button -->
+                    <div class="flex md:hidden">
+                        <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Open main menu</span>
+                            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UPDATED: Mobile Menu for Light Mode -->
+            <div class="hidden md:hidden bg-white shadow-lg" id="mobile-menu">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium text-gray-700" onclick="showPage('page-home', this); closeMenu();">Home</a>
+                    <a href="#" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium text-gray-700" onclick="showPage('page-about', this); closeMenu();">About Us</a>
+                    <a href="#" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium text-gray-700" onclick="showPage('page-services', this); closeMenu();">Our Services</a>
+                    <a href="#" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium text-gray-700" onclick="showPage('page-projects', this); closeMenu();">Our Projects</a>
+                    <a href="#" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium text-gray-700" onclick="showPage('page-clients', this); closeMenu();">Our Clients</a>
+                    <a href="#" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium text-gray-700" onclick="showPage('page-contact', this); closeMenu();">Contact Us</a>
+                    <a href="#" class="block w-full text-left mt-2 px-4 py-2 rounded-full text-base font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-colors" onclick="showPage('page-contact', this); closeMenu();">
+                        Get a Quote
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ========== MAIN CONTENT AREA ========== -->
+    <div class="relative" style="min-height: 100vh;">
+
+        <!-- ========== PAGE: HOME ========== -->
+        <main id="page-home" class="page-content page-hidden">
+            <!-- Hero Section (Remains Dark for impact) -->
+            <section class="relative h-[85vh] min-h-[600px] flex items-center justify-center text-center overflow-hidden">
+                <div class="absolute inset-0 z-0">
+                    <div class="image-placeholder-box w-full h-full rounded-none border-none bg-gray-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+                        <span>Main Hero Image/Slider Placeholder (1920x1080)</span>
+                        <span class="text-sm">Click to upload photo</span>
+                    </div>
+                    <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm"></div>
+                </div>
+                
+                <div class="relative z-10 p-6">
+                    <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-4 fade-in">
+                        Welcome to <span class="gradient-text">[BRAND] Technical</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8 fade-in fade-in-delay-1">
+                        Your trusted partner for comprehensive ELV, Fire & Safety, and IT Solutions.
+                    </p>
+                    <div class="fade-in fade-in-delay-2">
+                        <a href="#" class="px-8 py-3 rounded-full text-lg font-semibold bg-indigo-600 text-white hover:bg-indigo-700 transition-all duration-300 transform hover:scale-105 shadow-lg" onclick="showPage('page-services', this)">
+                            Explore Our Services
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Welcome Section (Light Mode) -->
+            <section class="py-16 sm:py-24">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div class="fade-in">
+                            <span class="text-indigo-600 font-semibold uppercase tracking-wider">Who We Are</span>
+                            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2 mb-4">
+                                [Company Name] L.L.C
+                            </h2>
+                            <p class="text-gray-600 text-lg mb-6 leading-relaxed">
+                                We are a leading provider of state-of-the-art solutions, specializing in a wide array of services including ELV Systems, Fire and Safety, IT Solutions, and Annual Maintenance Contracts.
+                            </p>
+                            <p class="text-gray-600 text-lg mb-8 leading-relaxed">
+                                Our commitment to quality, reliability, and customer satisfaction sets us apart. We deliver integrated solutions tailored to meet the unique needs of each client, ensuring safety, efficiency, and peace of mind.
+                            </p>
+                            <a href="#" class="px-6 py-3 rounded-md text-base font-medium bg-gray-200 text-gray-800 hover:bg-gray-300 transition-colors duration-300" onclick="showPage('page-about', this)">
+                                Learn More About Us
+                            </a>
+                        </div>
+                        <div class="fade-in fade-in-delay-1">
+                            <div class="image-placeholder-box h-full min-h-[350px]">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18h16.5M2.25 15h16.5m-16.5-6h16.5m-16.5-6h16.5m-16.5 6h16.5m-16.5 6h16.5m-16.5 6h16.5m-16.5-6h16.5" /></svg>
+                                <span>Company Welcome Image Placeholder</span>
+                                <span class="text-sm">Click to upload photo (e.g., team or office)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Overview (Light Mode) -->
+            <section class="py-16 sm:py-24 bg-white">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-2xl mx-auto mb-12">
+                        <span class="text-indigo-600 font-semibold uppercase tracking-wider">What We Do</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2">
+                            Our Core Services
+                        </h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <!-- Service Card 1: ELV -->
+                        <div class="service-card p-6 text-center fade-in">
+                            <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 11.976c.106-.11.22-.213.338-.316a.75.75 0 0 1 1.06 0l1.22 1.22a.75.75 0 0 0 1.06 0l4.32-4.32a.75.75 0 0 1 1.06 0l1.22 1.22a.75.75 0 0 0 1.06 0l4.32-4.32a.75.75 0 0 1 1.06 0l1.22 1.22a.75.75 0 0 0 1.06 0l.338-.316m-17.006 0a.75.75 0 0 0-1.06 0l-1.22 1.22a.75.75 0 0 0 0 1.06l4.32 4.32a.75.75 0 0 0 1.06 0l1.22-1.22a.75.75 0 0 1 1.06 0l4.32 4.32a.75.75 0 0 0 1.06 0l1.22-1.22a.75.75 0 0 1 1.06 0l4.32 4.32a.75.75 0 0 0 1.06 0l1.22-1.22a.75.75 0 0 0 0-1.06l-.338-.316" /></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">ELV Systems</h3>
+                            <p class="text-gray-600 text-sm mb-4">
+                                CCTV, Access Control, Intercoms, PA Systems, and more.
+                            </p>
+                            <a href="#" class="text-sm font-semibold text-indigo-600 hover:underline" onclick="showPage('page-services', this)">Learn More &rarr;</a>
+                        </div>
+                        
+                        <!-- Service Card 2: Fire & Safety -->
+                        <div class="service-card p-6 text-center fade-in fade-in-delay-1">
+                            <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM15 15h.008v.008H15V15Z" /></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Fire & Safety</h3>
+                            <p class="text-gray-600 text-sm mb-4">
+                                Fire Alarms, Fire Fighting, Emergency Lighting systems.
+                            </p>
+                            <a href="#" class="text-sm font-semibold text-indigo-600 hover:underline" onclick="showPage('page-services', this)">Learn More &rarr;</a>
+                        </div>
+                        
+                        <!-- Service Card 3: IT Solutions -->
+                        <div class="service-card p-6 text-center fade-in fade-in-delay-2">
+                            <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17.25v.008M12 17.25v.008M15 17.25v.008M4.5 5.25h15a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V7.5a2.25 2.25 0 0 1 2.25-2.25Z" /></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">IT Solutions</h3>
+                            <p class="text-gray-600 text-sm mb-4">
+                                Structured Cabling, Network Solutions, PABX systems.
+                            </p>
+                            <a href="#" class="text-sm font-semibold text-indigo-600 hover:underline" onclick="showPage('page-services', this)">Learn More &rarr;</a>
+                        </div>
+                        
+                        <!-- Service Card 4: AMC -->
+                        <div class="service-card p-6 text-center fade-in fade-in-delay-3">
+                            <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21M17.25 21A2.652 2.652 0 0 1 21 17.25m-3.75 0c.01-.01.01-.02.01-.03v-2.25c0-.98-.79-1.78-1.78-1.78h-2.25c-.01 0-.02.01-.03.01m-3.75 0c.01.01.01.02.01.03v2.25c0 .98.79 1.78 1.78 1.78h2.25c.01 0 .02-.01.03-.01M11.42 15.17l-3.04-3.04m-3.04 3.04 3.04-3.04M3 21v-2.25c0-.98.79-1.78 1.78-1.78h2.25c.01 0 .02.01.03.01m-3.75 0c.01.01.01.02.01.03v2.25c0 .98-.79 1.78-1.78 1.78H3.75c-.01 0-.02-.01-.03-.01M3 21l3.04-3.04m.0-3.04-3.04 3.04" /></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Maintenance (AMC)</h3>
+                            <p class="text-gray-600 text-sm mb-4">
+                                Annual Maintenance Contracts for all our provided systems.
+                            </p>
+                            <a href="#" class="text-sm font-semibold text-indigo-600 hover:underline" onclick="showPage('page-services', this)">Learn More &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+        </main>
+
+        <!-- ========== PAGE: ABOUT US ========== -->
+        <section id="page-about" class="page-content page-hidden py-16 sm:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Page Header -->
+                <div class="text-center max-w-2xl mx-auto mb-16 fade-in">
+                    <span class="text-indigo-600 font-semibold uppercase tracking-wider">About Us</span>
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mt-2">
+                        Our Commitment to Excellence
+                    </h1>
+                </div>
+
+                <!-- Mission & Vision -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+                    <!-- Our Mission -->
+                    <div class="service-card p-8 fade-in fade-in-delay-1">
+                        <h3 class="text-3xl font-bold text-gray-900 mb-4">Our Mission</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            To provide innovative and reliable ELV, Fire & Safety, and IT solutions that protect, connect, and empower our clients. We strive for excellence in every project, ensuring customer satisfaction through superior quality service and technical expertise.
+                        </p>
+                    </div>
+                    <!-- Our Vision -->
+                    <div class="service-card p-8 fade-in fade-in-delay-2">
+                        <h3 class="text-3xl font-bold text-gray-900 mb-4">Our Vision</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            To be the region's most trusted and sought-after integrated solutions provider, recognized for our technological leadership, unwavering commitment to safety, and sustainable growth.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Our Team Section -->
+                <div class="text-center max-w-2xl mx-auto mb-12 fade-in">
+                    <span class="text-indigo-600 font-semibold uppercase tracking-wider">The Experts</span>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mt-2">
+                        Meet Our Team
+                    </h2>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Team Member 1 -->
+                    <div class="text-center fade-in fade-in-delay-1">
+                        <div class="image-placeholder-box rounded-full w-48 h-48 mx-auto mb-4 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.5 1.5 0 0 1 18 21.625H6a1.5 1.5 0 0 1-1.499-1.507Z" /></svg>
+                            <span class="text-sm">Team Member Photo</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-900">Full Name</h4>
+                        <p class="text-indigo-600">Job Title</p>
+                    </div>
+                    <!-- Team Member 2 -->
+                    <div class="text-center fade-in fade-in-delay-2">
+                        <div class="image-placeholder-box rounded-full w-48 h-48 mx-auto mb-4 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.5 1.5 0 0 1 18 21.625H6a1.5 1.5 0 0 1-1.499-1.507Z" /></svg>
+                            <span class="text-sm">Team Member Photo</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-900">Full Name</h4>
+                        <p class="text-indigo-600">Job Title</p>
+                    </div>
+                    <!-- Team Member 3 -->
+                    <div class="text-center fade-in fade-in-delay-3">
+                        <div class="image-placeholder-box rounded-full w-48 h-48 mx-auto mb-4 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.5 1.5 0 0 1 18 21.625H6a1.5 1.5 0 0 1-1.499-1.507Z" /></svg>
+                            <span class="text-sm">Team Member Photo</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-900">Full Name</h4>
+                        <p class="text-indigo-600">Job Title</p>
+                    </div>
+                    <!-- Team Member 4 -->
+                    <div class="text-center fade-in fade-in-delay-3">
+                        <div class="image-placeholder-box rounded-full w-48 h-48 mx-auto mb-4 p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.5 1.5 0 0 1 18 21.625H6a1.5 1.5 0 0 1-1.499-1.507Z" /></svg>
+                            <span class="text-sm">Team Member Photo</span>
+                        </div>
+                        <h4 class="text-xl font-bold text-gray-900">Full Name</h4>
+                        <p class="text-indigo-600">Job Title</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PAGE: OUR SERVICES ========== -->
+        <section id="page-services" class="page-content page-hidden py-16 sm:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Page Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16 fade-in">
+                    <span class="text-indigo-600 font-semibold uppercase tracking-wider">Our Services</span>
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mt-2 mb-4">
+                        Comprehensive Technical Solutions
+                    </h1>
+                    <p class="text-lg text-gray-600">
+                        We provide a full spectrum of services, from design and installation to maintenance and support.
+                    </p>
+                </div>
+
+                <!-- Service Details -->
+                <div class="space-y-16">
+                    <!-- Service: ELV SYSTEMS -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <div class="image-placeholder-box min-h-[300px]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                            <span>ELV Systems Image</span>
+                            <span class="text-sm">Click to upload photo</span>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-bold text-gray-900 mb-4"><span class="gradient-text">ELV Systems</span></h3>
+                            <p class="text-gray-600 text-lg mb-6 leading-relaxed">
+                                Our ELV (Extra Low Voltage) systems are designed for security, communication, and automation.
+                            </p>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>CCTV & Surveillance Systems</li>
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>Access Control & Time Attendance</li>
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>Video Intercom Systems</li>
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>Gate Barriers & Parking Management</li>
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>Public Address & BGM Systems</li>
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>SMATV / IPTV Systems</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Service: FIRE AND SAFETY -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <div class="lg:order-2">
+                            <div class="image-placeholder-box min-h-[300px]">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                                <span>Fire & Safety Image</span>
+                                <span class="text-sm">Click to upload photo</span>
+                            </div>
+                        </div>
+                        <div class="lg:order-1">
+                            <h3 class="text-3xl font-bold text-gray-900 mb-4"><span class="gradient-text">Fire & Safety</span></h3>
+                            <p class="text-gray-600 text-lg mb-6 leading-relaxed">
+                                Ensuring the safety of your premises and personnel with certified fire and safety solutions.
+                            </p>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>Fire Alarm Systems (Conventional & Addressable)</li>
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>Fire Fighting Systems (Sprinklers, Hose Reels)</li>
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>Emergency & Exit Lighting</li>
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>Voice Evacuation Systems</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Service: IT SOLUTIONS -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <div class="image-placeholder-box min-h-[300px]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                                <span>IT Solutions Image</span>
+                                <span class="text-sm">Click to upload photo</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-3xl font-bold text-gray-900 mb-4"><span class="gradient-text">IT Solutions</span></h3>
+                            <p class="text-gray-600 text-lg mb-6 leading-relaxed">
+                                Robust IT infrastructure to support your business operations and connectivity.
+                            </p>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>Structured Cabling (Data & Voice)</li>
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>Network Solutions (Switches, Routers, WiFi)</li>
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>IP Telephony & PABX Systems</li>
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>Server & Data Center Solutions</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Service: AMC -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <div class="lg:order-2">
+                            <div class="image-placeholder-box min-h-[300px]">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                                <span>AMC Image</span>
+                                <span class="text-sm">Click to upload photo</span>
+                            </div>
+                        </div>
+                        <div class="lg:order-1">
+                            <h3 class="text-3xl font-bold text-gray-900 mb-4"><span class="gradient-text">Annual Maintenance Contracts (AMC)</span></h3>
+                            <p class="text-gray-600 text-lg mb-6 leading-relaxed">
+                                Protecting your investment with reliable and proactive maintenance services.
+                            </p>
+                            <ul class="space-y-3 text-gray-700">
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>Comprehensive & Non-Comprehensive AMCs</li>
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>Preventive Maintenance Visits</li>
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>24/7 Emergency Support</li>
+                                <li class="flex items-center"><span class="w-2 h-2 rounded-full bg-indigo-500 mr-3"></span>Dedicated Support Team</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PAGE: OUR PROJECTS ========== -->
+        <section id="page-projects" class="page-content page-hidden py-16 sm:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Page Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16 fade-in">
+                    <span class="text-indigo-600 font-semibold uppercase tracking-wider">Our Work</span>
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mt-2 mb-4">
+                        Featured Projects
+                    </h1>
+                    <p class="text-lg text-gray-600">
+                        We are proud of the work we do. Here are some of our completed projects that showcase our expertise and commitment to quality.
+                    </p>
+                </div>
+
+                <!-- Project Gallery -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Project 1 -->
+                    <div class="service-card overflow-hidden group fade-in fade-in-delay-1">
+                        <div class="image-placeholder-box rounded-b-none h-64 overflow-hidden">
+                            <!-- NEW: Added inner div for image scale effect -->
+                            <div class="w-full h-full flex flex-col items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                                <span>Project Image (400x300)</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-gray-900 mb-2">Project Name Placeholder</h4>
+                            <p class="text-gray-600 text-sm mb-4">Brief description of the project, client, or location. (e.g., Commercial Tower, Dubai)</p>
+                            <span class="text-xs font-medium bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">ELV & Security</span>
+                        </div>
+                    </div>
+                    <!-- Project 2 -->
+                    <div class="service-card overflow-hidden group fade-in fade-in-delay-2">
+                        <div class="image-placeholder-box rounded-b-none h-64 overflow-hidden">
+                            <div class="w-full h-full flex flex-col items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                                <span>Project Image (400x300)</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-gray-900 mb-2">Project Name Placeholder</h4>
+                            <p class="text-gray-600 text-sm mb-4">Brief description of the project, client, or location. (e.g., Residential Complex, Abu Dhabi)</p>
+                            <span class="text-xs font-medium bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">Fire & Safety</span>
+                        </div>
+                    </div>
+                    <!-- Project 3 -->
+                    <div class="service-card overflow-hidden group fade-in fade-in-delay-3">
+                        <div class="image-placeholder-box rounded-b-none h-64 overflow-hidden">
+                            <div class="w-full h-full flex flex-col items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                                <span>Project Image (400x300)</span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h4 class="text-xl font-bold text-gray-900 mb-2">Project Name Placeholder</h4>
+                            <p class="text-gray-600 text-sm mb-4">Brief description of the project, client, or location. (e.g., Corporate HQ, Sharjah)</p>
+                            <span class="text-xs font-medium bg-indigo-100 text-indigo-700 px-3 py-1 rounded-full">IT Solutions</span>
+                        </div>
+                    </div>
+                    <!-- Project 4, 5, 6 (Add more as needed) -->
+                    <div class="service-card overflow-hidden group fade-in">
+                        <div class="image-placeholder-box rounded-b-none h-64 overflow-hidden"><div class="w-full h-full flex flex-col items-center justify-center group-hover:scale-105 transition-transform duration-300">...</div></div>
+                        <div class="p-6">...</div>
+                    </div>
+                    <div class="service-card overflow-hidden group fade-in">
+                        <div class="image-placeholder-box rounded-b-none h-64 overflow-hidden"><div class="w-full h-full flex flex-col items-center justify-center group-hover:scale-105 transition-transform duration-300">...</div></div>
+                        <div class="p-6">...</div>
+                    </div>
+                    <div class="service-card overflow-hidden group fade-in">
+                        <div class="image-placeholder-box rounded-b-none h-64 overflow-hidden"><div class="w-full h-full flex flex-col items-center justify-center group-hover:scale-105 transition-transform duration-300">...</div></div>
+                        <div class="p-6">...</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ========== PAGE: OUR CLIENTS ========== -->
+        <section id="page-clients" class="page-content page-hidden py-16 sm:py-24 bg-white">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Page Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16 fade-in">
+                    <span class="text-indigo-600 font-semibold uppercase tracking-wider">Our Partners</span>
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mt-2 mb-4">
+                        Our Valued Clients
+                    </h1>
+                    <p class="text-lg text-gray-600">
+                        We are honored to have worked with a diverse range of clients who trust us for their critical technical needs.
+                    </p>
+                </div>
+
+                <!-- Client Logos Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center">
+                    
+                    <!-- Client Logo Placeholder (Repeat this block for each client) -->
+                    <div class="p-4 service-card items-center justify-center flex min-h-[120px] fade-in fade-in-delay-1 hover:bg-indigo-50">
+                        <div class="image-placeholder-box min-h-[100px] w-full border-none bg-transparent shadow-none hover:bg-transparent color-gray-400">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Z" /></svg>
+                            <span class="text-sm mt-2 text-gray-400">Client Logo</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 service-card items-center justify-center flex min-h-[120px] fade-in fade-in-delay-2 hover:bg-indigo-50">
+                        <div class="image-placeholder-box min-h-[100px] w-full border-none bg-transparent shadow-none hover:bg-transparent">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Z" /></svg>
+                            <span class="text-sm mt-2 text-gray-400">Client Logo</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 service-card items-center justify-center flex min-h-[120px] fade-in fade-in-delay-3 hover:bg-indigo-50">
+                        <div class="image-placeholder-box min-h-[100px] w-full border-none bg-transparent shadow-none hover:bg-transparent">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Z" /></svg>
+                            <span class="text-sm mt-2 text-gray-400">Client Logo</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 service-card items-center justify-center flex min-h-[120px] fade-in hover:bg-indigo-50">
+                        <div class="image-placeholder-box min-h-[100px] w-full border-none bg-transparent shadow-none hover:bg-transparent">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Z" /></svg>
+                            <span class="text-sm mt-2 text-gray-400">Client Logo</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 service-card items-center justify-center flex min-h-[120px] fade-in hover:bg-indigo-50">
+                        <div class="image-placeholder-box min-h-[100px] w-full border-none bg-transparent shadow-none hover:bg-transparent">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Z" /></svg>
+                            <span class="text-sm mt-2 text-gray-400">Client Logo</span>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 service-card items-center justify-center flex min-h-[120px] fade-in hover:bg-indigo-50">
+                        <div class="image-placeholder-box min-h-[100px] w-full border-none bg-transparent shadow-none hover:bg-transparent">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Z" /></svg>
+                            <span class="text-sm mt-2 text-gray-400">Client Logo</span>
+                        </div>
+                    </div>
+                     <div class="p-4 service-card items-center justify-center flex min-h-[120px] fade-in hover:bg-indigo-50">
+                        <div class="image-placeholder-box min-h-[100px] w-full border-none bg-transparent shadow-none hover:bg-transparent">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Z" /></svg>
+                            <span class="text-sm mt-2 text-gray-400">Client Logo</span>
+                        </div>
+                    </div>
+                     <div class="p-4 service-card items-center justify-center flex min-h-[120px] fade-in hover:bg-indigo-50">
+                        <div class="image-placeholder-box min-h-[100px] w-full border-none bg-transparent shadow-none hover:bg-transparent">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Z" /></svg>
+                            <span class="text-sm mt-2 text-gray-400">Client Logo</span>
+                        </div>
+                    </div>
+                     <div class="p-4 service-card items-center justify-center flex min-h-[120px] fade-in hover:bg-indigo-50">
+                        <div class="image-placeholder-box min-h-[100px] w-full border-none bg-transparent shadow-none hover:bg-transparent">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Z" /></svg>
+                            <span class="text-sm mt-2 text-gray-400">Client Logo</span>
+                        </div>
+                    </div>
+                     <div class="p-4 service-card items-center justify-center flex min-h-[120px] fade-in hover:bg-indigo-50">
+                        <div class="image-placeholder-box min-h-[100px] w-full border-none bg-transparent shadow-none hover:bg-transparent">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Z" /></svg>
+                            <span class="text-sm mt-2 text-gray-400">Client Logo</span>
+                        </div>
+                    </div>
+                     <div class="p-4 service-card items-center justify-center flex min-h-[120px] fade-in hover:bg-indigo-50">
+                        <div class="image-placeholder-box min-h-[100px] w-full border-none bg-transparent shadow-none hover:bg-transparent">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Z" /></svg>
+                            <span class="text-sm mt-2 text-gray-400">Client Logo</span>
+                        </div>
+                    </div>
+                     <div class="p-4 service-card items-center justify-center flex min-h-[120px] fade-in hover:bg-indigo-50">
+                        <div class="image-placeholder-box min-h-[100px] w-full border-none bg-transparent shadow-none hover:bg-transparent">
+                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 text-gray-400"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 16.875h3.375m0 0h3.375m-3.375 0V13.5m0 3.375v3.375M6 10.5h2.25a2.25 2.25 0 0 0 2.25-2.25V6a2.25 2.25 0 0 0-2.25-2.25H6A2.25 2.25 0 0 0 3.75 6v2.25A2.25 2.25 0 0 0 6 10.5Zm0 9.75h2.25A2.25 2.25 0 0 0 10.5 18v-2.25a2.25 2.25 0 0 0-2.25-2.25H6a2.25 2.25 0 0 0-2.25 2.25V18A2.25 2.25 0 0 0 6 20.25Z" /></svg>
+                            <span class="text-sm mt-2 text-gray-400">Client Logo</span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PAGE: CONTACT US ========== -->
+        <section id="page-contact" class="page-content page-hidden py-16 sm:py-24">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Page Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16 fade-in">
+                    <span class="text-indigo-600 font-semibold uppercase tracking-wider">Contact Us</span>
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 mt-2 mb-4">
+                        Get In Touch
+                    </h1>
+                    <p class="text-lg text-gray-600">
+                        Have a question or a project in mind? We'd love to hear from you.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    <!-- Contact Form -->
+                    <div class="lg:col-span-7 fade-in fade-in-delay-1">
+                        <form action="#" method="POST" class="space-y-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                                <input type="text" name="name" id="name" autocomplete="name" class="mt-1 block w-full bg-white border-gray-300 rounded-md shadow-sm py-3 px-4 text-gray-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                                <input type="email" name="email" id="email" autocomplete="email" class="mt-1 block w-full bg-white border-gray-300 rounded-md shadow-sm py-3 px-4 text-gray-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                                <input type="text" name="phone" id="phone" autocomplete="tel" class="mt-1 block w-full bg-white border-gray-300 rounded-md shadow-sm py-3 px-4 text-gray-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="subject" class="block text-sm font-medium text-gray-700">Subject</label>
+                                <input type="text" name="subject" id="subject" class="mt-1 block w-full bg-white border-gray-300 rounded-md shadow-sm py-3 px-4 text-gray-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                                <textarea id="message" name="message" rows="4" class="mt-1 block w-full bg-white border-gray-300 rounded-md shadow-sm py-3 px-4 text-gray-900 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"></textarea>
+                            </div>
+                            <div>
+                                <button type="submit" class="w-full px-8 py-3 rounded-md text-base font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-colors duration-300 shadow-lg">
+                                    Send Message
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="lg:col-span-5 fade-in fade-in-delay-2">
+                        <div class="service-card p-8 h-full">
+                            <h3 class="text-2xl font-bold text-gray-900 mb-6">Our Contact Details</h3>
+                            <div class="space-y-6">
+                                <div class="flex items-start gap-4">
+                                    <div class="flex-shrink-0 w-10 h-10 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-gray-900">Address</h4>
+                                        <p class="text-gray-600">[Company Name] L.L.C</p>
+                                        <p class="text-gray-600">P.O. Box: 12345, Dubai</p>
+                                        <p class="text-gray-600">United Arab Emirates</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="flex-shrink-0 w-10 h-10 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.081l-3.03-.76a1.125 1.125 0 0 0-1.29.916l-.768 3.073c-.413.203-.83.39-1.255.55A13.5 13.5 0 0 1 3.372 6.962c.16-.425.347-.842.55-1.255l3.073-.768a1.125 1.125 0 0 0 .916-1.29l-.76-3.03c-.115-.499-.6-.851-1.08-.851H2.25A2.25 2.25 0 0 0 0 4.5v.75Z" /></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-gray-900">Phone</h4>
+                                        <p class="text-gray-600">+971 4 123 4567</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="flex-shrink-0 w-10 h-10 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.625a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-gray-900">Email</h4>
+                                        <p class="text-gray-600">contact@company.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="bg-white border-t border-gray-200">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Footer About -->
+                <div class="col-span-1 md:col-span-2">
+                    <a href="#" class="flex items-center gap-2 mb-4" onclick="showPage('page-home', this)">
+                        <div class="logo-placeholder-box">
+                            <span>Logo</span>
+                            <span>Upload</span>
+                        </div>
+                        <span class="text-gray-900 text-xl font-bold tracking-tight">[Company Name]</span>
+                    </a>
+                    <p class="text-gray-600 max-w-md">
+                        Your trusted partner for comprehensive ELV, Fire & Safety, and IT Solutions in the UAE.
+                    </to>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h5 class="text-gray-900 font-semibold mb-4 uppercase tracking-wider">Quick Links</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-600 hover:text-indigo-600 transition-colors" onclick="showPage('page-home', this)">Home</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-indigo-600 transition-colors" onclick="showPage('page-about', this)">About Us</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-indigo-600 transition-colors" onclick="showPage('page-services', this)">Services</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-indigo-600 transition-colors" onclick="showPage('page-projects', this)">Projects</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-indigo-6I600 transition-colors" onclick="showPage('page-clients', this)">Clients</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-indigo-600 transition-colors" onclick="showPage('page-contact', this)">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h5 class="text-gray-900 font-semibold mb-4 uppercase tracking-wider">Contact Us</h5>
+                    <ul class="space-y-3 text-gray-600">
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 mt-1 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
+                            <span>P.O. Box: 12345, Dubai, UAE</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 mt-1 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.081l-3.03-.76a1.125 1.125 0 0 0-1.29.916l-.768 3.073c-.413.203-.83.39-1.255.55A13.5 13.5 0 0 1 3.372 6.962c.16-.425.347-.842.55-1.255l3.073-.768a1.125 1.125 0 0 0 .916-1.29l-.76-3.03c-.115-.499-.6-.851-1.08-.851H2.25A2.25 2.25 0 0 0 0 4.5v.75Z" /></svg>
+                            <span>+971 4 123 4567</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 mt-1 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.625a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
+                            <span>contact@company.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="mt-8 pt-8 border-t border-gray-200 text-center text-gray-500 text-sm">
+                <p>&copy; 2025 [Company Name] L.L.C. All rights reserved. Designed & Rebuilt.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ========== JAVASCRIPT LOGIC ========== -->
+    <script>
+        let currentPage = 'page-home';
+        const pages = document.querySelectorAll('.page-content');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileNavLinks = document.querySelectorAll('.nav-link-mobile');
+        
+        function showPage(pageId, navElement = null) {
+            const targetPage = document.getElementById(pageId);
+            if (!targetPage) return;
+            
+            const currentVisiblePage = document.querySelector('.page-visible');
+            if (currentVisiblePage && currentVisiblePage.id === pageId) {
+                return;
+            }
+
+            pages.forEach(page => {
+                page.classList.add('page-hidden');
+                page.classList.remove('page-visible');
+            });
+
+            targetPage.classList.remove('page-hidden');
+            void targetPage.offsetWidth; 
+            targetPage.classList.add('page-visible');
+            currentPage = pageId;
+
+            // UPDATED: Active link styling for new light theme
+            navLinks.forEach(link => {
+                link.classList.remove('text-indigo-600', 'border-indigo-600', 'border-b-2');
+                link.classList.add('text-gray-700', 'hover:text-indigo-600');
+            });
+            
+            mobileNavLinks.forEach(link => {
+                link.classList.remove('bg-indigo-50', 'text-indigo-700');
+                link.classList.add('text-gray-700', 'hover:bg-gray-100');
+            });
+
+            const activeNavLinks = document.querySelectorAll(`[onclick="showPage('${pageId}', this)"]`);
+            activeNavLinks.forEach(activeLink => {
+                if (activeLink.classList.contains('nav-link')) {
+                    // Desktop
+                    activeLink.classList.add('text-indigo-600', 'border-indigo-600', 'border-b-2');
+                    activeLink.classList.remove('text-gray-700');
+                } else if (activeLink.classList.contains('nav-link-mobile')) {
+                    // Mobile
+                    activeLink.classList.add('bg-indigo-50', 'text-indigo-700');
+                    activeLink.classList.remove('text-gray-700');
+                }
+            });
+
+            window.scrollTo(0, 0);
+        }
+
+        // Mobile Menu Logic
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const openIcon = menuButton.querySelector('svg:first-child');
+        const closeIcon = menuButton.querySelector('svg:last-child');
+
+        function closeMenu() {
+            mobileMenu.classList.add('hidden');
+            openIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+            menuButton.setAttribute('aria-expanded', 'false');
+        }
+
+        menuButton.addEventListener('click', () => {
+            const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+            if (isExpanded) {
+                closeMenu();
+            } else {
+                mobileMenu.classList.remove('hidden');
+                openIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+                menuButton.setAttribute('aria-expanded', 'true');
+            }
+        });
+
+        // Initialize the page on load
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage('page-home');
+        });
+    </script>
+
+</body>
+</html>

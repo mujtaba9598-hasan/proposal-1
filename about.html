@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | HomeNest Technical Services LLC</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&family=Inter:wght@400;600&family=Space+Grotesk:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/overrides.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/theme-config.css">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* Enhanced About Page Styles */
+        .about-hero {
+            background: linear-gradient(135deg, rgba(11, 43, 64, 0.98), rgba(7, 27, 42, 1)),
+                url('https://images.pexels.com/photos/1249611/pexels-photo-1249611.jpeg?auto=compress&cs=tinysrgb&w=1920') center/cover;
+            padding: 8rem 2rem 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(77, 227, 193, 0.03) 35px, rgba(77, 227, 193, 0.03) 70px);
+            pointer-events: none;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .value-card {
+            background: var(--panel-2);
+            border: 1px solid rgba(127, 168, 195, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .value-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .value-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .value-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(77, 227, 193, 0.15), rgba(77, 227, 193, 0.05));
+            border: 2px solid rgba(77, 227, 193, 0.3);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .value-card:hover .value-icon {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 30px rgba(77, 227, 193, 0.3);
+        }
+
+        .value-number {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 4rem;
+            font-weight: 700;
+            color: rgba(77, 227, 193, 0.08);
+            font-family: var(--font-mono);
+            line-height: 1;
+        }
+
+        .value-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .value-description {
+            color: var(--text-2);
+            line-height: 1.7;
+            font-size: 0.95rem;
+        }
+
+        .stats-section {
+            background: var(--panel-2);
+            border: 1px solid rgba(127, 168, 195, 0.2);
+            border-radius: 24px;
+            padding: 4rem 2rem;
+            margin: 4rem 0;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            position: relative;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            font-family: var(--font-mono);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 30px rgba(77, 227, 193, 0.3);
+        }
+
+        .stat-label {
+            color: var(--text-2);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: var(--font-mono);
+        }
+
+        .mission-card {
+            background: linear-gradient(135deg, rgba(77, 227, 193, 0.1), rgba(11, 43, 64, 0.8));
+            border: 2px solid var(--accent);
+            border-radius: 24px;
+            padding: 4rem;
+            text-align: center;
+            margin: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-card::before {
+            content: '"';
+            position: absolute;
+            top: 1rem;
+            left: 2rem;
+            font-size: 10rem;
+            color: rgba(77, 227, 193, 0.1);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .mission-text {
+            font-size: 1.8rem;
+            line-height: 1.6;
+            color: var(--text);
+            position: relative;
+            z-index: 1;
+            font-weight: 300;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .team-section {
+            text-align: center;
+            margin: 5rem 0;
+        }
+
+        .owner-card {
+            background: var(--panel-2);
+            border: 1px solid rgba(127, 168, 195, 0.2);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 600px;
+            margin: 2rem auto;
+            transition: all 0.3s ease;
+        }
+
+        .owner-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .owner-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(77, 227, 193, 0.2), rgba(77, 227, 193, 0.05));
+            border: 4px solid var(--accent);
+            margin: 0 auto 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(77, 227, 193, 0.3);
+        }
+
+        .owner-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+            .about-hero {
+                padding: 5rem 1.5rem 4rem;
+            }
+
+            .values-grid {
+                gap: 1.5rem;
+            }
+
+            .stats-grid {
+                gap: 2rem;
+            }
+
+            .mission-card {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .mission-text {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+
+<body class="blueprint-bg">
+
+    <!-- NAVIGATION -->
+    <div style="height: 60px;"></div>
+
+    <!-- WHATSAPP -->
+    <a href="https://wa.me/971543979027" class="wa-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- HERO SECTION -->
+    <section class="about-hero">
+        <div style="position: relative; z-index: 1; max-width: 900px; margin: 0 auto;">
+            <span class="mono-label"
+                style="background:var(--accent); color:black; padding:6px 16px; border-radius: 30px; display: inline-block; margin-bottom: 1.5rem;">
+                <i class="fa-solid fa-building"></i> ABOUT US
+            </span>
+            <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1.5rem; font-weight: 700;">
+                YOUR TRUSTED HOME
+                <br>
+                <span style="color: var(--accent);">MAINTENANCE PARTNER</span>
+            </h1>
+            <p style="font-size: 1.25rem; color: var(--text-2); line-height: 1.7; max-width: 700px; margin: 0 auto;">
+                Dedicated to excellence in home maintenance and technical services across Dubai and the UAE since
+                inception.
+            </p>
+        </div>
+    </section>
+
+    <main class="blueprint-container">
+
+        <!-- CORE VALUES -->
+        <section style="margin: 6rem 0;">
+            <div style="text-align: center; margin-bottom: 4rem;">
+                <span class="mono-label" style="color: var(--accent); font-size: 0.9rem;">WHAT DRIVES US</span>
+                <h2 style="font-size: 2.5rem; margin-top: 1rem; font-weight: 600;">Our Core Values</h2>
+            </div>
+
+            <div class="values-grid">
+                <!-- Value 1 -->
+                <div class="value-card">
+                    <div class="value-number">01</div>
+                    <div class="value-icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="value-title">Trust & Reliability</h3>
+                    <p class="value-description">
+                        HomeNest provides comprehensive home maintenance solutions with skilled technicians and
+                        quality materials for exceptional service delivery across all projects.
+                    </p>
+                </div>
+
+                <!-- Value 2 -->
+                <div class="value-card">
+                    <div class="value-number">02</div>
+                    <div class="value-icon">
+                        <i class="fa-solid fa-certificate"></i>
+                    </div>
+                    <h3 class="value-title">Quality Assurance</h3>
+                    <p class="value-description">
+                        Premium materials and expert workmanship. Our quality assurance process meets UAE standards
+                        for both residential and commercial projects.
+                    </p>
+                </div>
+
+                <!-- Value 3 -->
+                <div class="value-card">
+                    <div class="value-number">03</div>
+                    <div class="value-icon">
+                        <i class="fa-solid fa-clock"></i>
+                    </div>
+                    <h3 class="value-title">Timely Delivery</h3>
+                    <p class="value-description">
+                        Advanced project management systems ensure deadlines are respected without compromising on
+                        precision or quality standards.
+                    </p>
+                </div>
+
+                <!-- Value 4 -->
+                <div class="value-card">
+                    <div class="value-number">04</div>
+                    <div class="value-icon">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <h3 class="value-title">Expert Team</h3>
+                    <p class="value-description">
+                        Expert technicians with years of UAE experience providing reliable home maintenance services
+                        across Dubai and the Emirates.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATISTICS -->
+        <section class="stats-section">
+            <span class="mono-label" style="color: var(--accent);">BY THE NUMBERS</span>
+            <h2 style="font-size: 2rem; margin-top: 1rem; font-weight: 600;">Our Impact</h2>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">500+</div>
+                    <div class="stat-label">Projects Completed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Core Services</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Client Satisfaction</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Support Available</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MISSION STATEMENT -->
+        <section class="mission-card">
+            <div class="mono-label" style="color: var(--accent); margin-bottom: 2rem;">OUR MISSION</div>
+            <p class="mission-text">
+                To become Dubai's most trusted partner for comprehensive home maintenance and technical services,
+                delivering excellence in every project.
+            </p>
+        </section>
+
+        <!-- LEADERSHIP -->
+        <section class="team-section">
+            <span class="mono-label" style="color: var(--accent);">LEADERSHIP</span>
+            <h2 style="font-size: 2.5rem; margin-top: 1rem; margin-bottom: 3rem; font-weight: 600;">Meet Our Owner</h2>
+
+            <div class="owner-card">
+                <div class="owner-avatar">
+                    <img src="images/owner.jpg" alt="Mr. Sher Ali"
+                        onerror="this.onerror=null; this.style.display='none'; this.parentElement.innerHTML='<i class=\'fa-solid fa-user-tie\' style=\'font-size:4rem; color:var(--accent); display:flex; align-items:center; justify-content:center; height:100%\'></i>';">
+                </div>
+                <h3 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: var(--text);">Mr. Sher Ali</h3>
+                <p class="mono-label" style="color: var(--accent); margin-bottom: 1.5rem;">FOUNDER & OWNER</p>
+                <p style="color: var(--text-2); line-height: 1.7; margin-bottom: 2rem;">
+                    Leading HomeNest with a vision to provide exceptional home maintenance services across Dubai,
+                    backed by years of experience in the UAE technical services industry.
+                </p>
+                <div
+                    style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; padding-top: 1.5rem; border-top: 1px solid rgba(127, 168, 195, 0.2);">
+                    <a href="tel:+971528095912"
+                        style="color: var(--text-2); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s;">
+                        <i class="fa-solid fa-phone" style="color: var(--accent);"></i>
+                        +971 52 809 5912
+                    </a>
+                    <a href="mailto:shairali6261@gmail.com"
+                        style="color: var(--text-2); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s;">
+                        <i class="fa-solid fa-envelope" style="color: var(--accent);"></i>
+                        shairali6261@gmail.com
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer style="border-top:1px solid var(--line); padding:3rem 0; margin-top:6rem; background:var(--canvas-2);">
+        <div class="blueprint-container">
+            <div class="flex justify-between items-center" style="margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                <div class="mono-label">HOMENEST TECHNICAL SERVICES LLC // DUBAI</div>
+                <div class="mono-label">STATUS: OPERATIONAL</div>
+            </div>
+            <div style="text-align:center; color:var(--muted); font-size:0.8rem;">
+                &copy; 2026 HomeNest Technical Services LLC. <br>
+                Owner: Mr. Sher Ali | Phone: +971 52 809 5912 | Email: shairali6261@gmail.com | Dubai, UAE
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="assets/js/experience.js"></script>
+    <script>
+        // Animate value cards on scroll
+        gsap.utils.toArray('.value-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 80%',
+                    toggleActions: 'play none none reverse'
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                delay: i * 0.1
+            });
+        });
+
+        // Animate stats
+        gsap.utils.toArray('.stat-number').forEach(stat => {
+            gsap.from(stat, {
+                scrollTrigger: {
+                    trigger: stat,
+                    start: 'top 80%',
+                },
+                textContent: 0,
+                duration: 2,
+                ease: 'power1.inOut',
+                snap: { textContent: 1 }
+            });
+        });
+    </script>
+</body>
+
+</html>

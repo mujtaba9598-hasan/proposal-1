@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact | HomeNest Technical Services LLC</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&family=Inter:wght@400;600&family=Space+Grotesk:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/overrides.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/theme-config.css">
+
+    <style>
+        /* Enhanced Contact Page Styles */
+        .contact-hero {
+            background: linear-gradient(135deg, rgba(11, 43, 64, 0.98), rgba(7, 27, 42, 1)),
+                url('https://images.pexels.com/photos/4792285/pexels-photo-4792285.jpeg?auto=compress&cs=tinysrgb&w=1920') center/cover;
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(77, 227, 193, 0.03) 2px, rgba(77, 227, 193, 0.03) 4px);
+            pointer-events: none;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1.2fr 2fr;
+            gap: 3rem;
+            margin: 4rem 0;
+        }
+
+        .contact-info {
+            background: var(--panel-2);
+            border: 1px solid rgba(127, 168, 195, 0.2);
+            border-radius: 24px;
+            padding: 3rem;
+            height: fit-content;
+            position: sticky;
+            top: 80px;
+        }
+
+        .contact-method {
+            padding: 1.5rem;
+            background: rgba(11, 43, 64, 0.5);
+            border: 1px solid rgba(127, 168, 195, 0.15);
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-method:hover {
+            border-color: var(--accent);
+            transform: translateX(8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-method-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, rgba(77, 227, 193, 0.15), rgba(77, 227, 193, 0.05));
+            border: 2px solid rgba(77, 227, 193, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .contact-method-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            font-family: var(--font-mono);
+        }
+
+        .contact-method-value {
+            color: var(--text);
+            font-size: 1.1rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: block;
+        }
+
+        .contact-method-value:hover {
+            color: var(--accent);
+        }
+
+        .form-container {
+            background: var(--panel-2);
+            border: 1px solid rgba(127, 168, 195, 0.2);
+            border-radius: 24px;
+            padding: 3rem;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--text);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-label .required {
+            color: var(--accent);
+            margin-left: 0.25rem;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            background: rgba(11, 43, 64, 0.6);
+            border: 2px solid rgba(127, 168, 195, 0.2);
+            color: var(--text);
+            padding: 1rem 1.25rem;
+            border-radius: 14px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(77, 227, 193, 0.1);
+            background: rgba(11, 43, 64, 0.8);
+        }
+
+        .form-input::placeholder,
+        .form-textarea::placeholder {
+            color: var(--muted);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .form-select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%234DE3C1' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 3rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--accent), rgba(77, 227, 193, 0.8));
+            color: #000;
+            border: none;
+            padding: 1.25rem 3rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            font-family: var(--font-mono);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(77, 227, 193, 0.4);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .whatsapp-cta {
+            background: linear-gradient(135deg, rgba(37, 211, 102, 0.15), rgba(37, 211, 102, 0.05));
+            border: 2px solid rgba(37, 211, 102, 0.3);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: #fff;
+            border: none;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            text-decoration: none;
+        }
+
+        .whatsapp-btn:hover {
+            background: #20BA5A;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+        }
+
+        @media (max-width: 992px) {
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-info {
+                position: static;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body class="blueprint-bg">
+
+    <!-- NAVIGATION -->
+    <div style="height: 60px;"></div>
+
+    <!-- WHATSAPP -->
+    <a href="https://wa.me/971543979027" class="wa-float" target="_blank">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- HERO SECTION -->
+    <section class="contact-hero">
+        <div style="position: relative; z-index: 1; max-width: 800px; margin: 0 auto;">
+            <span class="mono-label"
+                style="background:var(--accent); color:black; padding:6px 16px; border-radius: 30px; display: inline-block; margin-bottom: 1.5rem;">
+                <i class="fa-solid fa-comments"></i> GET IN TOUCH
+            </span>
+            <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1.5rem; font-weight: 700;">
+                LET'S START YOUR
+                <br>
+                <span style="color: var(--accent);">NEXT PROJECT</span>
+            </h1>
+            <p style="font-size: 1.2rem; color: var(--text-2); line-height: 1.7;">
+                Have a project in mind? We're here to help. Reach out through any channel and our team will respond
+                promptly.
+            </p>
+        </div>
+    </section>
+
+    <main class="blueprint-container">
+
+        <div class="contact-container">
+
+            <!-- CONTACT INFO SIDEBAR -->
+            <aside class="contact-info">
+                <h2 style="font-size: 1.5rem; margin-bottom: 2rem; color: var(--text);">Contact Information</h2>
+
+                <!-- Phone -->
+                <div class="contact-method">
+                    <div class="contact-method-icon">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div class="contact-method-label">Phone</div>
+                    <a href="tel:+971528095912" class="contact-method-value">
+                        +971 52 809 5912
+                    </a>
+                </div>
+
+                <!-- Email -->
+                <div class="contact-method">
+                    <div class="contact-method-icon">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div class="contact-method-label">Email</div>
+                    <a href="mailto:shairali6261@gmail.com" class="contact-method-value">
+                        shairali6261@gmail.com
+                    </a>
+                </div>
+
+                <!-- Location -->
+                <div class="contact-method">
+                    <div class="contact-method-icon">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                    <div class="contact-method-label">Location</div>
+                    <div class="contact-method-value">
+                        Dubai, UAE
+                    </div>
+                </div>
+
+                <!-- WhatsApp CTA -->
+                <div class="whatsapp-cta">
+                    <i class="fa-brands fa-whatsapp" style="font-size: 3rem; color: #25D366; margin-bottom: 1rem;"></i>
+                    <h3 style="color: var(--text); margin-bottom: 0.5rem;">Prefer WhatsApp?</h3>
+                    <p style="color: var(--text-2); font-size: 0.9rem; margin-bottom: 1rem;">
+                        Chat with us instantly
+                    </p>
+                    <a href="https://wa.me/971543979027" class="whatsapp-btn">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        Start Chat
+                    </a>
+                </div>
+            </aside>
+
+            <!-- CONTACT FORM -->
+            <div class="form-container">
+                <div style="margin-bottom: 2.5rem;">
+                    <h2 style="font-size: 2rem; margin-bottom: 0.75rem; color: var(--text);">Send Us a Message</h2>
+                    <p style="color: var(--text-2);">Fill out the form below and we'll get back to you within 24
+                        hours.</p>
+                </div>
+
+                <form id="contact-form">
+
+                    <!-- Name & Email Row -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Your Name <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Email Address <span class="required">*</span>
+                            </label>
+                            <input type="email" class="form-input" placeholder="your@email.com" required>
+                        </div>
+                    </div>
+
+                    <!-- Phone & Service Row -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">
+                                Phone Number <span class="required">*</span>
+                            </label>
+                            <input type="tel" class="form-input" placeholder="+971 XXX XXX" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                Service Required <span class="required">*</span>
+                            </label>
+                            <select class="form-select" required>
+                                <option value="">Select a service</option>
+                                <option value="tile">Tile Work</option>
+                                <option value="plumbing">Plumbing</option>
+                                <option value="electrical">Electrical</option>
+                                <option value="ac">AC Maintenance</option>
+                                <option value="paint">Paint Work</option>
+                                <option value="garden">Pool & Garden</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Subject -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            Subject
+                        </label>
+                        <input type="text" class="form-input" placeholder="What's this regarding?">
+                    </div>
+
+                    <!-- Message -->
+                    <div class="form-group">
+                        <label class="form-label">
+                            Message <span class="required">*</span>
+                        </label>
+                        <textarea class="form-textarea" placeholder="Tell us about your project or requirements..."
+                            required></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-btn">
+                        <span>Send Message</span>
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer style="border-top:1px solid var(--line); padding:3rem 0; margin-top:6rem; background:var(--canvas-2);">
+        <div class="blueprint-container">
+            <div class="flex justify-between items-center" style="margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+                <div class="mono-label">HOMENEST TECHNICAL SERVICES LLC // DUBAI</div>
+                <div class="mono-label">STATUS: OPERATIONAL</div>
+            </div>
+            <div style="text-align:center; color:var(--muted); font-size:0.8rem;">
+                &copy; 2026 HomeNest Technical Services LLC. <br>
+                Owner: Mr. Sher Ali | Phone: +971 52 809 5912 | Email: shairali6261@gmail.com | Dubai, UAE
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="assets/js/experience.js"></script>
+    <script>
+        // Form submission handler
+        document.getElementById('contact-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const btn = document.querySelector('.submit-btn');
+            const originalContent = btn.innerHTML;
+
+            // Show loading state
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+            btn.disabled = true;
+
+            // Simulate form submission (replace with actual API call)
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Message Sent!';
+                btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+
+                setTimeout(() => {
+                    btn.innerHTML = originalContent;
+                    btn.style.background = '';
+                    btn.disabled = false;
+                    this.reset();
+                }, 3000);
+            }, 2000);
+        });
+
+        // Input animations
+        document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(input => {
+            input.addEventListener('focus', function () {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+
+            input.addEventListener('blur', function () {
+                this.parentElement.style.transform = '';
+            });
+        });
+    </script>
+</body>
+
+</html>

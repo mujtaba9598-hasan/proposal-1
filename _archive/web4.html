@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Company Name]</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    <!-- Swiper.js for Slideshow -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Hero Slider Styles */
+        .hero-swiper {
+            width: 100%;
+            height: 80vh;
+            max-height: 700px;
+            min-height: 500px;
+        }
+
+        .hero-swiper .swiper-slide {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-swiper .slide-content {
+            position: relative;
+            z-index: 3; /* Above overlay and uploader */
+            padding: 2rem 4rem; /* 32px 64px */
+            max-width: 600px;
+            color: white;
+        }
+
+        .hero-swiper .slide-bg-uploader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2; /* Below content, above overlay */
+            background-color: #e0f2f1; /* Light teal fallback */
+        }
+        
+        .hero-swiper .slide-bg-uploader .preview-image {
+            z-index: 1; /* Below text/input */
+        }
+        
+        .hero-swiper .slide-bg-uploader .placeholder-text {
+            z-index: 2;
+        }
+        
+        .hero-swiper .slide-bg-uploader input[type="file"] {
+            z-index: 3; /* On top to be clickable */
+        }
+
+        .hero-swiper .slide-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 100%);
+            z-index: 1; /* Bottom layer */
+        }
+
+        .dark .hero-swiper .slide-overlay {
+            background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+        }
+
+        /* Swiper Navigation/Pagination */
+        .hero-swiper .swiper-button-next,
+        .hero-swiper .swiper-button-prev {
+            color: white;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        .hero-swiper .swiper-button-next:hover,
+        .hero-swiper .swiper-button-prev:hover {
+            opacity: 1;
+        }
+
+        .hero-swiper .swiper-pagination-bullet {
+            background: rgba(255, 255, 255, 0.7);
+            width: 10px;
+            height: 10px;
+            opacity: 1;
+        }
+
+        .hero-swiper .swiper-pagination-bullet-active {
+            background: #0d9488; /* Primary color */
+        }
+
+
+        /* Section Transitions */
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Navigation */
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--color-primary-light);
+            transition: width 0.3s ease;
+        }
+        .dark .nav-link::after {
+            background-color: var(--color-primary-dark);
+        }
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Image Uploader */
+        .image-uploader .preview-image.hidden {
+            display: none;
+        }
+        .image-uploader .preview-image:not(.hidden) ~ .placeholder-text {
+            display: none;
+        }
+
+        /* Light/Dark Mode Toggle */
+        .toggle-switch {
+            width: 60px;
+            height: 30px;
+            background-color: #374151; /* Gray-800 */
+            border-radius: 9999px;
+            padding: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .dark .toggle-switch {
+            background-color: #f3f4f6; /* Gray-100 */
+        }
+        .toggle-knob {
+            width: 22px;
+            height: 22px;
+            background-color: #f3f4f6; /* Gray-100 */
+            border-radius: 9999px;
+            transition: transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .dark .toggle-knob {
+            background-color: #374151; /* Gray-800 */
+            transform: translateX(30px);
+        }
+        .toggle-knob svg {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+
+    <script>
+        // Define custom color theme for Tailwind
+        tailwind.config = {
+            darkMode: 'class', // Enable dark mode using a class
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        // Light Mode Colors
+                        primary: {
+                            light: '#0d9488', // Teal-600
+                            DEFAULT: '#0f766e', // Teal-700
+                            dark: '#115e59', // Teal-800
+                            text: '#ffffff',
+                            'hero-btn': '#14b8a6', // Teal-500 (Reverted to a lighter button)
+                            'hero-btn-hover': '#0d9488' // Teal-600
+                        },
+                        secondary: {
+                            light: '#f0f9ff', // Sky-50
+                            DEFAULT: '#e0f2fe', // Sky-100
+                            dark: '#bae6fd', // Sky-200
+                        },
+                        background: '#f8fafc', // Slate-50 (Light mode background)
+                        'card-bg': '#ffffff',
+                        'text-primary': '#1e293b', // Slate-800
+                        'text-secondary': '#475569', // Slate-600
+
+                        // Dark Mode Colors
+                        'primary-dark': {
+                            light: '#2dd4bf', // Teal-400
+                            DEFAULT: '#14b8a6', // Teal-500
+                            dark: '#0d9488', // Teal-600
+                            text: '#ffffff',
+                            'hero-btn': '#2dd4bf', // Teal-400 (Bright button for dark mode)
+                            'hero-btn-hover': '#5eead4' // Teal-300
+                        },
+                        'secondary-dark': {
+                            light: '#1e293b', // Slate-800
+                            DEFAULT: '#0f172a', // Slate-900
+                            dark: '#020617', // Slate-950
+                        },
+                        'background-dark': '#1e293b', // Slate-800 (Dark mode background)
+                        'card-bg-dark': '#334155', // Slate-700
+                        'text-primary-dark': '#f1f5f9', // Slate-100
+                        'text-secondary-dark': '#cbd5e1', // Slate-300
+                    },
+                    // Custom CSS variables for dynamic colors
+                    vars: {
+                        '--color-primary-light': '#0d9488',
+                        '--color-primary': '#0f766e',
+                        '--color-primary-dark': '#115e59',
+                        '--color-primary-text': '#ffffff',
+                        '--color-secondary-light': '#f0f9ff',
+                        '--color-secondary': '#e0f2fe',
+                        '--color-secondary-dark': '#bae6fd',
+                        '--color-background': '#f8fafc',
+                        '--color-card-bg': '#ffffff',
+                        '--color-text-primary': '#1e293b',
+                        '--color-text-secondary': '#475569',
+                        '--color-hero-btn': '#134e4a',
+                        '--color-hero-btn-hover': '#115e59',
+                    },
+                    varsDark: {
+                        '--color-primary-light': '#2dd4bf',
+                        '--color-primary': '#14b8a6',
+                        '--color-primary-dark': '#0d9488',
+                        '--color-primary-text': '#ffffff',
+                        '--color-secondary-light': '#1e293b',
+                        '--color-secondary': '#0f172a',
+                        '--color-secondary-dark': '#020617',
+                        '--color-background': '#1e293b',
+                        '--color-card-bg': '#334155',
+                        '--color-text-primary': '#f1f5f9',
+                        '--color-text-secondary': '#cbd5e1',
+                        '--color-hero-btn': '#2dd4bf',
+                        '--color-hero-btn-hover': '#5eead4',
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="css/theme-config.css">
+</head>
+<body class="bg-background dark:bg-background-dark text-text-primary dark:text-text-primary-dark transition-colors duration-300">
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 w-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-md z-50 transition-colors duration-300">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#home" class="flex items-center space-x-2" onclick="navigateTo('home')">
+                <div class="logo-uploader image-uploader relative w-12 h-12 flex items-center justify-center rounded-full border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark bg-gray-100 dark:bg-gray-700">
+                    <span class="placeholder-text text-[10px] leading-tight text-gray-500 dark:text-gray-400 p-1">Upload Logo</span>
+                    <img src="" alt="Logo" class="preview-image hidden h-full w-full object-contain rounded-full">
+                    <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                </div>
+                <span class="text-xl font-bold text-primary dark:text-primary-dark-light">[Company Name]</span>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#home" class="nav-link active" onclick="navigateTo('home')">Home</a>
+                <a href="#about" class="nav-link" onclick="navigateTo('about')">About Us</a>
+                <a href="#services" class="nav-link" onclick="navigateTo('services')">Services</a>
+                <a href="#projects" class="nav-link" onclick="navigateTo('projects')">Our Projects</a>
+                <a href="#contact" class="nav-link" onclick="navigateTo('contact')">Contact Us</a>
+                
+                <!-- Theme Toggle -->
+                <div id="theme-toggle" class="toggle-switch">
+                    <div class="toggle-knob">
+                        <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M12 12a5 5 0 110-10 5 5 0 010 10z" />
+                        </svg>
+                        <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white opacity-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-gray-700 dark:text-gray-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-8 6h8" />
+                </svg>
+            </button>
+        </nav>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-gray-800 py-4 shadow-lg">
+            <a href="#home" class="block py-2 px-6 text-gray-700 dark:text-gray-300" onclick="navigateTo('home')">Home</a>
+            <a href="#about" class="block py-2 px-6 text-gray-700 dark:text-gray-300" onclick="navigateTo('about')">About Us</a>
+            <a href="#services" class="block py-2 px-6 text-gray-700 dark:text-gray-300" onclick="navigateTo('services')">Services</a>
+            <a href="#projects" class="block py-2 px-6 text-gray-700 dark:text-gray-300" onclick="navigateTo('projects')">Our Projects</a>
+            <a href="#contact" class="block py-2 px-6 text-gray-700 dark:text-gray-300" onclick="navigateTo('contact')">Contact Us</a>
+            <div class="flex justify-center mt-4">
+                <!-- Theme Toggle (Mobile) -->
+                <div id="theme-toggle-mobile" class="toggle-switch">
+                    <div class="toggle-knob">
+                        <!-- Icons will be handled by main JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="page-section pt-[68px]"> <!-- 68px padding-top to offset fixed header -->
+            <!-- Hero Slideshow -->
+            <div class="hero-swiper swiper-container">
+                <div id="hero-slides-wrapper" class="swiper-wrapper">
+                    <!-- Slides will be injected by JavaScript -->
+                </div>
+                <!-- Swiper Navigation -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <!-- Swiper Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+
+            <!-- Why Choose Us Section -->
+            <section id="why-choose-us" class="py-16 lg:py-24 bg-secondary dark:bg-secondary-dark transition-colors duration-300">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl lg:text-4xl font-bold text-primary dark:text-primary-dark-light mb-4">Why Choose Us?</h2>
+                        <p class="text-lg text-text-secondary dark:text-text-secondary-dark max-w-2xl mx-auto">
+                            Delivering quality, reliability, and customized solutions for all your technical needs.
+                        </p>
+                    </div>
+                    <div id="why-choose-us-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <!-- Content Injected by JS -->
+                    </div>
+                </div>
+            </section>
+        
+            <!-- Services Overview Section (Home Page) -->
+            <section id="home-services" class="py-16 lg:py-24">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl lg:text-4xl font-bold text-primary dark:text-primary-dark-light mb-4">Our Services</h2>
+                        <p class="text-lg text-text-secondary dark:text-text-secondary-dark max-w-2xl mx-auto">
+                            A brief overview of the expert solutions we provide.
+                        </p>
+                    </div>
+                    <div id="home-services-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Content Injected by JS -->
+                    </div>
+                    <div class="text-center mt-12">
+                        <a href="#services" onclick="navigateTo('services')" class="inline-block bg-primary hover:bg-primary-dark dark:bg-primary-dark-DEFAULT dark:hover:bg-primary-dark-light text-white font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                            Explore All Services
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="page-section pt-24 pb-16 lg:py-24 bg-secondary dark:bg-secondary-dark transition-colors duration-300">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl lg:text-4xl font-bold text-primary dark:text-primary-dark-light mb-4">About Us</h2>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+                    <!-- About Text -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <h3 id="about-title" class="text-2xl font-semibold text-text-primary dark:text-text-primary-dark"></h3>
+                        <p id="about-description" class="text-text-secondary dark:text-text-secondary-dark leading-relaxed"></p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+                            <!-- Mission -->
+                            <div class="bg-card-bg dark:bg-card-bg-dark p-6 rounded-xl shadow-lg transition-colors duration-300">
+                                <h4 class="text-xl font-bold text-primary dark:text-primary-dark-light mb-3">Our Mission</h4>
+                                <p id="about-mission" class="text-text-secondary dark:text-text-secondary-dark"></p>
+                            </div>
+                            <!-- Vision -->
+                            <div class="bg-card-bg dark:bg-card-bg-dark p-6 rounded-xl shadow-lg transition-colors duration-300">
+                                <h4 class="text-xl font-bold text-primary dark:text-primary-dark-light mb-3">Our Vision</h4>
+                                <p id="about-vision" class="text-text-secondary dark:text-text-secondary-dark"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- About Image -->
+                    <div class="lg:col-span-1">
+                        <div class="image-uploader aspect-[4/3] relative flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark bg-white dark:bg-gray-800">
+                            <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload team/office photo</span>
+                            <img src="" alt="About Us" class="preview-image hidden h-full w-full object-contain rounded-lg">
+                            <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="page-section pt-24 pb-16 lg:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl lg:text-4xl font-bold text-primary dark:text-primary-dark-light mb-4">Our Services</h2>
+                </div>
+                
+                <!-- Metal Works -->
+                <div class="mb-16">
+                    <h3 id="metal-title" class="text-2xl lg:text-3xl font-semibold text-text-primary dark:text-text-primary-dark mb-3"></h3>
+                    <p id="metal-description" class="text-lg text-text-secondary dark:text-text-secondary-dark max-w-3xl mb-8"></p>
+                    <div id="metal-services-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Metal Services Injected by JS -->
+                    </div>
+                </div>
+
+                <!-- Glass Works -->
+                <div>
+                    <h3 id="glass-title" class="text-2xl lg:text-3xl font-semibold text-text-primary dark:text-text-primary-dark mb-3"></h3>
+                    <p id="glass-description" class="text-lg text-text-secondary dark:text-text-secondary-dark max-w-3xl mb-8"></p>
+                    <div id="glass-services-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Glass Services Injected by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Projects Section -->
+        <section id="projects" class="page-section pt-24 pb-16 lg:py-24 bg-secondary dark:bg-secondary-dark transition-colors duration-300">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl lg:text-4xl font-bold text-primary dark:text-primary-dark-light mb-4">Our Projects</h2>
+                    <p class="text-lg text-text-secondary dark:text-text-secondary-dark max-w-2xl mx-auto">
+                        A gallery of our completed work. Upload your project photos here.
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Project Image Uploaders -->
+                    <div class="image-uploader aspect-video relative flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark bg-white dark:bg-gray-800">
+                        <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload project photo</span>
+                        <img src="" alt="Project Photo" class="preview-image hidden h-full w-full object-contain rounded-lg">
+                        <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                     <div class="image-uploader aspect-video relative flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark bg-white dark:bg-gray-800">
+                        <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload project photo</span>
+                        <img src="" alt="Project Photo" class="preview-image hidden h-full w-full object-contain rounded-lg">
+                        <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                     <div class="image-uploader aspect-video relative flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark bg-white dark:bg-gray-800">
+                        <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload project photo</span>
+                        <img src="" alt="Project Photo" class="preview-image hidden h-full w-full object-contain rounded-lg">
+                        <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                     <div class="image-uploader aspect-video relative flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark bg-white dark:bg-gray-800">
+                        <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload project photo</span>
+                        <img src="" alt="Project Photo" class="preview-image hidden h-full w-full object-contain rounded-lg">
+                        <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                     <div class="image-uploader aspect-video relative flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark bg-white dark:bg-gray-800">
+                        <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload project photo</span>
+                        <img src="" alt="Project Photo" class="preview-image hidden h-full w-full object-contain rounded-lg">
+                        <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                     <div class="image-uploader aspect-video relative flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark bg-white dark:bg-gray-800">
+                        <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload project photo</span>
+                        <img src="" alt="Project Photo" class="preview-image hidden h-full w-full object-contain rounded-lg">
+                        <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Us Section -->
+        <section id="contact" class="page-section pt-24 pb-16 lg:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl lg:text-4xl font-bold text-primary dark:text-primary-dark-light mb-4">Contact Us</h2>
+                    <p class="text-lg text-text-secondary dark:text-text-secondary-dark max-w-2xl mx-auto">
+                        Have questions or need assistance with your project? We're here to help!
+                    </p>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                    <!-- Contact Info -->
+                    <div class="lg:col-span-1 space-y-6">
+                        <h3 class="text-2xl font-semibold text-text-primary dark:text-text-primary-dark mb-4">Let's get in touch</h3>
+                        
+                        <div class="flex items-start space-x-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary dark:text-primary-dark-light flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-text-primary dark:text-text-primary-dark">Email</h4>
+                                <a id="contact-email" href="" class="text-text-secondary dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary-dark-light transition-colors"></a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary dark:text-primary-dark-light flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.46 4.383a1 1 0 01-.32 1.028l-2.2 2.2a11 11 0 005.09 5.09l2.2-2.2a1 1 0 011.028-.32l4.383 1.46a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-text-primary dark:text-text-primary-dark">Phone</h4>
+                                <a id="contact-phone" href="" class="text-text-secondary dark:text-text-secondary-dark hover:text-primary dark:hover:text-primary-dark-light transition-colors"></a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary dark:text-primary-dark-light flex-shrink-0 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657l-4.243 4.243a2 2 0 01-2.828 0l-4.243-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <div>
+                                <h4 class="font-semibold text-text-primary dark:text-text-primary-dark">Location</h4>
+                                <p id="contact-location" class="text-text-secondary dark:text-text-secondary-dark"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Contact Form -->
+                    <div class="lg:col-span-2">
+                        <form id="contact-form" class="bg-card-bg dark:bg-card-bg-dark p-8 rounded-xl shadow-lg space-y-6 transition-colors duration-300">
+                            <div>
+                                <label for="full-name" class="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">Full Name</label>
+                                <input type="text" id="full-name" name="full-name" placeholder="Enter your name" class="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 focus:border-primary-light dark:focus:border-primary-dark outline-none transition-colors">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">Email Address</label>
+                                <input type="email" id="email" name="email" placeholder="Enter your email" class="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 focus:border-primary-light dark:focus:border-primary-dark outline-none transition-colors">
+                            </div>
+                             <div>
+                                <label for="phone" class="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">Phone</label>
+                                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" class="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 focus:border-primary-light dark:focus:border-primary-dark outline-none transition-colors">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-sm font-medium text-text-secondary dark:text-text-secondary-dark mb-2">Message</label>
+                                <textarea id="message" name="message" rows="5" placeholder="Your message..." class="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 focus:border-primary-light dark:focus:border-primary-dark outline-none transition-colors"></textarea>
+                            </div>
+                            <div>
+                                <button type="submit" class="w-full bg-primary hover:bg-primary-dark dark:bg-primary-dark-DEFAULT dark:hover:bg-primary-dark-light text-white font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                                    Send Message
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-card-bg-dark dark:bg-secondary-dark-dark text-gray-300 py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p>&copy; <span id="footer-year"></span> [Company Name]. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a id="whatsapp-btn" href="" target="_blank" rel="noopener noreferrer" class="hidden sm:flex fixed bottom-6 right-6 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:bg-[#128C7E] transition-all duration-300 transform hover:scale-110 z-40">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.0-6.556 5.338-11.895 11.893-11.895 3.161 0 6.127 1.24 8.413 3.527 2.285 2.285 3.527 5.252 3.527 8.413 0 6.556-5.338 11.895-11.895 11.895-1.995 0-3.9- .52-5.607-1.476l-6.162 1.688a.6.6 0 0 1-.76-.76zM11.893 2.16c-5.464 0-9.909 4.445-9.909 9.909 0 2.088.622 4.045 1.724 5.688l-.253 1.039.98 3.555-3.619-.99c1.611 1.002 3.473 1.523 5.43 1.523C17.357 22.07 21.8 17.624 21.8 12.16c0-2.677-1.04-5.183-2.924-7.068S14.57 2.16 11.893 2.16zM17.16 14.545c-.14-.28-.503-.418-.75-.468-.247-.05-.422-.05-.597.05-.28.16-.455.418-.597.568-.14.15-.28.16-.42.06-.14-.1-.597-.247-1.144-.723-.42-.358-.84-.84-1.2-1.403-.35-.558-.05-.867.16-.987.16-.1.28-.247.42-.418.1-.15.16-.28.235-.418.075-.14.05-.28-.05-.418-.1-.14-.597-1.403-1.192-2.358-.558-.92-.867-1.018-.987-1.018-.1 0-.28.05-.418.05-.14 0-.418.05-.597.247-.18.2-.418.418-.597.668-.18.247-.35.558-.35.987 0 .418.05.84.16 1.2.1.358.558 1.403 1.68 2.8.92 1.144 1.99 2.04 3.2 2.7.987.52 1.76.84 2.218 1.018.668.28 1.144.358 1.523.418.42.05.84.05 1.144-.05.418-.1.597-.478.75-.92.14-.42.14-.84.05-1.2z"/>
+        </svg>
+    </a>
+
+    <script>
+        // --- CONTENT DATABASE ---
+        const siteData = {
+            contact: {
+                email: "contact@company.com",
+                phone: "+971-555640267",
+                phone_link: "tel:+971 50 000 0000",
+                whatsapp_link: "https://wa.me/971500000000",
+                location: "Shed# 3, Business Bay, Dubai - Dubai, UAE"
+            },
+            home: {
+                hero: [
+                    {
+                        title: "Innovative Technical Solutions",
+                        subtitle: "Crafting durable and visually appealing products for residential, commercial, and industrial needs in UAE."
+                    },
+                    {
+                        title: "Expert Craftsmanship",
+                        subtitle: "Precision, durability, and customer satisfaction in every project we undertake."
+                    }
+                ],
+                whyChooseUs: [
+                    {
+                        icon: "expertise",
+                        title: "Expertise and Experience",
+                        description: "Our skilled professionals excel in metal works specialized in Aluminum and Glass, Mild steel, Stainless steel and CNC crafts works. We ensure top-quality workmanship by staying updated with the latest industry standards and techniques."
+                    },
+                    {
+                        icon: "offerings",
+                        title: "Service Offerings",
+                        description: "We provide a full range of services for residential, commercial, and industrial clients. From installation and maintenance to repairs and upgrades, we address all your needs under one roof, saving you time and hassle."
+                    },
+                    {
+                        icon: "quality",
+                        title: "Quality and Reliability",
+                        description: "We use high-quality materials and adhere to strict quality control measures, ensuring durable and reliable results. Our commitment to excellence guarantees each project meets the highest standards and customer satisfaction."
+                    },
+                    {
+                        icon: "customized",
+                        title: "Customized Solutions",
+                        description: "We tailor our services to meet your unique needs and preferences. Whether it's custom Metal works or complicated installations, we work closely with you to deliver the best outcomes for every project."
+                    }
+                ],
+                services: {
+                    title: "Our Services",
+                    items: [
+                        { name: "Pergola", description: "Transform outdoor spaces with our custom-designed pergolas, combining style and functionality.", link: "#services" },
+                        { name: "CNC Panel", description: "Precision-engineered CNC panels crafted with intricate designs for architectural and decorative requirements.", link: "#services" },
+                        { name: "Manhole & Gratings", description: "High-quality manhole covers and gratings designed for safety, durability, and performance.", link: "#services" },
+                        { name: "Stainless Steel Work", description: "Expert stainless steel fabrication services from custom designs to robust industrial components.", link: "#services" },
+                        { name: "Car Parking Shades", description: "Protect vehicles from harsh weather with our durable and stylish car parking shades.", link: "#services" },
+                        { name: "Glass Work", description: "Add a touch of elegance to your spaces with our premium glass solutions, from partitions to windows.", link: "#services" }
+                    ]
+                }
+            },
+            about: {
+                title: "[Company Name] - Your Trusted Partner",
+                description: "[Company Name] is a trusted provider of innovative and high-quality technical solutions for residential, commercial, and industrial needs. We specialize in crafting durable and visually appealing products, including boundary wall fences, CNC panels, manhole gratings, stainless steel works, handrails, pergolas, car parking shades, and glass installations. With a commitment to precision, durability, and customer satisfaction, our expert team ensures every project meets the highest standards of quality and design. At [Company Name], we pride ourselves on delivering tailored solutions that combine functionality with aesthetic appeal, helping clients enhance their spaces with reliable and elegant technical craftsmanship.",
+                mission: "Our mission at [Company Name] is to provide exceptional technical solutions that combine durability, precision, and aesthetic excellence. We are dedicated to delivering innovative and reliable products while fostering long-term relationships through quality craftsmanship and unmatched customer service.",
+                vision: "Our vision is to be a leading provider of technical and architectural solutions, recognized for our commitment to innovation, quality, and customer satisfaction. We strive to set industry benchmarks while enhancing the beauty, functionality, and safety of spaces worldwide."
+            },
+            services: {
+                metalWork: {
+                    title: "Metal Works & Shades",
+                    description: "Durable and stylish metal fabrications tailored to your needs.",
+                    items: [
+                        { name: "Pergola", description: "Transform outdoor spaces with our custom-designed pergolas. Combining style and functionality, our pergolas create shaded, comfortable areas for relaxation, entertainment, or dining while enhancing the beauty of gardens, patios, or rooftops." },
+                        { name: "CNC Panel", description: "Discover precision-engineered CNC panels crafted with intricate designs to meet your architectural and decorative requirements. Our panels are ideal for adding a modern touch to interiors, exteriors, and commercial spaces, ensuring unmatched quality and elegance." },
+                        { name: "Manhole & Gratings", description: "We offer high-quality manhole covers and gratings designed for safety, durability, and performance. Perfect for industrial, commercial, and urban applications, our solutions withstand heavy loads while ensuring smooth functionality and compliance with industry standards." },
+                        { name: "Stainless Steel Work", description: "Elevate your spaces with our expert stainless steel fabrication services. From custom designs to robust industrial components, our stainless steel solutions combine strength, durability, and elegance, catering to a wide range of residential, commercial, and industrial projects." },
+                        { name: "Handrails", description: "Ensure safety and sophistication with our meticulously crafted handrails. Designed for durability and aesthetic appeal, our handrails are perfect for homes, offices, and public spaces, offering seamless integration with your architectural style." },
+                        { name: "Boundary Wall Fence", description: "Enhance your property's safety and privacy with our durable boundary wall fencing solutions. Designed to be secure, long-lasting, and visually appealing, our fences are tailored to suit residential, commercial, and industrial needs, blending functionality with aesthetics." },
+                        { name: "Car Parking Shades", description: "Protect vehicles from harsh weather with our durable and stylish car parking shades. Designed for maximum coverage and resilience, our shades are ideal for residential, commercial, and public parking areas, blending utility with aesthetics." }
+                    ]
+                },
+                glassWork: {
+                    title: "Glass Work Solutions",
+                    description: "Elevate your spaces with the elegance and versatility of glass. At [Company Name], we specialize in custom glass solutions that combine functionality, style, and precision.",
+                    items: [
+                        { name: "Glass Partitions", description: "Transform your interiors with sleek and modern glass partitions. Ideal for offices, homes, and commercial spaces, our partitions create a sense of openness while maintaining privacy." },
+                        { name: "Glass Pool Fence", description: "Ensure safety without compromising style with our glass pool fences. Crafted from toughened, high-grade glass, our fences provide a secure barrier around pools while maintaining an unobstructed view." },
+                        { name: "Mirrors", description: "Add sophistication and depth to your interiors with our custom mirror work. From decorative wall mirrors to functional bathroom and gym mirrors, we craft designs that reflect your style." },
+                        { name: "Glazing Work", description: "Professional glazing services for windows, doors, and storefronts, ensuring a flawless finish and optimal adhesion for a polished and durable result." }
+                    ]
+                }
+            }
+        };
+
+        // --- ICONS (as SVGs) ---
+        const icons = {
+            expertise: `<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697A9.022 9.022 0 003 12c0 1.148.213 2.25.613 3.268M16.165 19.303A9.022 9.022 0 0021 12c0-1.148-.213-2.25-.613-3.268M12 3c2.747 0 5.22.99 7.071 2.621M12 21c-2.747 0-5.22-.99-7.071-2.621M12 12a3 3 0 110-6 3 3 0 010 6z" /></svg>`,
+            offerings: `<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V6a3 3 0 013-3h0a3 3 0 013 3v2a3 3 0 01-3 3z" /></svg>`,
+            quality: `<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
+            customized: `<svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>`,
+        };
+
+
+        // --- PAGE LOAD AND CONTENT INJECTION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const d = siteData;
+
+            // --- Contact Info ---
+            document.getElementById('contact-email').href = `mailto:${d.contact.email}`;
+            document.getElementById('contact-email').textContent = d.contact.email;
+            document.getElementById('contact-phone').href = d.contact.phone_link;
+            document.getElementById('contact-phone').textContent = d.contact.phone;
+            document.getElementById('contact-location').textContent = d.contact.location;
+            document.getElementById('whatsapp-btn').href = d.contact.whatsapp_link;
+
+            // --- Hero Section ---
+            const heroWrapper = document.getElementById('hero-slides-wrapper');
+            if (heroWrapper) {
+                heroWrapper.innerHTML = d.home.hero.map(slide => `
+                    <div class="swiper-slide">
+                        <!-- Background Image Uploader -->
+                        <div class="image-uploader slide-bg-uploader relative flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark">
+                            <span class="placeholder-text text-lg z-10">Click to upload slide image</span>
+                            <img src="" alt="Hero Slide" class="preview-image hidden h-full w-full object-cover">
+                            <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0 z-20 cursor-pointer" accept="image/*" onchange="handleImageUpload(event)">
+                        </div>
+                        <!-- Overlay -->
+                        <div class="slide-overlay"></div>
+                        <!-- Content -->
+                        <div class="slide-content">
+                            <h1 class="text-4xl lg:text-6xl font-extrabold mb-4 text-shadow-lg animate-fade-in-down">${slide.title}</h1>
+                            <p class="text-lg lg:text-xl mb-8 text-shadow-md animate-fade-in-up">${slide.subtitle}</p>
+                            <a href="#contact" onclick="navigateTo('contact')" class="inline-block bg-primary-hero-btn hover:bg-primary-hero-btn-hover dark:bg-primary-dark-hero-btn dark:hover:bg-primary-dark-hero-btn-hover text-white font-bold py-3 px-8 rounded-lg text-lg transition-all duration-300 transform hover:scale-105 shadow-lg">
+                                Get in Touch
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Initialize Swiper
+                new Swiper('.hero-swiper', {
+                    loop: true,
+                    autoplay: {
+                        delay: 5000,
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                    effect: 'fade',
+                    fadeEffect: {
+                        crossFade: true
+                    },
+                });
+            }
+
+            // --- Why Choose Us ---
+            const whyChooseUsContainer = document.getElementById('why-choose-us-container');
+            if (whyChooseUsContainer) {
+                whyChooseUsContainer.innerHTML = d.home.whyChooseUs.map(item => `
+                    <div class="text-center p-6 bg-card-bg dark:bg-card-bg-dark rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
+                        <div class="flex items-center justify-center h-16 w-16 mb-6 mx-auto rounded-full bg-primary-light text-white dark:bg-primary-dark-light dark:text-gray-900">
+                            ${icons[item.icon] || ''}
+                        </div>
+                        <h3 class="text-xl font-bold text-text-primary dark:text-text-primary-dark mb-3">${item.title}</h3>
+                        <p class="text-text-secondary dark:text-text-secondary-dark">${item.description}</p>
+                    </div>
+                `).join('');
+            }
+            
+            // --- Home Services Overview ---
+            const homeServicesContainer = document.getElementById('home-services-container');
+            if (homeServicesContainer) {
+                homeServicesContainer.innerHTML = d.home.services.items.map(item => `
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="image-uploader aspect-video relative flex items-center justify-center border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-center cursor-pointer">
+                            <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload photo for ${item.name}</span>
+                            <img src="" alt="${item.name}" class="preview-image hidden h-full w-full object-contain">
+                            <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-text-primary dark:text-text-primary-dark mb-2">${item.name}</h3>
+                            <p class="text-text-secondary dark:text-text-secondary-dark mb-4">${item.description}</p>
+                            <a href="${item.link}" onclick="navigateTo('services')" class="font-medium text-primary dark:text-primary-dark-light hover:underline">View Service &rarr;</a>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // --- About Us ---
+            document.getElementById('about-title').textContent = d.about.title;
+            document.getElementById('about-description').textContent = d.about.description;
+            document.getElementById('about-mission').textContent = d.about.mission;
+            document.getElementById('about-vision').textContent = d.about.vision;
+            
+            // --- Services Page ---
+            // Metal Works
+            document.getElementById('metal-title').textContent = d.services.metalWork.title;
+            document.getElementById('metal-description').textContent = d.services.metalWork.description;
+            const metalServicesContainer = document.getElementById('metal-services-container');
+            if (metalServicesContainer) {
+                metalServicesContainer.innerHTML = d.services.metalWork.items.map(item => `
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="image-uploader aspect-video relative flex items-center justify-center border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-center cursor-pointer">
+                            <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload photo for ${item.name}</span>
+                            <img src="" alt="${item.name}" class="preview-image hidden h-full w-full object-contain">
+                            <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-text-primary dark:text-text-primary-dark mb-2">${item.name}</h3>
+                            <p class="text-text-secondary dark:text-text-secondary-dark">${item.description}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Glass Works
+            document.getElementById('glass-title').textContent = d.services.glassWork.title;
+            document.getElementById('glass-description').textContent = d.services.glassWork.description;
+            const glassServicesContainer = document.getElementById('glass-services-container');
+            if (glassServicesContainer) {
+                glassServicesContainer.innerHTML = d.services.glassWork.items.map(item => `
+                    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                        <div class="image-uploader aspect-video relative flex items-center justify-center border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-center cursor-pointer">
+                            <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload photo for ${item.name}</span>
+                            <img src="" alt="${item.name}" class="preview-image hidden h-full w-full object-contain">
+                            <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-text-primary dark:text-text-primary-dark mb-2">${item.name}</h3>
+                            <p class="text-text-secondary dark:text-text-secondary-dark">${item.description}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // --- Footer ---
+            document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+            // --- Initial Page Setup ---
+            setupTheme();
+            setupMobileMenu();
+            setupScrollSpy();
+            setupFadeInSections();
+            setupContactForm();
+
+            // Show the default page (Home)
+            showPage('home');
+        });
+
+        // --- THEME (DARK/LIGHT MODE) ---
+        function setupTheme() {
+            const toggleButton = document.getElementById('theme-toggle');
+            const mobileToggleButton = document.getElementById('theme-toggle-mobile');
+            const sunIcon = document.getElementById('sun-icon');
+            const moonIcon = document.getElementById('moon-icon');
+            
+            // Clone icons for mobile toggle
+            const mobileToggleKnob = mobileToggleButton.querySelector('.toggle-knob');
+            mobileToggleKnob.innerHTML = ''; // Clear it first
+            mobileToggleKnob.appendChild(sunIcon.cloneNode(true));
+            mobileToggleKnob.appendChild(moonIcon.cloneNode(true));
+            
+            const sunIcons = document.querySelectorAll('#sun-icon');
+            const moonIcons = document.querySelectorAll('#moon-icon');
+
+            const applyTheme = (isDark) => {
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                    sunIcons.forEach(icon => icon.style.opacity = '0');
+                    moonIcons.forEach(icon => icon.style.opacity = '1');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    sunIcons.forEach(icon => icon.style.opacity = '1');
+                    moonIcons.forEach(icon => icon.style.opacity = '0');
+                }
+            };
+
+            const toggleTheme = () => {
+                const isDark = document.documentElement.classList.toggle('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+                applyTheme(isDark);
+            };
+
+            toggleButton.addEventListener('click', toggleTheme);
+            mobileToggleButton.addEventListener('click', toggleTheme);
+
+            // Check saved theme on load
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const isDark = savedTheme === 'dark' || (savedTheme !== 'light' && prefersDark);
+            
+            applyTheme(isDark);
+        }
+
+        // --- MOBILE MENU ---
+        function setupMobileMenu() {
+            const btn = document.getElementById('mobile-menu-btn');
+            const menu = document.getElementById('mobile-menu');
+            btn.addEventListener('click', () => {
+                menu.classList.toggle('hidden');
+            });
+            // Close menu when a link is clicked
+            menu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    menu.classList.add('hidden');
+                });
+            });
+        }
+
+        // --- IMAGE UPLOAD HANDLER ---
+        function handleImageUpload(event) {
+            const input = event.target;
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                const uploader = input.closest('.image-uploader');
+                const previewImage = uploader.querySelector('.preview-image');
+                
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewImage.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // --- NAVIGATION & SCROLLSPY ---
+        const sections = {};
+        let isScrolling = false;
+
+        function setupScrollSpy() {
+            document.querySelectorAll('.page-section').forEach(section => {
+                sections[section.id] = section.offsetTop;
+            });
+
+            window.addEventListener('scroll', () => {
+                if (isScrolling) return; // Don't run spy while programmatically scrolling
+                
+                const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+                const offset = 200; // Header height + buffer
+                let currentSection = '';
+
+                for (const id in sections) {
+                    if (scrollPosition >= sections[id] - offset) {
+                        currentSection = id;
+                    }
+                }
+                updateActiveLink(currentSection);
+            });
+        }
+
+        function updateActiveLink(id) {
+            document.querySelectorAll('nav .nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${id}`) {
+                    link.classList.add('active');
+                }
+            });
+             document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.classList.remove('font-bold', 'text-primary', 'dark:text-primary-dark-light');
+                if (link.getAttribute('href') === `#${id}`) {
+                    link.classList.add('font-bold', 'text-primary', 'dark:text-primary-dark-light');
+                }
+            });
+        }
+        
+        // This function handles the single-page navigation logic
+        function showPage(pageId) {
+            // In our new structure, all "pages" are just sections.
+            // We just need to scroll to the section.
+            const targetElement = document.getElementById(pageId);
+            if (targetElement) {
+                isScrolling = true;
+                const targetTop = targetElement.offsetTop - 68; // 68px for header height
+                
+                window.scrollTo({
+                    top: targetTop,
+                    behavior: 'smooth'
+                });
+
+                // Update active link immediately
+                updateActiveLink(pageId);
+                
+                // Reset scrolling flag after animation
+                setTimeout(() => {
+                    isScrolling = false;
+                }, 1000); // Adjust time to match smooth scroll duration
+            }
+        }
+        
+        // Wrapper for nav links
+        function navigateTo(pageId) {
+            event.preventDefault(); // Stop anchor jump
+            history.pushState(null, null, `#${pageId}`); // Update URL bar
+            showPage(pageId);
+        }
+
+        // --- FADE-IN SECTIONS ON SCROLL ---
+        function setupFadeInSections() {
+            const sections = document.querySelectorAll('.fade-in-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // We're not using .fade-in-section, so let's apply this to major containers
+             const containers = document.querySelectorAll('#why-choose-us, #home-services, #about, #services, #projects, #contact');
+             containers.forEach(container => {
+                container.classList.add('fade-in-section');
+                observer.observe(container);
+             });
+        }
+
+        // --- CONTACT FORM ---
+        function setupContactForm() {
+            const form = document.getElementById('contact-form');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault(); // Stop form from submitting traditionally
+
+                // Get form data
+                const name = document.getElementById('full-name').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const message = document.getElementById('message').value;
+
+                // Create mailto link
+                const subject = `Website Inquiry from ${name}`;
+                const body = `Name: ${name}%0D%0AEmail: ${email}%0D%0APhone: ${phone}%0D%0A%0D%0AMessage:%0D%0A${message}`;
+                
+                const mailtoLink = `mailto:${siteData.contact.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+                // Open default email client
+                window.location.href = mailtoLink;
+                
+                // Optional: Clear form or show a message
+                // form.reset();
+                // alert('Your email client has been opened to send the message.');
+            });
+        }
+
+    </script>
+</body>
+</html>

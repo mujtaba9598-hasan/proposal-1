@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Company Name]</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Swiper.js CSS and JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <!-- Google Font (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Theme switcher logic -->
+    <script>
+        // Set theme on initial load
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Configure Tailwind for dark mode
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            light: '#0d9488', // teal-600
+                            DEFAULT: '#134e4a', // teal-900 (NEW Light mode button)
+                            dark: '#064e3b', // teal-950 (NEW Light mode button hover)
+                            'dm-light': '#5eead4', // teal-300 (Dark mode button hover)
+                            'dm-DEFAULT': '#2dd4bf', // teal-400 (Dark mode button)
+                        },
+                        'primary-accent': {
+                            light: '#ccfbf1', // teal-50
+                            DEFAULT: '#f0fdfa', // teal-50
+                            dark: '#134e4a', // teal-900
+                        },
+                        'bg-light': '#f8fafc', // slate-50
+                        'bg-dark': '#0f172a', // slate-900
+                        'text-light': '#f1f5f9', // slate-100
+                        'text-dark': '#1e293b', // slate-800
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <style>
+        /* Base font */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Page content fade-in animation */
+        .page-content {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Active nav link styles */
+        .nav-link.active {
+            color: #0d9488; /* teal-600 */
+            font-weight: 700;
+        }
+        .dark .nav-link.active {
+            color: #2dd4bf; /* teal-400 */
+        }
+        
+        /* Image uploader styles */
+        .image-uploader {
+            transition: all 0.3s ease;
+        }
+        .image-uploader input[type="file"] {
+            cursor: pointer;
+        }
+
+        /* Swiper Hero Slider */
+        .hero-swiper {
+            width: 100%;
+            height: 60vh; /* Adjust height as needed */
+            border-radius: 1rem; /* 16px */
+            overflow: hidden;
+            margin-bottom: 4rem; /* 64px */
+        }
+        .hero-swiper .swiper-slide {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: left;
+            color: white;
+        }
+        .hero-swiper .slide-content {
+            position: relative;
+            z-index: 3; /* <-- WAS 10, NOW 3 */
+            padding: 2rem 4rem; /* 32px 64px */
+            max-width: 48rem; /* 768px */
+            width: 100%;
+        }
+        .hero-swiper .slide-bg-uploader {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2; /* <-- WAS 1, NOW 2 */
+            background-color: #e0f2f1; /* Light teal fallback */
+        }
+        .dark .hero-swiper .slide-bg-uploader {
+            background-color: #134e4a; /* Dark teal fallback */
+        }
+        .hero-swiper .slide-bg-uploader .placeholder-text {
+            color: #0f766e; /* Darker teal text */
+            font-weight: 500;
+        }
+        .dark .hero-swiper .slide-bg-uploader .placeholder-text {
+            color: #ccfbf1; /* Lighter teal text */
+        }
+        .hero-swiper .slide-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 100%);
+            z-index: 1; /* <-- WAS 2, NOW 1 */
+        }
+        .dark .hero-swiper .slide-overlay {
+            background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+        }
+        /* Swiper Navigation/Pagination */
+        .hero-swiper .swiper-pagination-bullet {
+            background-color: #fff;
+            opacity: 0.7;
+        }
+        .hero-swiper .swiper-pagination-bullet-active {
+            background-color: #2dd4bf; /* teal-400 */
+            opacity: 1;
+        }
+        .hero-swiper .swiper-button-next,
+        .hero-swiper .swiper-button-prev {
+            color: #2dd4bf; /* teal-400 */
+            transition: all 0.3s ease;
+        }
+        .hero-swiper .swiper-button-next:hover,
+        .hero-swiper .swiper-button-prev:hover {
+            color: #fff;
+        }
+    </style>
+    <link rel="stylesheet" href="css/theme-config.css">
+</head>
+<body class="bg-bg-light dark:bg-bg-dark text-text-dark dark:text-text-light transition-colors duration-300">
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-50 w-full bg-white/80 dark:bg-bg-dark/80 backdrop-blur-lg shadow-sm dark:shadow-gray-800 transition-all duration-300">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo Uploader -->
+                <div class="flex-shrink-0">
+                    <div class="image-uploader relative w-40 h-16 flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark" title="Click to upload logo">
+                        <span class="placeholder-text text-xs text-gray-500 dark:text-gray-400">Click to upload logo</span>
+                        <img src="" alt="Logo" class="preview-image hidden h-full w-full object-contain p-1">
+                        <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex md:items-center md:space-x-8">
+                    <a href="#" class="nav-link text-gray-600 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark transition-all duration-300 font-medium" data-page="home" onclick="navigateTo(event, 'home')">Home</a>
+                    <a href="#" class="nav-link text-gray-600 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark transition-all duration-300 font-medium" data-page="about" onclick="navigateTo(event, 'about')">About Us</a>
+                    <a href="#" class="nav-link text-gray-600 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark transition-all duration-300 font-medium" data-page="services" onclick="navigateTo(event, 'services')">Services</a>
+                    <a href="#" class="nav-link text-gray-600 dark:text-gray-300 hover:text-primary-light dark:hover:text-primary-dark transition-all duration-300 font-medium" data-page="contact" onclick="navigateTo(event, 'contact')">Contact Us</a>
+                </div>
+
+                <!-- Theme Toggle & Mobile Menu Button -->
+                <div class="flex items-center">
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="p-2 rounded-full text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition-all duration-300" aria-label="Toggle theme">
+                        <!-- Sun Icon (hidden in dark mode) -->
+                        <svg id="theme-icon-sun" class="h-6 w-6 hidden dark:block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <!-- Moon Icon (hidden in light mode) -->
+                        <svg id="theme-icon-moon" class="h-6 w-6 block dark:hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <!-- Mobile Menu Button -->
+                    <div class="md:hidden ml-3">
+                        <button id="mobile-menu-button" class="p-2 rounded-md text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none transition-all duration-300" aria-label="Open main menu">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu (hidden by default) -->
+            <div id="mobile-menu" class="md:hidden hidden pb-4">
+                <a href="#" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700" data-page="home" onclick="navigateTo(event, 'home')">Home</a>
+                <a href="#" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700" data-page="about" onclick="navigateTo(event, 'about')">About Us</a>
+                <a href="#" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700" data-page="services" onclick="navigateTo(event, 'services')">Services</a>
+                <a href="#" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700" data-page="contact" onclick="navigateTo(event, 'contact')">Contact Us</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <!-- Home Page Content -->
+        <section id="page-home" class="page-content" data-page="home">
+            <!-- Hero Section -->
+            <div class="swiper hero-swiper">
+                <div class="swiper-wrapper" id="hero-slider-wrapper">
+                    <!-- Slides will be injected by JavaScript -->
+                </div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+                <!-- Add Navigation -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+            </div>
+
+            <!-- Why Choose Us Section -->
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-10" id="home-whychooseus-title"></h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8" id="home-whychooseus-points">
+                    <!-- Points will be injected by JS -->
+                </div>
+            </section>
+
+            <!-- Our Services Preview Section -->
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-10" id="home-services-title"></h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="home-services-items">
+                    <!-- Service cards will be injected by JS -->
+                </div>
+                <div class="text-center mt-12">
+                    <a href="#" onclick="navigateTo(event, 'services')" class="text-primary-DEFAULT dark:text-primary-dark font-semibold text-lg hover:underline transition-all duration-300">
+                        View All Services &rarr;
+                    </a>
+                </div>
+            </section>
+
+            <!-- Image Placeholder Example -->
+            <section>
+                 <h2 class="text-3xl font-bold text-center mb-10">Our Projects Gallery</h2>
+                 <p class="text-center text-gray-600 dark:text-gray-400 mb-8">Click on any box to upload a photo of your completed work.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="image-uploader aspect-video relative flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark bg-white dark:bg-gray-800">
+                        <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload project photo</span>
+                        <img src="" alt="Project Photo" class="preview-image hidden h-full w-full object-cover rounded-lg">
+                        <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                     <div class="image-uploader aspect-video relative flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark bg-white dark:bg-gray-800">
+                        <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload project photo</span>
+                        <img src="" alt="Project Photo" class="preview-image hidden h-full w-full object-cover rounded-lg">
+                        <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                     <div class="image-uploader aspect-video relative flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark bg-white dark:bg-gray-800">
+                        <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload project photo</span>
+                        <img src="" alt="Project Photo" class="preview-image hidden h-full w-full object-cover rounded-lg">
+                        <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- About Page Content -->
+        <section id="page-about" class="page-content hidden" data-page="about">
+            <h1 class="text-4xl font-extrabold text-center mb-12" id="about-title"></h1>
+            
+            <div class="grid lg:grid-cols-5 gap-12 items-center mb-16">
+                <div class="lg:col-span-3">
+                    <h2 class="text-2xl font-bold text-primary-dark dark:text-primary-light mb-4">Your Trusted Partner</h2>
+                    <p class="text-lg leading-relaxed mb-6" id="about-partner-text"></p>
+                    <div class="space-y-6">
+                        <div class="p-6 rounded-lg bg-primary-accent-light dark:bg-primary-accent-dark">
+                            <h3 class="text-xl font-bold mb-2" id="about-mission-title"></h3>
+                            <p id="about-mission-text"></p>
+                        </div>
+                        <div class="p-6 rounded-lg bg-primary-accent-light dark:bg-primary-accent-dark">
+                            <h3 class="text-xl font-bold mb-2" id="about-vision-title"></h3>
+                            <p id="about-vision-text"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-2">
+                    <div class="image-uploader aspect-[4/3] relative flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark bg-white dark:bg-gray-800">
+                        <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload team/office photo</span>
+                        <img src="" alt="About Us" class="preview-image hidden h-full w-full object-cover rounded-lg">
+                        <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial Section -->
+            <section class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg">
+                <h2 class="text-3xl font-bold text-center mb-8">What Our Clients Say</h2>
+                <div class="max-w-3xl mx-auto text-center">
+                    <svg class="w-12 h-12 mx-auto mb-4 text-primary-light" fill="currentColor" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M10.383 13.357c.343-.343.343-.896 0-1.239-.343-.343-.896-.343-1.239 0L.383 20.879c-.515.515-.515 1.349 0 1.864l8.761 8.761c.343.343.896.343 1.239 0 .343-.343.343-.896 0-1.239L3.095 22.75h6.013c4.28 0 7.75 3.47 7.75 7.75s-3.47 7.75-7.75 7.75c-.464 0-.84-.376-.84-.84s.376-.84.84-.84c3.353 0 6.07-2.717 6.07-6.07s-2.717-6.07-6.07-6.07H3.095l7.288-7.288zm10.852 0c.343-.343.343-.896 0-1.239-.343-.343-.896-.343-1.239 0L11.235 20.879c-.515.515-.515 1.349 0 1.864l8.761 8.761c.343.343.896.343 1.239 0 .343-.343.343-.896 0-1.239L14.334 22.75h6.013c4.28 0 7.75 3.47 7.75 7.75s-3.47 7.75-7.75 7.75c-.464 0-.84-.376-.84-.84s.376-.84.84-.84c3.353 0 6.07-2.717 6.07-6.07s-2.717-6.07-6.07-6.07h-6.013l7.288-7.288z"/></svg>
+                    <blockquote class="italic text-xl text-gray-700 dark:text-gray-300 mb-6" id="about-testimonial-text"></blockquote>
+                    <cite class="font-bold text-lg not-italic" id="about-testimonial-author"></cite>
+                </div>
+            </section>
+        </section>
+
+        <!-- Services Page Content -->
+        <section id="page-services" class="page-content hidden" data-page="services">
+            <h1 class="text-4xl font-extrabold text-center mb-16" id="services-title"></h1>
+
+            <!-- Metal Works & Shades -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold mb-8" id="services-metal-title"></h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="services-metal-items">
+                    <!-- Metal service cards injected by JS -->
+                </div>
+            </div>
+
+            <!-- Glass Work Solutions -->
+            <div class="mb-16">
+                <h2 class="text-3xl font-bold mb-4" id="services-glass-title"></h2>
+                <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mb-8" id="services-glass-intro"></p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="services-glass-items">
+                    <!-- Glass service cards injected by JS -->
+                </div>
+            </div>
+
+            <!-- Our Promise Section -->
+            <section class="bg-primary-accent-light dark:bg-primary-accent-dark p-8 md:p-12 rounded-2xl">
+                <h2 class="text-3xl font-bold text-center mb-10" id="services-promise-title"></h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8" id="services-promise-points">
+                    <!-- Promise points will be injected by JS -->
+                </div>
+            </section>
+        </section>
+
+        <!-- Contact Page Content -->
+        <section id="page-contact" class="page-content hidden" data-page="contact">
+            <h1 class="text-4xl font-extrabold text-center mb-4" id="contact-title"></h1>
+            <p class="text-xl text-center text-gray-600 dark:text-gray-400 mb-12" id="contact-subtitle"></p>
+
+            <div class="grid lg:grid-cols-2 gap-12">
+                <!-- Contact Info -->
+                <div class="space-y-8">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 p-3 bg-primary-accent-light dark:bg-primary-accent-dark rounded-full">
+                            <svg class="w-6 h-6 text-primary-DEFAULT dark:text-primary-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Location</h3>
+                            <p class="text-gray-600 dark:text-gray-400" id="contact-address"></p>
+                        </div>
+                    </div>
+                     <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 p-3 bg-primary-accent-light dark:bg-primary-accent-dark rounded-full">
+                            <svg class="w-6 h-6 text-primary-DEFAULT dark:text-primary-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Phone Number</h3>
+                            <p class="text-gray-600 dark:text-gray-400" id="contact-phone"></p>
+                        </div>
+                    </div>
+                     <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0 p-3 bg-primary-accent-light dark:bg-primary-accent-dark rounded-full">
+                            <svg class="w-6 h-6 text-primary-DEFAULT dark:text-primary-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Email Address</h3>
+                            <p class="text-gray-600 dark:text-gray-400" id="contact-email"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <form action="#" method="POST" class="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg space-y-6">
+                    <div>
+                        <label for="full-name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Full Name</label>
+                        <input type="text" name="full-name" id="full-name" placeholder="Enter your name" class="mt-1 block w-full px-4 py-3 rounded-lg border-gray-300 dark:border-gray-600 dark:bg-gray-700 shadow-sm focus:border-primary-light focus:ring-primary-light transition-all duration-300">
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full bg-primary-DEFAULT hover:bg-primary-dark dark:bg-primary-dm-DEFAULT dark:hover:bg-primary-dm-light text-white font-bold py-3 px-8 rounded-lg text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-200 dark:border-gray-700 mt-16 transition-colors duration-300">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
+            <p class="text-gray-500 dark:text-gray-400">&copy; <span id="footer-year"></span> <span id="footer-company-name"></span>. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // --- CONTENT DATA ---
+        // All website content is stored here, based on your PDFs.
+        const appData = {
+            companyName: "[Company Name]",
+            phone: "+971-555640267",
+            email: "contact@company.com",
+            address: "Shed# 3, Dry Dooks Al Jaddaf - Dubai, UAE",
+            
+            home: {
+                hero: [
+                    {
+                        title: "Innovative Technical Solutions",
+                        subtitle: "Crafting durable and visually appealing products for residential, commercial, and industrial needs."
+                    },
+                    {
+                        title: "Expert Metal & Glass Work",
+                        subtitle: "Specializing in pergolas, CNC panels, glass partitions, and custom fabrications."
+                    }
+                ],
+                whyChooseUs: {
+                    title: "Why Choose Us?",
+                    points: [
+                        { icon: "Sparkles", title: "Expertise and Experience", text: "Our skilled professionals excel in metal works specialized in Aluminum and Glass, Mild steel Stainless steel and CNC crafts works. We ensure top-quality workmanship by staying updated with the latest industry standards and techniques." },
+                        { icon: "Archive", title: "Service Offerings", text: "We provide a full range of services for residential, commercial, and industrial clients. From installation and maintenance to repairs and upgrades, we address all your needs under one roof." },
+                        { icon: "CheckBadge", title: "Quality and Reliability", text: "We use high-quality materials and adhere to strict quality control measures, ensuring durable and reliable results. Our commitment to excellence guarantees each project meets the highest standards." },
+                        { icon: "WrenchScrewdriver", title: "Customized Solutions", text: "We tailor our services to meet your unique needs and preferences. Whether it's custom Metal works or complicated installations, we work closely with you to deliver the best outcomes." }
+                    ]
+                },
+                services: {
+                    title: "Our Services",
+                    items: [
+                        { name: "Pergola", description: "Transform outdoor spaces with our custom-designed pergolas." },
+                        { name: "CNC Panel", description: "Precision-engineered CNC panels with intricate designs." },
+                        { name: "Manhole & Gratings", description: "High-quality manhole covers and gratings for safety and durability." },
+                        { name: "Stainless Steel Work", description: "Expert stainless steel fabrication for custom designs and industrial components." },
+                        { name: "Handrails", description: "Meticulously crafted handrails for safety and sophistication." },
+                        { name: "Car Parking Shades", description: "Durable and stylish car parking shades to protect vehicles." }
+                    ]
+                }
+            },
+            
+            about: {
+                title: "About [Company Name]",
+                partnerText: "[Company Name] is a trusted provider of innovative and high-quality technical solutions for residential, commercial, and industrial needs. We specialize in crafting durable and visually appealing products, including boundary wall fences, CNC panels, manhole gratings, stainless steel works, handrails, pergolas, car parking shades, and glass installations. With a commitment to precision, durability, and customer satisfaction, our expert team ensures every project meets the highest standards of quality and design. At [Company Name], we pride ourselves on delivering tailored solutions that combine functionality with aesthetic appeal, helping clients enhance their spaces with reliable and elegant technical craftsmanship.",
+                mission: { title: "Our Mission", text: "Our mission at [Company Name] is to provide exceptional technical solutions that combine durability, precision, and aesthetic excellence. We are dedicated to delivering innovative and reliable products while fostering long-term relationships through quality craftsmanship and unmatched customer service." },
+                vision: { title: "Our Vision", text: "Our vision is to be a leading provider of technical and architectural solutions, recognized for our commitment to innovation, quality, and customer satisfaction. We strive to set industry benchmarks while enhancing the beauty, functionality, and safety of spaces worldwide." },
+                testimonial: { text: "Working with [Company Name] was a seamless experience. Their attention to detail and commitment to quality exceeded our expectations. The custom pergola they installed transformed our outdoor space into a beautiful retreat. Highly recommend their services!", author: "Toy De" }
+            },
+            
+            services: {
+                title: "Our Services",
+                metalWork: {
+                    title: "Metal Works & Shades",
+                    items: [
+                        { name: "Pergola", description: "Transform outdoor spaces with our custom-designed pergolas. Combining style and functionality, our pergolas create shaded, comfortable areas for relaxation, entertainment, or dining." },
+                        { name: "CNC Panel", description: "Discover precision-engineered CNC panels crafted with intricate designs to meet your architectural and decorative requirements. Ideal for adding a modern touch to interiors, exteriors, and commercial spaces." },
+                        { name: "Manhole & Gratings", description: "We offer high-quality manhole covers and gratings designed for safety, durability, and performance. Perfect for industrial, commercial, and urban applications." },
+                        { name: "Stainless Steel Work", description: "Elevate your spaces with our expert stainless steel fabrication services. From custom designs to robust industrial components, our solutions combine strength, durability, and elegance." },
+                        { name: "Handrails", description: "Ensure safety and sophistication with our meticulously crafted handrails. Designed for durability and aesthetic appeal, our handrails are perfect for homes, offices, and public spaces." },
+                        { name: "Boundary Wall Fence", description: "Enhance your property's safety and privacy with our durable boundary wall fencing solutions. Designed to be secure, long-lasting, and visually appealing." },
+                        { name: "Car Parking Shades", description: "Protect vehicles from harsh weather with our durable and stylish car parking shades. Designed for maximum coverage and resilience for residential, commercial, and public parking areas." }
+                    ]
+                },
+                glassWork: {
+                    title: "Glass Work Solutions",
+                    intro: "Elevate your spaces with the elegance and versatility of glass. At [Company Name], we specialize in custom glass solutions that combine functionality, style, and precision.",
+                    items: [
+                        { name: "Glass Partitions", description: "Transform your interiors with sleek and modern glass partitions. Ideal for offices and homes, they create openness while maintaining privacy and maximizing natural light." },
+                        { name: "Glass Pool Fence", description: "Ensure safety without compromising style. Crafted from toughened, high-grade glass, our fences provide a secure barrier with an unobstructed view." },
+                        { name: "Mirrors", description: "Add sophistication and depth with our custom mirror work. From decorative wall mirrors to functional bathroom and gym mirrors, we craft designs that reflect your style." },
+                        { name: "Glazing Work", description: "We prepare surfaces for optimal adhesion, apply finishing touches including grouting and sealing, and conduct a final inspection to ensure a polished and durable result." }
+                    ]
+                },
+                ourPromise: {
+                    title: "Our Promise",
+                    points: [
+                        { icon: "Sparkles", title: "Expertise and Experience", text: "With years of experience, our team has the knowledge and skills to handle any project, regardless of its complexity." },
+                        { icon: "CheckBadge", title: "Quality Assurance", text: "We are committed to providing high-quality services that meet international standards. Our rigorous quality control ensures every project is completed to the highest standard." },
+                        { icon: "Users", title: "Customer-Centric", text: "Your satisfaction is our priority. We work closely with you throughout the project to ensure all your requirements are met." },
+                        { icon: "CurrencyDollar", title: "Competitive Pricing", text: "We offer competitive pricing without compromising on quality, providing you with the best value for your investment." }
+                    ]
+                }
+            },
+            
+            contact: {
+                title: "Contact Us",
+                subtitle: "Have questions or need assistance with your project? Let's get in touch!"
+            }
+        };
+
+        // --- SVG ICONS ---
+        const icons = {
+            Sparkles: `<svg class="w-8 h-8 text-primary-DEFAULT dark:text-primary-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M6.343 4.636l-.707-.707m12.728 10.607l.707-.707M4.636 14.657l.707.707M12 21v-1m6.364-1.636l-.707-.707M6.343 19.364l-.707.707m12.728-10.607l.707.707M4.636 9.343l.707-.707M12 17.657a.343.343 0 01.686 0 .343.343 0 01-.686 0zM4.636 4.636a.343.343 0 01.686 0 .343.343 0 01-.686 0zM19.364 4.636a.343.343 0 01.686 0 .343.343 0 01-.686 0zM4.636 19.364a.343.343 0 01.686 0 .343.343 0 01-.686 0zM19.364 19.364a.343.343 0 01.686 0 .343.343 0 01-.686 0z" /></svg>`,
+            Archive: `<svg class="w-8 h-8 text-primary-DEFAULT dark:text-primary-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" /></svg>`,
+            CheckBadge: `<svg class="w-8 h-8 text-primary-DEFAULT dark:text-primary-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" /></svg>`,
+            WrenchScrewdriver: `<svg class="w-8 h-8 text-primary-DEFAULT dark:text-primary-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.83-5.83M11.42 15.17l.354-.354m-4.095-4.095l.354.354M11.42 15.17L15.17 11.42m-4.095 4.095l-4.095-4.095M3 8.25l3.379-3.379a2.652 2.652 0 013.75 0L17.25 12l-5.83 5.83c-1.03.942-2.37.942-3.4 0L3 11.625V8.25z" /></svg>`,
+            Users: `<svg class="w-8 h-8 text-primary-DEFAULT dark:text-primary-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.003c0 1.113.285 2.16.786 3.07M15 19.128l-3.182-1.909M12.75 8.25a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM8.625 15.75a3.75 3.75 0 117.5 0 3.75 3.75 0 01-7.5 0z" /></svg>`,
+            CurrencyDollar: `<svg class="w-8 h-8 text-primary-DEFAULT dark:text-primary-dark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`,
+        };
+
+
+        // --- PAGE NAVIGATION ---
+        let currentPage = 'home';
+        const pageSections = document.querySelectorAll('.page-content');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function navigateTo(event, page) {
+            if (event) event.preventDefault();
+            
+            currentPage = page;
+
+            // Hide all page sections
+            pageSections.forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            // Show the target page section
+            const targetPage = document.getElementById(`page-${page}`);
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+            }
+
+            // Update active nav link
+            navLinks.forEach(link => {
+                if (link.dataset.page === page) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // Close mobile menu
+            mobileMenu.classList.add('hidden');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // --- THEME TOGGLER ---
+        const themeToggle = document.getElementById('theme-toggle');
+        
+        function toggleTheme() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.theme = isDark ? 'dark' : 'light';
+        }
+
+        themeToggle.addEventListener('click', toggleTheme);
+
+        // --- MOBILE MENU ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- IMAGE UPLOAD HANDLER ---
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            const uploader = event.target.closest('.image-uploader');
+            const preview = uploader.querySelector('.preview-image');
+            const placeholder = uploader.querySelector('.placeholder-text');
+
+            reader.onload = (e) => {
+                preview.src = e.target.result;
+                preview.classList.remove('hidden');
+                if (placeholder) {
+                    placeholder.classList.add('hidden');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // --- DYNAMIC CONTENT INJECTION ---
+        function populateContent() {
+            const d = appData; // shorthand
+
+            // --- General ---
+            document.getElementById('footer-year').textContent = new Date().getFullYear();
+            document.getElementById('footer-company-name').textContent = d.companyName;
+
+            // --- Home Page ---
+            const heroWrapper = document.getElementById('hero-slider-wrapper');
+            if (heroWrapper) {
+                heroWrapper.innerHTML = d.home.hero.map(slide => `
+                    <div class="swiper-slide">
+                        <!-- Background Image Uploader -->
+                        <div class="image-uploader slide-bg-uploader relative flex items-center justify-center rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600 text-center cursor-pointer hover:border-primary-light dark:hover:border-primary-dark">
+                            <span class="placeholder-text text-lg z-10">Click to upload slide image</span>
+                            <img src="" alt="Hero Slide" class="preview-image hidden h-full w-full object-cover">
+                            <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0 z-20 cursor-pointer" accept="image/*" onchange="handleImageUpload(event)">
+                        </div>
+                        <!-- Overlay -->
+                        <div class="slide-overlay"></div>
+                        <!-- Text Content -->
+                        <div class="slide-content w-full">
+                            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4">${slide.title}</h1>
+                            <p class="text-lg md:text-xl text-gray-200 max-w-2xl mb-8">${slide.subtitle}</p>
+                            <a href="#" onclick="navigateTo(event, 'contact')" class="inline-block bg-primary-dm-DEFAULT hover:bg-primary-dm-light text-primary-dark font-bold py-3 px-8 rounded-lg text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
+                                Get in Touch
+                            </a>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            document.getElementById('home-whychooseus-title').textContent = d.home.whyChooseUs.title;
+            const whyChooseUsContainer = document.getElementById('home-whychooseus-points');
+            whyChooseUsContainer.innerHTML = d.home.whyChooseUs.points.map(point => `
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg transform hover:scale-105 transition-all duration-300">
+                    <div class="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-primary-accent-light dark:bg-primary-accent-dark mb-4">
+                        ${icons[point.icon] || ''}
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">${point.title}</h3>
+                    <p class="text-gray-600 dark:text-gray-400">${point.text}</p>
+                </div>
+            `).join('');
+
+            document.getElementById('home-services-title').textContent = d.home.services.title;
+            const homeServicesContainer = document.getElementById('home-services-items');
+            homeServicesContainer.innerHTML = d.home.services.items.map(item => `
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="image-uploader aspect-video relative flex items-center justify-center border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-center cursor-pointer">
+                        <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload photo for ${item.name}</span>
+                        <img src="" alt="${item.name}" class="preview-image hidden h-full w-full object-cover">
+                        <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">${item.name}</h3>
+                        <p class="text-gray-600 dark:text-gray-400">${item.description}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // --- About Page ---
+            document.getElementById('about-title').textContent = d.about.title;
+            document.getElementById('about-partner-text').textContent = d.about.partnerText;
+            document.getElementById('about-mission-title').textContent = d.about.mission.title;
+            document.getElementById('about-mission-text').textContent = d.about.mission.text;
+            document.getElementById('about-vision-title').textContent = d.about.vision.title;
+            document.getElementById('about-vision-text').textContent = d.about.vision.text;
+            document.getElementById('about-testimonial-text').textContent = `"${d.about.testimonial.text}"`;
+            document.getElementById('about-testimonial-author').textContent = `– ${d.about.testimonial.author}`;
+
+            // --- Services Page ---
+            document.getElementById('services-title').textContent = d.services.title;
+            
+            document.getElementById('services-metal-title').textContent = d.services.metalWork.title;
+            const metalServicesContainer = document.getElementById('services-metal-items');
+            metalServicesContainer.innerHTML = d.services.metalWork.items.map(item => `
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="image-uploader aspect-video relative flex items-center justify-center border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-center cursor-pointer">
+                        <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload photo for ${item.name}</span>
+                        <img src="" alt="${item.name}" class="preview-image hidden h-full w-full object-cover">
+                        <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">${item.name}</h3>
+                        <p class="text-gray-600 dark:text-gray-400">${item.description}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('services-glass-title').textContent = d.services.glassWork.title;
+            document.getElementById('services-glass-intro').textContent = d.services.glassWork.intro;
+            const glassServicesContainer = document.getElementById('services-glass-items');
+            glassServicesContainer.innerHTML = d.services.glassWork.items.map(item => `
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden transform hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                    <div class="image-uploader aspect-video relative flex items-center justify-center border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-center cursor-pointer">
+                        <span class="placeholder-text text-sm text-gray-500 dark:text-gray-400">Click to upload photo for ${item.name}</span>
+                        <img src="" alt="${item.name}" class="preview-image hidden h-full w-full object-cover">
+                        <input type="file" class="absolute left-0 top-0 h-full w-full opacity-0" accept="image/*" onchange="handleImageUpload(event)">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">${item.name}</h3>
+                        <p class="text-gray-600 dark:text-gray-400">${item.description}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('services-promise-title').textContent = d.services.ourPromise.title;
+            const promiseContainer = document.getElementById('services-promise-points');
+            promiseContainer.innerHTML = d.services.ourPromise.points.map(point => `
+                <div class="text-center md:text-left">
+                    <div class="flex-shrink-0 flex items-center justify-center md:justify-start h-12 w-12 mb-4">
+                        ${icons[point.icon] || ''}
+                    </div>
+                    <h3 class="text-xl font-bold mb-2">${point.title}</h3>
+                    <p class="text-gray-600 dark:text-gray-400">${point.text}</p>
+                </div>
+            `).join('');
+
+            // --- Contact Page ---
+            document.getElementById('contact-title').textContent = d.contact.title;
+            document.getElementById('contact-subtitle').textContent = d.contact.subtitle;
+            document.getElementById('contact-address').textContent = d.address;
+            document.getElementById('contact-phone').textContent = d.phone;
+            document.getElementById('contact-email').textContent = d.email;
+        }
+
+        // --- INITIALIZE APP ---
+        document.addEventListener('DOMContentLoaded', () => {
+            populateContent();
+            navigateTo(null, 'home'); // Set initial page
+
+            // Initialize Hero Swiper
+            try {
+                new Swiper('.hero-swiper', {
+                    // Optional parameters
+                    loop: true,
+                    autoplay: {
+                        delay: 5000,
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                });
+            } catch (e) {
+                console.error("Failed to initialize Swiper:", e);
+            }
+        });
+        
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,7 @@
+:root {
+    /* Brand Colors - Edit here to change site-wide theme */
+    --brand-primary: #C35626;  /* Default: Deep Orange */
+    --brand-accent: #1e3a8a;   /* Default: Royal Blue */
+    --text-dark: #1F2937;
+    --text-light: #6B7280;
+}

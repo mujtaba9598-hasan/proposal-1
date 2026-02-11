@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Company Name] | Excellence in Engineering</title>
+    
+    <!-- Font: Manrope (Geometric, High-Trust) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* --- 1. CSS VARIABLES (THEMING ENGINE) --- */
+        :root {
+            /* --- LIGHT MODE (Default) --- */
+            --bg-body: #f8fafc;        /* Very faint gray/white */
+            --bg-card: #ffffff;
+            --bg-glass: rgba(255, 255, 255, 0.9);
+            
+            --text-main: #0f172a;      /* Dark Navy/Charcoal */
+            --text-muted: #475569;     /* Slate Gray */
+            
+            /* Accents */
+            --primary-gold: #d97706;   /* Deep Amber/Gold */
+            --primary-emerald: #059669; /* Emerald Green */
+            --error-red: #dc2626;
+            
+            --border-subtle: rgba(15, 23, 42, 0.1);
+            --border-strong: #0f172a; /* Black/Dark border for placeholders */
+            --shadow-card: 0 10px 40px -10px rgba(0,0,0,0.08);
+            --shadow-hover: 0 20px 50px -10px rgba(0,0,0,0.12);
+            
+            --gradient-text: linear-gradient(135deg, #059669 0%, #0f172a 100%);
+            
+            --radius-pill: 100px;
+            --radius-card: 24px;
+            --radius-square: 16px;
+        }
+
+        /* --- DARK MODE OVERRIDES --- */
+        [data-theme="dark"] {
+            --bg-body: #0f172a;        /* Deep Navy/Slate */
+            --bg-card: #1e293b;
+            --bg-glass: rgba(15, 23, 42, 0.9);
+            
+            --text-main: #f8fafc;      /* Off-white */
+            --text-muted: #94a3b8;     /* Light Slate */
+            
+            /* Accents (Neon/Bright) */
+            --primary-gold: #fbbf24;   /* Bright Gold */
+            --primary-emerald: #34d399; /* Neon Mint/Green */
+            --error-red: #ef4444;
+            
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --border-strong: rgba(255, 255, 255, 0.3);
+            --shadow-card: 0 20px 50px -10px rgba(0,0,0,0.3);
+            
+            --gradient-text: linear-gradient(135deg, #34d399 0%, #ffffff 100%);
+        }
+
+        /* --- RESET & BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body { 
+            font-family: 'Manrope', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            transition: background-color 0.3s ease, color 0.3s ease; 
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.2s; }
+        img { display: block; width: 100%; height: 100%; object-fit: cover; }
+        input, button, textarea { font-family: inherit; }
+        ul { list-style: none; }
+
+        /* UTILITIES */
+        .wrapper { max-width: 1280px; margin: 0 auto; padding: 0 5%; }
+        .section-pad { padding: 100px 0; }
+        .text-center { text-align: center; }
+        
+        /* --- 2. COMPONENTS --- */
+        
+        /* Buttons */
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 14px 32px; border-radius: var(--radius-pill);
+            font-weight: 700; font-size: 1rem; letter-spacing: -0.02em;
+            transition: all 0.3s ease; cursor: pointer; text-align: center;
+        }
+        
+        .btn-primary {
+            background: var(--primary-gold);
+            color: #0f172a; /* Always dark text on gold for readability */
+            box-shadow: 0 10px 20px -5px rgba(217, 119, 6, 0.4);
+            border: 1px solid transparent;
+        }
+        .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 15px 30px -5px rgba(217, 119, 6, 0.5); }
+        
+        .btn-whatsapp {
+            background: #25D366; color: #fff;
+            border: 1px solid transparent;
+            box-shadow: 0 10px 20px -5px rgba(37, 211, 102, 0.3);
+        }
+        .btn-whatsapp:hover { background: #128C7E; transform: translateY(-2px); box-shadow: 0 15px 30px -5px rgba(37, 211, 102, 0.4); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-subtle);
+        }
+        .btn-outline:hover {
+            border-color: var(--primary-emerald);
+            color: var(--primary-emerald);
+            transform: translateY(-2px);
+        }
+
+        /* Badge Square */
+        .badge-square {
+            display: inline-flex; align-items: center; gap: 10px;
+            padding: 12px 24px; 
+            border-radius: var(--radius-square);
+            background: rgba(52, 211, 153, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            color: var(--primary-emerald);
+            font-size: 0.95rem; font-weight: 700; letter-spacing: 0.5px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Unified Upload Input */
+        .unified-upload { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10; }
+        
+        /* --- 3. HEADER & NAV --- */
+        header {
+            position: fixed; top: 20px; left: 0; width: 100%; z-index: 100;
+        }
+        
+        .nav-container {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-subtle);
+            padding: 12px 24px;
+            border-radius: var(--radius-pill);
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: var(--shadow-card);
+            max-width: 1280px; margin: 0 auto;
+        }
+
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .logo-box {
+            width: 48px; height: 48px; border-radius: 50%; 
+            background: var(--bg-body); border: 2px dashed var(--border-strong); /* Black/Dark border */
+            position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+            transition: 0.3s;
+        }
+        .logo-box:hover { border-color: var(--primary-gold); }
+        .logo-box span { font-size: 0.6rem; font-weight: 800; text-align: center; line-height: 1; color: var(--text-muted); }
+        .logo-box img { display: none; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .logo-box.has-image img { display: block; }
+        .logo-box.has-image span { display: none; }
+
+        .brand-text h1 { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.03em; color: var(--text-main); line-height: 1; }
+        .brand-text span { font-size: 0.75rem; font-weight: 600; color: var(--primary-emerald); text-transform: uppercase; }
+
+        nav ul { display: flex; gap: 32px; list-style: none; }
+        nav a { font-weight: 600; font-size: 0.95rem; color: var(--text-muted); }
+        nav a:hover { color: var(--text-main); }
+
+        .header-actions { display: flex; align-items: center; gap: 16px; }
+        
+        /* Theme Toggle */
+        .theme-toggle {
+            background: transparent; border: 1px solid var(--border-subtle);
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-main); cursor: pointer; transition: 0.3s;
+        }
+        .theme-toggle:hover { border-color: var(--primary-gold); color: var(--primary-gold); }
+
+        /* --- 4. HERO SECTION --- */
+        .hero {
+            position: relative; min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; padding-top: 120px; padding-bottom: 80px;
+        }
+        
+        .hero-bg-uploader {
+            position: absolute; inset: 0; z-index: 0; /* Ensure it's clickable */
+            background: radial-gradient(circle at center, var(--border-subtle) 1px, transparent 1px);
+            background-size: 40px 40px;
+            cursor: pointer;
+        }
+        .hero-bg-uploader img { opacity: 0.15; object-fit: cover; position: absolute; inset: 0; width: 100%; height: 100%; display: none; pointer-events: none; }
+        .hero-bg-uploader.has-image img { display: block; }
+        .hero-bg-label {
+            position: absolute; bottom: 20px; right: 20px; 
+            font-size: 0.7rem; color: var(--text-muted); border: 1px dashed var(--text-muted);
+            padding: 5px 10px; border-radius: 8px; pointer-events: none; background: var(--bg-glass);
+        }
+        
+        .hero-content { max-width: 900px; padding: 0 20px; z-index: 1; position: relative; pointer-events: none; }
+        .hero-content * { pointer-events: auto; } /* Enable clicks on content */
+        
+        .hero-title {
+            font-size: 3.5rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.03em;
+            margin-bottom: 24px; color: var(--text-main);
+        }
+        .hero-title span {
+            background: var(--gradient-text);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        
+        .hero-sub {
+            font-size: 1.2rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 40px;
+            font-weight: 500;
+        }
+
+        /* Why Us Grid (Updated White/Glass Design) */
+        .why-us-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+            margin-bottom: 48px; text-align: left;
+        }
+        .why-item {
+            background: var(--bg-card); 
+            border: 1px solid var(--border-subtle);
+            padding: 24px; border-radius: 16px;
+            box-shadow: var(--shadow-card);
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+        .why-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-emerald);
+        }
+        .why-item h4 { font-size: 1.1rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
+        .why-item p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; }
+        
+        .hero-buttons { display: flex; gap: 16px; justify-content: center; }
+
+        /* --- 5. BENTO SERVICES --- */
+        .section-header { text-align: center; margin-bottom: 60px; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .section-header h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 16px; color: var(--text-main); }
+        .section-header p { color: var(--text-muted); font-size: 1.1rem; }
+
+        .bento-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+        }
+        
+        .bento-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-card);
+            padding: 32px; transition: 0.3s;
+            position: relative; overflow: hidden;
+        }
+        .bento-card:hover { 
+            border-color: var(--primary-emerald); 
+            transform: translateY(-5px); 
+            box-shadow: var(--shadow-card);
+        }
+        
+        .bento-icon {
+            width: 56px; height: 56px; background: rgba(52, 211, 153, 0.1);
+            color: var(--primary-emerald); border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; margin-bottom: 24px;
+        }
+        .bento-card h3 { font-size: 1.5rem; font-weight: 700; margin-bottom: 12px; color: var(--text-main); }
+        .bento-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+
+        .card-lg { grid-column: span 2; background: linear-gradient(135deg, var(--bg-card) 0%, rgba(52, 211, 153, 0.05) 100%); }
+        .card-highlight { border-color: var(--primary-gold); }
+        .card-highlight .bento-icon { color: var(--primary-gold); background: rgba(251, 191, 36, 0.1); }
+
+        /* --- 6. THE [BRAND] ADVANTAGE (Flip Cards) --- */
+        .flip-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+        }
+        .flip-container {
+            perspective: 1000px; height: 380px; cursor: pointer;
+        }
+        .flip-inner {
+            position: relative; width: 100%; height: 100%;
+            text-align: center; transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-container:hover .flip-inner { transform: rotateY(180deg); }
+        
+        .flip-front, .flip-back {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden;
+            border-radius: var(--radius-card);
+            padding: 32px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-subtle);
+        }
+        
+        .flip-front { background: var(--bg-card); }
+        .flip-back { 
+            background: var(--bg-body); 
+            transform: rotateY(180deg); 
+            border: 1px solid var(--primary-emerald);
+        }
+
+        .flip-icon-red { color: var(--error-red); margin-bottom: 16px; }
+        .flip-icon-green { color: var(--primary-emerald); margin-bottom: 16px; }
+        
+        .flip-title { font-size: 1.25rem; font-weight: 700; color: var(--text-main); margin-bottom: 16px; }
+        .flip-list { text-align: left; width: 100%; font-size: 0.9rem; color: var(--text-muted); }
+        .flip-list li { margin-bottom: 12px; display: flex; gap: 10px; align-items: flex-start; }
+
+        /* --- 7. GALLERY --- */
+        .gallery-container {
+            display: flex; gap: 24px; overflow-x: auto; padding: 20px 0 40px;
+            scrollbar-width: none;
+        }
+        .gallery-container::-webkit-scrollbar { display: none; }
+        
+        .gallery-card {
+            min-width: 320px; height: 420px;
+            border-radius: var(--radius-card);
+            background: var(--bg-card);
+            border: 2px dashed var(--border-strong); /* Black Border */
+            position: relative; overflow: hidden;
+            transition: 0.3s;
+        }
+        .gallery-card:hover { transform: scale(1.02); border-color: var(--primary-gold); border-style: solid; }
+        
+        .gallery-placeholder {
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 2;
+            pointer-events: none; color: var(--text-muted); font-weight: 600;
+        }
+        .gallery-card img { display: none; position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; }
+        .gallery-card.has-image img { display: block; }
+        .gallery-card.has-image .gallery-placeholder { display: none; }
+        .gallery-card.has-image { border-style: solid; border-width: 1px; border-color: var(--border-subtle); }
+        
+        .gallery-meta {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 20px; background: linear-gradient(to top, rgba(15,23,42,0.9), transparent);
+            z-index: 3; color: white;
+        }
+
+        /* --- 8. ABOUT --- */
+        .about-split { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .about-img-box {
+            aspect-ratio: 1/1; border-radius: var(--radius-card);
+            background: var(--bg-card); border: 2px dashed var(--border-strong); /* Black Border */
+            position: relative; overflow: hidden; transition: 0.3s;
+        }
+        .about-img-box:hover { border-color: var(--primary-gold); }
+        .about-img-box img { display: none; width: 100%; height: 100%; object-fit: cover; }
+        .about-img-box.has-image img { display: block; }
+        .about-img-box.has-image { border-style: solid; border-width: 1px; border-color: var(--border-subtle); }
+        
+        /* --- 9. CONTACT FORM --- */
+        .contact-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-card);
+            padding: 60px;
+            display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px;
+        }
+        
+        .form-control {
+            width: 100%; padding: 16px 20px; margin-bottom: 20px;
+            background: var(--bg-body);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px; color: var(--text-main);
+            transition: 0.3s;
+        }
+        .form-control:focus { outline: none; border-color: var(--primary-emerald); }
+
+        /* Footer */
+        footer { border-top: 1px solid var(--border-subtle); padding: 80px 0 40px; text-align: center; }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .hero-title { font-size: 2.5rem; }
+            .why-us-grid, .bento-grid, .flip-grid, .about-split, .contact-box { grid-template-columns: 1fr; gap: 30px; }
+            .card-lg { grid-column: span 1; }
+            .nav-container { padding: 12px; }
+            nav ul { display: none; } 
+        }
+    </style>
+    <link rel="stylesheet" href="css/theme-config.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="wrapper">
+            <div class="nav-container">
+                <div class="brand">
+                    <label class="logo-box" title="Upload Logo">
+                        <span>LOGO</span>
+                        <img src="" alt="Logo">
+                        <input type="file" class="unified-upload" accept="image/*">
+                    </label>
+                    <div class="brand-text">
+                        <h1>[BRAND]</h1>
+                        <span>Technical Services</span>
+                    </div>
+                </div>
+
+                <nav>
+                    <ul>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#projects">Projects</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <div class="header-actions">
+                    <button class="theme-toggle" id="themeSwitch" title="Toggle Theme">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <a href="#contact" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.9rem;">Get Quote</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <!-- Background Uploader (Clickable) -->
+        <label class="hero-bg-uploader" title="Click anywhere to upload background image">
+            <input type="file" class="unified-upload" accept="image/*">
+            <img src="" alt="Hero BG">
+            <span class="hero-bg-label">Click background to upload image</span>
+        </label>
+
+        <div class="hero-content">
+            <h1 class="hero-title">
+                Innovative Technical<br><span>Solutions</span>
+            </h1>
+            
+            <p class="hero-sub">
+                Crafting durable and visually appealing products for residential, commercial, and industrial needs across Dubai. Specializing in Glass, Metal, and Custom Fabrication.
+            </p>
+            
+            <!-- 2. Why Us Grid (Updated with White BG & Transitions) -->
+            <div class="why-us-grid">
+                <div class="why-item">
+                    <h4><i data-lucide="shield-check" style="color: var(--primary-emerald);"></i> Unmatched Quality</h4>
+                    <p>Certified high-grade materials for lasting durability.</p>
+                </div>
+                <div class="why-item">
+                    <h4><i data-lucide="clock" style="color: var(--primary-gold);"></i> On-Time Delivery</h4>
+                    <p>Optimized workflows ensuring we respect your deadlines.</p>
+                </div>
+                <div class="why-item">
+                    <h4><i data-lucide="users" style="color: var(--text-main);"></i> Expert Team</h4>
+                    <p>Skilled professionals dedicated to precision craftsmanship.</p>
+                </div>
+            </div>
+            
+            <div class="hero-buttons">
+                <a href="#contact" class="btn btn-primary">Start Project</a>
+                <a href="#services" class="btn btn-outline">View Expertise</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- SERVICES (Bento) -->
+    <section id="services" class="section-pad">
+        <div class="wrapper">
+            <div class="section-header">
+                <h2>Our Expertise</h2>
+                <p>Comprehensive technical solutions tailored to your unique architectural needs.</p>
+            </div>
+
+            <div class="bento-grid">
+                <div class="bento-card card-lg">
+                    <div class="bento-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <h3>Glass Work Solutions</h3>
+                    <p>Elevate your space with custom glass partitions, pool fences, and mirrors. Functionality meets elegance.</p>
+                </div>
+                <div class="bento-card">
+                    <div class="bento-icon"><i class="fa-solid fa-umbrella-beach"></i></div>
+                    <h3>Pergolas</h3>
+                    <p>Custom-designed outdoor shading for relaxation.</p>
+                </div>
+                <div class="bento-card">
+                    <div class="bento-icon"><i class="fa-solid fa-bezier-curve"></i></div>
+                    <h3>CNC Panels</h3>
+                    <p>Precision-engineered intricate designs.</p>
+                </div>
+                <div class="bento-card card-highlight">
+                    <div class="bento-icon"><i class="fa-solid fa-car-side"></i></div>
+                    <h3>Parking Shades</h3>
+                    <p>Durable protection for your vehicles.</p>
+                </div>
+                <div class="bento-card">
+                    <div class="bento-icon"><i class="fa-solid fa-gears"></i></div>
+                    <h3>Stainless Steel</h3>
+                    <p>Robust fabrication for handrails and industrial needs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. THE [BRAND] ADVANTAGE (Updated Flip Cards) -->
+    <section class="section-pad" style="background: var(--bg-body); border-top: 1px solid var(--border-subtle);">
+        <div class="wrapper">
+            <div class="section-header">
+                <h2>The [BRAND] Advantage</h2>
+                <p>Why leading businesses choose us over generic contractors.</p>
+            </div>
+
+            <div class="flip-grid">
+                <!-- Card 1 -->
+                <div class="flip-container">
+                    <div class="flip-inner">
+                        <div class="flip-front">
+                            <i data-lucide="alert-circle" class="flip-icon-red" style="width: 40px; height: 40px;"></i>
+                            <h3 class="flip-title">Market Standard</h3>
+                            <ul class="flip-list">
+                                <li><i data-lucide="x" style="color: var(--error-red); width:16px;"></i> Inconsistent Material Quality</li>
+                                <li><i data-lucide="x" style="color: var(--error-red); width:16px;"></i> Hidden Costs & Fees</li>
+                                <li><i data-lucide="x" style="color: var(--error-red); width:16px;"></i> Missed Deadlines</li>
+                            </ul>
+                        </div>
+                        <div class="flip-back">
+                            <i data-lucide="check-circle-2" class="flip-icon-green" style="width: 40px; height: 40px;"></i>
+                            <h3 class="flip-title">[BRAND] Excellence</h3>
+                            <ul class="flip-list">
+                                <li><i data-lucide="check" style="color: var(--primary-emerald); width:16px;"></i> Certified High-Grade Steel</li>
+                                <li><i data-lucide="check" style="color: var(--primary-emerald); width:16px;"></i> 100% Transparent Pricing</li>
+                                <li><i data-lucide="check" style="color: var(--primary-emerald); width:16px;"></i> Guaranteed On-Time</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="flip-container">
+                    <div class="flip-inner">
+                        <div class="flip-front">
+                            <i data-lucide="scissors" class="flip-icon-red" style="width: 40px; height: 40px;"></i>
+                            <h3 class="flip-title">DIY / Freelance</h3>
+                            <ul class="flip-list">
+                                <li><i data-lucide="x" style="color: var(--error-red); width:16px;"></i> Safety Hazards</li>
+                                <li><i data-lucide="x" style="color: var(--error-red); width:16px;"></i> No Warranty Support</li>
+                                <li><i data-lucide="x" style="color: var(--error-red); width:16px;"></i> Poor Finish Quality</li>
+                            </ul>
+                        </div>
+                        <div class="flip-back">
+                            <i data-lucide="shield-check" class="flip-icon-green" style="width: 40px; height: 40px;"></i>
+                            <h3 class="flip-title">Expert Handling</h3>
+                            <ul class="flip-list">
+                                <li><i data-lucide="check" style="color: var(--primary-emerald); width:16px;"></i> Full Safety Compliance</li>
+                                <li><i data-lucide="check" style="color: var(--primary-emerald); width:16px;"></i> Comprehensive Warranty</li>
+                                <li><i data-lucide="check" style="color: var(--primary-emerald); width:16px;"></i> Luxury Aesthetic Finish</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="flip-container">
+                    <div class="flip-inner">
+                        <div class="flip-front">
+                            <i data-lucide="clock" class="flip-icon-red" style="width: 40px; height: 40px;"></i>
+                            <h3 class="flip-title">Common Delays</h3>
+                            <ul class="flip-list">
+                                <li><i data-lucide="x" style="color: var(--error-red); width:16px;"></i> Unresponsive Teams</li>
+                                <li><i data-lucide="x" style="color: var(--error-red); width:16px;"></i> Project Stalls</li>
+                                <li><i data-lucide="x" style="color: var(--error-red); width:16px;"></i> Communication Gaps</li>
+                            </ul>
+                        </div>
+                        <div class="flip-back">
+                            <i data-lucide="zap" class="flip-icon-green" style="width: 40px; height: 40px;"></i>
+                            <h3 class="flip-title">Rapid Execution</h3>
+                            <ul class="flip-list">
+                                <li><i data-lucide="check" style="color: var(--primary-emerald); width:16px;"></i> 24/7 Support Team</li>
+                                <li><i data-lucide="check" style="color: var(--primary-emerald); width:16px;"></i> Dedicated Project Manager</li>
+                                <li><i data-lucide="check" style="color: var(--primary-emerald); width:16px;"></i> Efficient Workflow</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GALLERY (Added Slots + Black Border) -->
+    <section id="projects" class="section-pad">
+        <div class="wrapper">
+            <div class="section-header" style="text-align: left; margin-left: 0;">
+                <h2>Recent Projects</h2>
+                <p>Swipe to see our craftsmanship.</p>
+            </div>
+        </div>
+        <div class="gallery-container">
+            <div class="gallery-card">
+                <label class="unified-upload"><input type="file" accept="image/*"></label>
+                <div class="gallery-placeholder"><i data-lucide="image"></i><span>Upload Pergola</span></div>
+                <img src="" alt="Project">
+                <div class="gallery-meta"><h4>Pergola</h4><p>Villa Project</p></div>
+            </div>
+            <div class="gallery-card">
+                <label class="unified-upload"><input type="file" accept="image/*"></label>
+                <div class="gallery-placeholder"><i data-lucide="image"></i><span>Upload CNC</span></div>
+                <img src="" alt="Project">
+                <div class="gallery-meta"><h4>CNC Facade</h4><p>Commercial</p></div>
+            </div>
+            <div class="gallery-card">
+                <label class="unified-upload"><input type="file" accept="image/*"></label>
+                <div class="gallery-placeholder"><i data-lucide="image"></i><span>Upload Glass</span></div>
+                <img src="" alt="Project">
+                <div class="gallery-meta"><h4>Glass Partition</h4><p>Office</p></div>
+            </div>
+            <div class="gallery-card">
+                <label class="unified-upload"><input type="file" accept="image/*"></label>
+                <div class="gallery-placeholder"><i data-lucide="image"></i><span>Upload Parking</span></div>
+                <img src="" alt="Project">
+                <div class="gallery-meta"><h4>Parking Shade</h4><p>Residential</p></div>
+            </div>
+            <!-- Added Slots -->
+            <div class="gallery-card">
+                <label class="unified-upload"><input type="file" accept="image/*"></label>
+                <div class="gallery-placeholder"><i data-lucide="image"></i><span>Upload Metal Work</span></div>
+                <img src="" alt="Project">
+                <div class="gallery-meta"><h4>Metal Fencing</h4><p>Industrial</p></div>
+            </div>
+            <div class="gallery-card">
+                <label class="unified-upload"><input type="file" accept="image/*"></label>
+                <div class="gallery-placeholder"><i data-lucide="image"></i><span>Upload Custom</span></div>
+                <img src="" alt="Project">
+                <div class="gallery-meta"><h4>Custom Job</h4><p>Client Project</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section-pad" style="background: var(--bg-card);">
+        <div class="wrapper">
+            <div class="about-split">
+                <div class="about-content">
+                    <h2 style="font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 24px;">
+                        Your Trusted <span style="color: var(--primary-emerald);">Partner</span>
+                    </h2>
+                    <p style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 30px;">
+                        [Company Name] is a premier provider of technical solutions in Dubai. We pride ourselves on delivering tailored solutions that combine functionality with aesthetic appeal.
+                    </p>
+                    <div style="display:flex; gap:40px; border-top:1px solid var(--border-subtle); padding-top:20px;">
+                        <div><h3 style="font-size:2rem; font-weight:800; color:var(--primary-gold);">10+</h3><p style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">Years Exp</p></div>
+                        <div><h3 style="font-size:2rem; font-weight:800; color:var(--primary-gold);">100%</h3><p style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">Quality</p></div>
+                        <div><h3 style="font-size:2rem; font-weight:800; color:var(--primary-gold);">350+</h3><p style="font-size:0.8rem; color:var(--text-muted); text-transform:uppercase;">Projects</p></div>
+                    </div>
+                </div>
+                <div class="about-img-box">
+                    <label class="unified-upload"><input type="file" accept="image/*"></label>
+                    <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--text-muted); pointer-events: none;">
+                        <span style="font-weight: 700;">UPLOAD TEAM PHOTO</span>
+                    </div>
+                    <img src="" alt="Team">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section-pad">
+        <div class="wrapper">
+            <div class="contact-box">
+                <div class="contact-info">
+                    <h2>Get a Free Quote</h2>
+                    <p style="color: var(--text-muted); margin-bottom: 30px;">Fill out the form and our team will get back to you within 24 hours.</p>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <h5 style="font-weight: 700; margin-bottom: 8px;">Direct Contact</h5>
+                        <div style="display: flex; flex-wrap: wrap; gap: 16px;">
+                            <!-- 4. UPDATED CONTACT BUTTONS -->
+                            <a href="tel:+971 50 000 0000" class="btn btn-outline" style="padding: 12px 20px;">
+                                <i data-lucide="phone"></i> Call Us
+                            </a>
+                            <a href="https://wa.me/971500000000" target="_blank" class="btn btn-whatsapp" style="padding: 12px 20px;">
+                                <i data-lucide="message-circle"></i> WhatsApp
+                            </a>
+                        </div>
+                        <!-- Updated Location Layout -->
+                        <div style="margin-top: 24px;">
+                            <p style="color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: center; gap: 10px;">
+                                <i data-lucide="mail" style="width:16px;"></i> contact@company.com
+                            </p>
+                            <p style="margin-top: 12px; color: var(--text-muted); font-size: 0.9rem; display: flex; align-items: flex-start; gap: 10px;">
+                                <i data-lucide="map-pin" style="width:16px; margin-top: 4px;"></i> 
+                                <span>Shed# 3, Business Bay, Dubai<br>Dubai, United Arab Emirates</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <form id="contactForm">
+                    <input type="text" id="c-name" class="form-control" placeholder="Full Name" required>
+                    <input type="tel" id="c-phone" class="form-control" placeholder="Phone Number" required>
+                    <input type="email" id="c-email" class="form-control" placeholder="Email Address" required>
+                    <textarea id="c-message" class="form-control" rows="4" placeholder="Tell us about your project..." required></textarea>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Request</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="wrapper">
+            <label class="logo-box" style="width:60px; height:60px; margin:0 auto 20px;">
+                <input type="file" class="unified-upload" accept="image/*">
+                <span>LOGO</span>
+                <img src="" alt="Footer Logo">
+            </label>
+            <h4 style="font-weight: 800; margin-bottom: 8px;">[Company Name]</h4>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2025 All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+        // 1. Initialize Icons
+        lucide.createIcons();
+
+        // 2. Theme Toggle
+        const themeSwitch = document.getElementById('themeSwitch');
+        const html = document.documentElement;
+        const icon = themeSwitch.querySelector('i');
+
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        updateIcon(currentTheme);
+
+        themeSwitch.addEventListener('click', () => {
+            const newTheme = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            icon.className = theme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+
+        // 3. Image Upload Logic
+        document.querySelectorAll('.unified-upload').forEach(input => {
+            input.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if(file) {
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        const parent = input.parentElement;
+                        let img = parent.querySelector('img');
+                        if(!img) img = parent.parentElement.querySelector('img'); 
+                        
+                        if(img) {
+                            img.src = ev.target.result;
+                            parent.classList.add('has-image');
+                            if(parent.parentElement.classList.contains('gallery-card')) {
+                                parent.parentElement.classList.add('has-image');
+                            }
+                            if(parent.parentElement.classList.contains('about-img-box')) {
+                                parent.parentElement.classList.add('has-image');
+                            }
+                            if(parent.parentElement.classList.contains('hero-bg-uploader')) {
+                                parent.parentElement.classList.add('has-image');
+                            }
+                        }
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+
+        // 4. Contact Form Logic
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('c-name').value;
+            const phone = document.getElementById('c-phone').value;
+            const email = document.getElementById('c-email').value;
+            const message = document.getElementById('c-message').value;
+            
+            const subject = `Inquiry from ${name}`;
+            const body = `Name: ${name}%0D%0APhone: ${phone}%0D%0AEmail: ${email}%0D%0A%0D%0AMessage:%0D%0A${message}`;
+            
+            window.location.href = `mailto:contact@company.com?subject=${subject}&body=${body}`;
+        });
+    </script>
+</body>
+</html>

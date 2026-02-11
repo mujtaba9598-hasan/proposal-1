@@ -1,0 +1,178 @@
+/* --- 3D PREMIUM LIGHTBOX --- */
+.lightbox-3d-perspective {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1500px;
+    /* Deep 3D space */
+    padding: 50px;
+    gap: 40px;
+}
+
+/* LEFT: MAIN STAGE */
+.lightbox-main-stage {
+    flex: 1;
+    max-width: 900px;
+    /* Reduced to fit side cards */
+    height: 80vh;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 50px 100px -30px rgba(0, 0, 0, 0.9);
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #000;
+    transition: 0.5s;
+    transform: translateZ(0);
+    /* Hardware accel */
+}
+
+.lightbox-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* RIGHT: 3.5D CARD STACK */
+.lightbox-card-stack {
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* The 3.5D "Screen Shape" Effect */
+    transform: rotateY(-25deg) rotateX(10deg);
+    transform-style: preserve-3d;
+}
+
+.lightbox-mini-card {
+    height: 180px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: -20px 20px 40px rgba(0, 0, 0, 0.4);
+    position: relative;
+}
+
+.lightbox-mini-card:hover {
+    transform: translateX(-40px) scale(1.1) rotateY(10deg);
+    /* Pops OUT towards user */
+    border-color: var(--brand-accent, #00d4ff);
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 10;
+    box-shadow: -30px 30px 60px rgba(0, 0, 0, 0.6);
+}
+
+.lightbox-mini-card.active {
+    border-color: var(--brand-accent, #00d4ff);
+    box-shadow: 0 0 20px var(--brand-accent, #00d4ff);
+}
+
+.lightbox-mini-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.7;
+    transition: 0.4s;
+}
+
+.lightbox-mini-card:hover img,
+.lightbox-mini-card.active img {
+    opacity: 1;
+}
+
+@media (max-width: 1024px) {
+    .lightbox-3d-perspective {
+        flex-direction: column;
+        perspective: none;
+    }
+
+    .lightbox-card-stack {
+        width: 100%;
+        flex-direction: row;
+        transform: none;
+        overflow-x: auto;
+        padding-bottom: 20px;
+        height: 150px;
+    }
+
+    .lightbox-mini-card {
+        min-width: 200px;
+        height: 100%;
+    }
+
+    .lightbox-main-stage {
+        height: 50vh;
+        width: 100%;
+    }
+}
+
+/* IMAGE COUNTER */
+.lightbox-counter {
+    position: absolute;
+    bottom: 30px;
+    left: 40px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 30px;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    /* Animated in via JS */
+    transform: translateY(10px);
+}
+
+.lightbox-counter span {
+    color: var(--brand-accent, #00d4ff);
+    font-weight: 700;
+}
+
+/* OVERLAY BASE (Copied from general style.css usually, ensuring it exists) */
+.lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 10000;
+    display: none;
+    /* Toggled by class .active */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.lightbox-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    z-index: 10001;
+    transition: 0.3s;
+}
+
+.lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}

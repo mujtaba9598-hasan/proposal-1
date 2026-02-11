@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[SERVICE NAME] | [Company Name]</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600&family=Inter:wght@400;600&family=Space+Grotesk:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/overrides.css">
+    <link rel="stylesheet" href="css/lightbox_3d.css">
+    <link rel="stylesheet" href="css/theme-config.css">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* MASONRY GRID OVERRIDES */
+        .masonry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .masonry-item {
+            position: relative;
+            background: var(--panel-2);
+            border: 1px solid rgba(43, 107, 136, .55);
+            border-radius: var(--radius-2);
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            cursor: zoom-in;
+            transition: border-color 0.3s ease;
+        }
+
+        .masonry-item:hover {
+            border-color: var(--accent);
+        }
+
+        .masonry-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            filter: grayscale(20%);
+        }
+
+        .masonry-item:hover img {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        /* Overlay */
+        .item-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(7, 27, 42, 0.9), transparent);
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .masonry-item:hover .item-overlay {
+            opacity: 1;
+        }
+
+        .item-meta span {
+            font-family: var(--font-mono);
+            color: var(--accent);
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .item-meta h5 {
+            color: var(--text);
+            margin: 0;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body class="blueprint-bg">
+
+    <!-- WHATSAPP FLOAT -->
+    <a href="https://wa.me/971500000000" class="wa-float" target="_blank" aria-label="Chat on WhatsApp"
+        style="z-index: 2000;">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <div id="scroll-progress"
+        style="position:fixed; top:0; left:0; width:0%; height:3px; background:var(--accent); z-index:1100;"></div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="blueprint-container" style="padding-top: 100px;">
+
+        <!-- MODULE 01: HEADER / HERO -->
+        <section class="module-panel" id="cat-hero">
+            <div class="module-header">
+                <span class="title">CAT / [SERVICE NAME]</span>
+                <span class="mono-label">COLLECTION</span>
+            </div>
+            <div style="position:relative; height:400px; overflow:hidden;">
+                <div class="hero-bg" style="position:absolute; inset:0;">
+                    <!-- CHANGE HERO IMAGE HERE -->
+                    <img src="images/3d.jpeg" alt="Service Hero"
+                        style="width:100%; height:100%; object-fit:cover; opacity:0.5;">
+                </div>
+                <div
+                    style="position:absolute; bottom:0; left:0; width:100%; padding:3rem; background:linear-gradient(to top, var(--canvas), transparent);">
+                    <div style="margin-bottom: 1rem;">
+                        <a href="index.html" class="mono-label"
+                            style="text-decoration:none; color:var(--text-2);">HOME</a>
+                        <span style="color:var(--line)"> / </span>
+                        <a href="services.html" class="mono-label"
+                            style="text-decoration:none; color:var(--text-2);">SERVICES</a>
+                        <span style="color:var(--line)"> / </span>
+                        <span class="mono-label" style="color:var(--accent);">[SERVICE NAME]</span>
+                    </div>
+                    <h1 style="font-size:3rem; line-height:1; color: var(--text);">
+                        [Service Name]<br><span style="color:var(--muted)">Specification</span>
+                    </h1>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODULE 02: SPECS & GALLERY Split -->
+        <div style="display: grid; grid-template-columns: 350px 1fr; gap: 2rem;">
+
+            <!-- SIDEBAR: SPECS -->
+            <aside>
+                <div class="module-panel" style="position:sticky; top:120px;">
+                    <div class="module-header">
+                        <span class="title">DAT / SPECS</span>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <!-- SPEC ITEM -->
+                        <div style="border-bottom: 1px solid var(--line); padding-bottom: 1rem; margin-bottom: 1rem;">
+                            <span class="mono-label"
+                                style="display:block; margin-bottom:0.5rem; color:var(--text-2);">MATERIAL</span>
+                            <span style="font-size:1.1rem; color:var(--text);">Aluminum 6061-T6</span>
+                        </div>
+                        <!-- SPEC ITEM -->
+                        <div style="border-bottom: 1px solid var(--line); padding-bottom: 1rem; margin-bottom: 1rem;">
+                            <span class="mono-label"
+                                style="display:block; margin-bottom:0.5rem; color:var(--text-2);">FINISH</span>
+                            <span style="font-size:1.1rem; color:var(--text);">Powder Coated</span>
+                        </div>
+                        <!-- SPEC ITEM -->
+                        <div style="border-bottom: 1px solid var(--line); padding-bottom: 1rem; margin-bottom: 1rem;">
+                            <span class="mono-label"
+                                style="display:block; margin-bottom:0.5rem; color:var(--text-2);">WARRANTY</span>
+                            <span style="font-size:1.1rem; color:var(--text);">10 Years</span>
+                        </div>
+
+                        <a href="contact.html" class="btn-blueprint-primary"
+                            style="width:100%; justify-content:center; margin-top:1rem;">
+                            INITIATE REQUEST
+                        </a>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- MAIN: GALLERY -->
+            <section class="module-panel">
+                <div class="module-header">
+                    <span class="title">VISUAL / RECORDS</span>
+                    <span class="mono-label">TOTAL: 08</span>
+                </div>
+                <div style="padding: 2rem;">
+                    <p style="color:var(--text-2); margin-bottom: 2rem;">
+                        System records of completed [Service Name] deployments. Click to inspect details.
+                    </p>
+
+                    <div class="masonry-grid" id="collection-grid">
+                        <!-- JS WILL POPULATE THIS AUTOMATICALLY FOR DEMO -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- FOOTER PRESERVED FROM INDEX -->
+    <footer style="border-top:1px solid var(--line); padding:3rem 0; margin-top:4rem; background:var(--canvas-2);">
+        <div class="blueprint-container" style="text-align: center; color: var(--muted); font-size: 0.8rem;">
+            &copy; 2026 [Company Name]. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="js/main.js"></script>
+    <script src="assets/js/experience.js"></script>
+    <script>
+        // DEMO SCRIPT: POPULATE GALLERY
+        const grid = document.getElementById('collection-grid');
+        const imgSource = "images/3d.jpeg"; // Default image
+
+        for (let i = 1; i <= 8; i++) {
+            const div = document.createElement('div');
+            div.className = 'masonry-item';
+            div.innerHTML = `
+                <img src="${imgSource}" alt="Project ${i}">
+                <div class="item-overlay">
+                    <div class="item-meta">
+                        <div>
+                            <span>SECTOR ${i}</span>
+                            <h5>PROJECT DELTA-${i}</h5>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // BIND 3D LIGHTBOX
+            div.addEventListener('click', () => {
+                // Mock a stack of images (in production, this would be real project data)
+                const stack = [imgSource, imgSource, imgSource, imgSource];
+                if (window.open3DLightbox) {
+                    window.open3DLightbox(imgSource, stack);
+                } else {
+                    console.error("3D Lightbox not initialized");
+                }
+            });
+
+            grid.appendChild(div);
+        }
+    </script>
+</body>
+
+</html>

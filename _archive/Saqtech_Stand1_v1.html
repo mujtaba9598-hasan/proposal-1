@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Company Name] L.L.C - Modern Redesign</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom Styles and Animations -->
+    <style>
+        /* * NEW: CSS Variables for Black, White & Gold Theme
+         * High-contrast, elegant, "architectural" feel.
+        */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #111827; /* gray-900 */
+            --text-secondary: #6b7280; /* gray-500 */
+            --border-primary: #e5e7eb; /* gray-200 */
+            --border-secondary: #d1d5db; /* gray-300 */
+            --accent-color: #d97706; /* amber-600 */
+            --accent-color-hover: #b45309; /* amber-700 */
+            --accent-color-light: #fef3c7; /* amber-100 */
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            --card-shadow-hover: 0 10px 25px rgba(217, 119, 6, 0.15);
+            --placeholder-bg: #f8f9fa;
+            --placeholder-text: #6b7280;
+            --placeholder-border: #d1d5db;
+            --placeholder-hover-bg: #f3f4f6;
+            --placeholder-hover-text: #111827;
+            --header-bg: rgba(255, 255, 255, 0.85);
+            --nav-link-text: #374151; /* gray-700 */
+        }
+
+        /*
+         * NEW: Dark mode overrides for Black & Gold Theme
+        */
+        html.dark {
+            --bg-primary: #111827; /* gray-900 */
+            --bg-secondary: #1f2937; /* gray-800 */
+            --text-primary: #f3f4f6; /* gray-100 */
+            --text-secondary: #9ca3af; /* gray-400 */
+            --border-primary: #374151; /* gray-700 */
+            --border-secondary: #4b5563; /* gray-600 */
+            --accent-color: #f59e0b; /* amber-500 */
+            --accent-color-hover: #d97706; /* amber-600 */
+            --accent-color-light: #312e22; /* Dark amber-ish */
+            --card-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            --card-shadow-hover: 0 10px 25px rgba(245, 158, 11, 0.1);
+            --placeholder-bg: #1f2937;
+            --placeholder-text: #9ca3af;
+            --placeholder-border: #4b5563;
+            --placeholder-hover-bg: #374151;
+            --placeholder-hover-text: #f3f4f6;
+            --header-bg: rgba(17, 24, 39, 0.85);
+            --nav-link-text: #d1d5db; /* gray-300 */
+        }
+        
+        /* Base styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            scroll-behavior: smooth;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* NEW: Elegant Serif Font for Headings */
+        h1, h2, h3, .gradient-text {
+            font-family: "Times New Roman", Times, serif;
+            font-weight: 700;
+            letter-spacing: -0.025em; /* tracking-tight */
+        }
+        /* Hero h1 needs to be stronger */
+        #page-home h1 {
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        /* Accent colors */
+        .accent-color { color: var(--accent-color); }
+        .bg-accent-color { background-color: var(--accent-color); }
+        .hover\:bg-accent-hover:hover { background-color: var(--accent-color-hover); }
+        .border-accent-color { border-color: var(--accent-color); }
+
+        /* Page transitions */
+        .page-content {
+            opacity: 0; transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+            position: absolute; width: 100%; left: 0; top: 0;
+            padding-top: 80px;
+        }
+        .page-visible { opacity: 1; transform: translateY(0); position: relative; }
+        .page-hidden { display: none; }
+        
+        /* Functional Image Uploader Styles */
+        .image-uploader-label {
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            border: 2px dashed var(--placeholder-border);
+            border-radius: 0.5rem;
+            background-color: var(--placeholder-bg);
+            color: var(--placeholder-text);
+            min-height: 250px;
+            text-align: center;
+            padding: 1rem;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            overflow: hidden; position: relative;
+        }
+        .image-uploader-label:hover {
+            border-color: var(--accent-color);
+            background-color: var(--placeholder-hover-bg);
+            color: var(--placeholder-hover-text);
+        }
+        .image-uploader-label svg {
+            width: 40px; height: 40px;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+        .image-uploader-label .uploader-text {
+            transition: all 0.3s ease;
+        }
+        .image-uploader-label input[type="file"] {
+            display: none;
+        }
+        .image-uploader-label .uploaded-image {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        .image-uploader-label.image-loaded svg,
+        .image-uploader-label.image-loaded .uploader-text {
+            opacity: 0; transform: scale(0.8);
+        }
+        .image-uploader-label.image-loaded .uploaded-image {
+            opacity: 1;
+        }
+
+        /* Logo Uploader (smaller variant) */
+        .logo-uploader-label {
+            width: 50px; height: 50px;
+            min-height: 50px;
+            font-size: 10px; line-height: 1.2;
+            padding: 2px;
+        }
+        .logo-uploader-label svg {
+            width: 20px; height: 20px; margin-bottom: 2px;
+        }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        .fade-in-delay-1 { animation-delay: 0.2s; opacity: 0; }
+        .fade-in-delay-2 { animation-delay: 0.4s; opacity: 0; }
+        .fade-in-delay-3 { animation-delay: 0.6s; opacity: 0; }
+        
+        /* Service Card */
+        .service-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 0.75rem;
+            transition: all 0.3s ease-in-out;
+            box-shadow: var(--card-shadow);
+        }
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-color);
+            box-shadow: var(--card-shadow-hover);
+        }
+
+        /* Gradient Text (Updated to new accent) */
+        .gradient-text {
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-color-hover));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        html.dark .gradient-text {
+             background: linear-gradient(90deg, #f59e0b, #fde68a); /* Brighter gradient for dark mode */
+             -webkit-background-clip: text;
+             -webkit-text-fill-color: transparent;
+        }
+        
+        /* Form Inputs */
+        input:focus, textarea:focus {
+            border-color: var(--accent-color) !important;
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.3) !important;
+            outline: none !important;
+        }
+        .form-input {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        /* General Colors */
+        .text-main-primary { color: var(--text-primary); }
+        .text-main-secondary { color: var(--text-secondary); }
+        .bg-main-primary { background-color: var(--bg-primary); }
+        .bg-main-secondary { background-color: var(--bg-secondary); }
+        .border-main-primary { border-color: var(--border-primary); }
+
+        /* Header */
+        .header-nav {
+            background-color: var(--header-bg);
+            border-bottom: 1px solid var(--border-primary);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        .nav-link { color: var(--nav-link-text); }
+        .nav-link-mobile { color: var(--nav-link-text); }
+        
+        /* Active link styles */
+        .nav-link-active-light {
+            color: var(--accent-color) !important;
+            border-bottom: 2px solid var(--accent-color) !important;
+        }
+        .nav-link-mobile-active-light {
+            color: var(--accent-color) !important;
+            background-color: var(--accent-color-light) !important;
+        }
+        html.dark .nav-link-active-dark {
+            color: var(--accent-color) !important;
+            border-bottom: 2px solid var(--accent-color) !important;
+        }
+        html.dark .nav-link-mobile-active-dark {
+            color: var(--accent-color) !important;
+            background-color: var(--accent-color-light) !important;
+        }
+
+        /* Theme Toggle */
+        #theme-toggle-btn {
+            background: none; border: none; cursor: pointer;
+            padding: 0.5rem; border-radius: 9999px;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+        #theme-toggle-btn:hover {
+            color: var(--text-primary);
+            background-color: var(--placeholder-bg);
+        }
+    </style>
+    <link rel="stylesheet" href="css/theme-config.css">
+</head>
+<body class="overflow-x-hidden">
+
+    <!-- ========== HEADER / NAVIGATION ========== -->
+    <header class="fixed top-0 left-0 right-0 z-50 w-full">
+        <nav class="header-nav backdrop-blur-lg shadow-sm">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    
+                    <!-- Functional Logo Uploader -->
+                    <a href="#" class="flex-shrink-0 flex items-center gap-2" onclick="showPage('page-home', this)">
+                        <label class="image-uploader-label logo-uploader-label">
+                            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                            <span class="uploader-text">Logo</span>
+                            <img class="uploaded-image" alt="Uploaded Logo">
+                        </label>
+                        <span class="text-main-primary text-xl font-bold tracking-tight hidden sm:block">[BRAND] Technical</span>
+                    </a>
+                    
+                    <!-- Desktop Navigation -->
+                    <div class="hidden md:flex md:items-center md:space-x-2">
+                        <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300" onclick="showPage('page-home', this)">Home</a>
+                        <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300" onclick="showPage('page-metal-works', this)">Metal Works & Shades</a>
+                        <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300" onclick="showPage('page-glass-work', this)">Glass Work</a>
+                        <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300" onclick="showPage('page-about', this)">About Us</a>
+                        <a href="#" class="nav-link px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300" onclick="showPage('page-contact', this)">Contact Us</a>
+                        
+                        <!-- Theme Toggle Button -->
+                        <button id="theme-toggle-btn" class="ml-4">
+                            <svg id="theme-icon-dark" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" /></svg>
+                            <svg id="theme-icon-light" class="h-6 w-6 hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-6.364-.386l1.591-1.591M3 12H.75m.386-6.364l1.591 1.591M12 5.25A2.25 2.25 0 0114.25 7.5v.01A2.25 2.25 0 0112 9.75a2.25 2.25 0 01-2.25-2.25V7.5A2.25 2.25 0 0112 5.25z" /></svg>
+                        </button>
+
+                        <a href="#" class="ml-2 px-4 py-2 rounded-full text-sm font-medium bg-accent-color text-white hover:bg-accent-hover transition-colors duration-300" onclick="showPage('page-contact', this)">
+                            Get a Quote
+                        </a>
+                    </div>
+                    
+                    <!-- Mobile Menu Button -->
+                    <div class="flex md:hidden items-center">
+                        <button id="theme-toggle-btn-mobile" class="mr-2">
+                            <svg id="theme-icon-dark-mobile" class="h-6 w-6 text-main-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" /></svg>
+                            <svg id="theme-icon-light-mobile" class="h-6 w-6 hidden text-main-secondary" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-6.364-.386l1.591-1.591M3 12H.75m.386-6.364l1.591 1.591M12 5.25A2.25 2.25 0 0114.25 7.5v.01A2.25 2.25 0 0112 9.75a2.25 2.25 0 01-2.25-2.25V7.5A2.25 2.25 0 0112 5.25z" /></svg>
+                        </button>
+                        
+                        <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-main-secondary hover:text-main-primary hover:bg-main-secondary focus:outline-none focus:ring-2 focus:ring-inset focus:ring-accent-color" aria-controls="mobile-menu" aria-expanded="false">
+                            <span class="sr-only">Open main menu</span>
+                            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
+                            <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div class="hidden md:hidden bg-main-secondary shadow-lg" id="mobile-menu">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium" onclick="showPage('page-home', this); closeMenu();">Home</a>
+                    <a href="#" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium" onclick="showPage('page-metal-works', this); closeMenu();">Metal Works & Shades</a>
+                    <a href="#" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium" onclick="showPage('page-glass-work', this); closeMenu();">Glass Work</a>
+                    <a href="#" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium" onclick="showPage('page-about', this); closeMenu();">About Us</a>
+                    <a href="#" class="nav-link-mobile block px-3 py-2 rounded-md text-base font-medium" onclick="showPage('page-contact', this); closeMenu();">Contact Us</a>
+                    <a href="#" class="block w-full text-left mt-2 px-4 py-2 rounded-full text-base font-medium bg-accent-color text-white hover:bg-accent-hover transition-colors" onclick="showPage('page-contact', this); closeMenu();">
+                        Get a Quote
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ========== MAIN CONTENT AREA ========== -->
+    <div class="relative" style="min-height: 100vh;">
+
+        <!-- ========== PAGE: HOME ========== -->
+        <main id="page-home" class="page-content page-hidden">
+            <!-- Hero Section -->
+            <section class="relative h-[85vh] min-h-[600px] flex items-center justify-center text-center overflow-hidden">
+                <div class="absolute inset-0 z-0">
+                    <!-- Functional Hero Uploader -->
+                    <label class="image-uploader-label w-full h-full rounded-none border-none bg-gray-800">
+                        <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg>
+                        <span class="uploader-text">Main Hero Image/Slider Placeholder (1920x1080)</span>
+                        <span class="uploader-text text-sm">Click to upload photo</span>
+                        <img class="uploaded-image" alt="Uploaded Hero Image">
+                    </label>
+                    <div class="absolute inset-0 bg-gray-900/60 backdrop-blur-sm"></div>
+                </div>
+                
+                <div class="relative z-10 p-6">
+                    <h1 class="text-4xl sm:text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-4 fade-in">
+                        Welcome to <span class="gradient-text">[BRAND] Technical</span>
+                    </h1>
+                    <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8 fade-in fade-in-delay-1">
+                        Your trusted partner for comprehensive Metal, Glass, and Glazing Solutions.
+                    </p>
+                    <div class="fade-in fade-in-delay-2">
+                        <a href="#" class="px-8 py-3 rounded-full text-lg font-semibold bg-accent-color text-white hover:bg-accent-hover transition-all duration-300 transform hover:scale-105 shadow-lg" onclick="showPage('page-metal-works', this)">
+                            Explore Our Services
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Choose Us Section -->
+            <section class="py-16 sm:py-24 bg-main-secondary">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-2xl mx-auto mb-12">
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-main-primary mt-2">
+                            Why Choose Us?
+                        </h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                        <!-- Card 1: Expertise -->
+                        <div class="service-card p-6 fade-in">
+                            <h3 class="text-xl font-bold text-main-primary mb-2">Expertise and Experience</h3>
+                            <p class="text-main-secondary text-sm">
+                                Our skilled professionals excel in metal works specialized in Aluminum and Glass, Mild steel, Stainless steel and CNC crafts works. We ensure top-quality workmanship by staying updated with the latest industry standards and techniques.
+                            </p>
+                        </div>
+                        <!-- Card 2: Service Offerings -->
+                        <div class="service-card p-6 fade-in fade-in-delay-1">
+                            <h3 class="text-xl font-bold text-main-primary mb-2">Service Offerings</h3>
+                            <p class="text-main-secondary text-sm">
+                                We provide a full range of services for residential, commercial, and industrial clients. From installation and maintenance to repairs and upgrades, we address all your needs under one roof, saving you time and hassle.
+                            </p>
+                        </div>
+                        <!-- Card 3: Quality -->
+                        <div class="service-card p-6 fade-in fade-in-delay-2">
+                            <h3 class="text-xl font-bold text-main-primary mb-2">Quality and Reliability</h3>
+                            <p class="text-main-secondary text-sm">
+                                We use high-quality materials and adhere to strict quality control measures, ensuring durable and reliable results. Our commitment to excellence guarantees each project meets the highest standards and customer satisfaction.
+                            </p>
+                        </div>
+                        <!-- Card 4: Customized -->
+                        <div class="service-card p-6 fade-in fade-in-delay-3">
+                            <h3 class="text-xl font-bold text-main-primary mb-2">Customized Solutions</h3>
+                            <p class="text-main-secondary text-sm">
+                                We tailor our services to meet your unique needs and preferences. Whether it's custom Metal works or complicated installations, we work closely with you to deliver the best outcomes for every project.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Overview (Categories) -->
+            <section class="py-16 sm:py-24 bg-main-primary">
+                <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-2xl mx-auto mb-12">
+                        <span class="accent-color font-semibold uppercase tracking-wider">What We Do</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-main-primary mt-2">
+                            Our Core Services
+                        </h2>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Category 1: Metal Works -->
+                        <div class="service-card p-6 text-center fade-in">
+                            <div class="w-16 h-16 bg-accent-color-light text-accent-color rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" /></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-main-primary mb-2">Metal Works & Shades</h3>
+                            <p class="text-main-secondary text-sm mb-4">
+                                Pergolas, CNC Panels, Handrails, Boundary Fences, Car Parking Shades, and more.
+                            </p>
+                            <a href="#" class="text-sm font-semibold accent-color hover:underline" onclick="showPage('page-metal-works', this)">Learn More &rarr;</a>
+                        </div>
+                        
+                        <!-- Category 2: Glass Works -->
+                        <div class="service-card p-6 text-center fade-in fade-in-delay-1">
+                            <div class="w-16 h-16 bg-accent-color-light text-accent-color rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 21v-8.25m0 0a3 3 0 00-3-3H6.75m4.5 11.25V12.75m0 0a3 3 0 013-3h1.5m-4.5 11.25V12.75m0 0a3 3 0 003 3h1.5m0 0V21m-4.5-8.25H6.75m4.5 0h4.5M6.75 12.75V21m0 0H3v-8.25m3.75 0H3m0 0V3h3.75m0 9.75h1.5m-1.5 0V3m0 0h1.5m3 9.75V3m0 0h1.5m3 9.75h1.5m0 0V3m0 0h3.75v9.75m0 0h-3.75m-1.5 0h-1.5" /></svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-main-primary mb-2">Glass Work</h3>
+                            <p class="text-main-secondary text-sm mb-4">
+                                Glass Partitions, Mirrors, Glass Pool Fences, and Glazing Work.
+                            </p>
+                            <a href="#" class="text-sm font-semibold accent-color hover:underline" onclick="showPage('page-glass-work', this)">Learn More &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- ========== PAGE: ABOUT US (REVISED) ========== -->
+        <section id="page-about" class="page-content page-hidden py-16 sm:py-24 bg-main-primary">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Page Header -->
+                <div class="text-center max-w-2xl mx-auto mb-16 fade-in">
+                    <span class="accent-color font-semibold uppercase tracking-wider">About Us</span>
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-main-primary mt-2">
+                        [Company Name] - Your Trusted Partner
+                    </h1>
+                </div>
+
+                <!-- Main About Content -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-20">
+                    <div class="fade-in fade-in-delay-1">
+                        <!-- Functional Uploader -->
+                        <label class="image-uploader-label h-full min-h-[350px]">
+                            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18h16.5M2.25 15h16.5m-16.5-6h16.5m-16.5-6h16.5m-16.5 6h16.5m-16.5 6h16.5m-16.5 6h16.5m-16.5-6h16.5" /></svg>
+                            <span class="uploader-text">Company Welcome Image</span>
+                            <span class="uploader-text text-sm">Click to upload photo</span>
+                            <img class="uploaded-image" alt="Uploaded Welcome Image">
+                        </label>
+                    </div>
+                    <div class="fade-in">
+                        <p class="text-main-secondary text-lg mb-6 leading-relaxed">
+                            [Company Name] is a trusted provider of innovative and high-quality technical solutions for residential, commercial, and industrial needs. We specialize in crafting durable and visually appealing products, including boundary wall fences, CNC panels, manhole gratings, stainless steel works, handrails, pergolas, car parking shades, and glass installations.
+                        </p>
+                        <p class="text-main-secondary text-lg leading-relaxed">
+                            With a commitment to precision, durability, and customer satisfaction, our expert team ensures every project meets the highest standards of quality and design. At [Company Name], we pride ourselves on delivering tailored solutions that combine functionality with aesthetic appeal, helping clients enhance their spaces with reliable and elegant technical craftsmanship.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Mission & Vision -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+                    <div class="service-card p-8 fade-in fade-in-delay-1">
+                        <h3 class="text-3xl font-bold text-main-primary mb-4">Our Mission</h3>
+                        <p class="text-main-secondary text-lg leading-relaxed">
+                            Our mission at [Company Name] is to provide exceptional technical solutions that combine durability, precision, and aesthetic excellence. We are dedicated to delivering innovative and reliable products while fostering long-term relationships through quality craftsmanship and unmatched customer service.
+                        </p>
+                    </div>
+                    <div class="service-card p-8 fade-in fade-in-delay-2">
+                        <h3 class="text-3xl font-bold text-main-primary mb-4">Our Vision</h3>
+                        <p class="text-main-secondary text-lg leading-relaxed">
+                            Our vision is to be a leading provider of technical and architectural solutions, recognized for our commitment to innovation, quality, and customer satisfaction. We strive to set industry benchmarks while enhancing the beauty, functionality, and safety of spaces worldwide.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Our Team Section -->
+                <div class="text-center max-w-2xl mx-auto mb-12 fade-in">
+                    <span class="accent-color font-semibold uppercase tracking-wider">The Experts</span>
+                    <h2 class="text-3xl md:text-4xl font-extrabold text-main-primary mt-2">
+                        Meet Our Team
+                    </h2>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Team Member 1 -->
+                    <div class="text-center fade-in fade-in-delay-1">
+                        <label class="image-uploader-label rounded-full w-48 h-48 mx-auto mb-4 p-2">
+                            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.5 1.5 0 0 1 18 21.625H6a1.5 1.5 0 0 1-1.499-1.507Z" /></svg>
+                            <span class="uploader-text text-sm">Team Photo</span>
+                            <img class="uploaded-image rounded-full" alt="Uploaded Team Photo">
+                        </label>
+                        <h4 class="text-xl font-bold text-main-primary">Full Name</h4>
+                        <p class="accent-color">Job Title</p>
+                    </div>
+                    <!-- Repeat for other team members -->
+                    <div class="text-center fade-in fade-in-delay-2">
+                        <label class="image-uploader-label rounded-full w-48 h-48 mx-auto mb-4 p-2">
+                            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.5 1.5 0 0 1 18 21.625H6a1.5 1.5 0 0 1-1.499-1.507Z" /></svg>
+                            <span class="uploader-text text-sm">Team Photo</span>
+                            <img class="uploaded-image rounded-full" alt="Uploaded Team Photo">
+                        </label>
+                        <h4 class="text-xl font-bold text-main-primary">Full Name</h4>
+                        <p class="accent-color">Job Title</p>
+                    </div>
+                    <div class="text-center fade-in fade-in-delay-3">
+                        <label class="image-uploader-label rounded-full w-48 h-48 mx-auto mb-4 p-2">
+                            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.5 1.5 0 0 1 18 21.625H6a1.5 1.5 0 0 1-1.499-1.507Z" /></svg>
+                            <span class="uploader-text text-sm">Team Photo</span>
+                            <img class="uploaded-image rounded-full" alt="Uploaded Team Photo">
+                        </label>
+                        <h4 class="text-xl font-bold text-main-primary">Full Name</h4>
+                        <p class="accent-color">Job Title</p>
+                    </div>
+                    <div class="text-center fade-in fade-in-delay-3">
+                        <label class="image-uploader-label rounded-full w-48 h-48 mx-auto mb-4 p-2">
+                            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A1.5 1.5 0 0 1 18 21.625H6a1.5 1.5 0 0 1-1.499-1.507Z" /></svg>
+                            <span class="uploader-text text-sm">Team Photo</span>
+                            <img class="uploaded-image rounded-full" alt="Uploaded Team Photo">
+                        </label>
+                        <h4 class="text-xl font-bold text-main-primary">Full Name</h4>
+                        <p class="accent-color">Job Title</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== NEW PAGE: METAL WORKS & SHADES ========== -->
+        <section id="page-metal-works" class="page-content page-hidden py-16 sm:py-24 bg-main-secondary">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Page Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16 fade-in">
+                    <span class="accent-color font-semibold uppercase tracking-wider">Our Services</span>
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-main-primary mt-2 mb-4">
+                        Metal Works & Shades
+                    </h1>
+                    <p class="text-lg text-main-secondary">
+                        Durable and visually appealing products for residential, commercial, and industrial needs.
+                    </p>
+                </div>
+
+                <!-- Service Details -->
+                <div class="space-y-16">
+                    <!-- Pergola -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <label class="image-uploader-label min-h-[300px]">
+                            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                            <span class="uploader-text">Pergola Image</span>
+                            <img class="uploaded-image" alt="Uploaded Pergola Image">
+                        </label>
+                        <div>
+                            <h3 class="text-3xl font-bold text-main-primary mb-4"><span class="gradient-text">Pergola</span></h3>
+                            <p class="text-main-secondary text-lg mb-6 leading-relaxed">
+                                Transform outdoor spaces with our custom-designed pergolas. Combining style and functionality, our pergolas create shaded comfortable areas for relaxation, entertainment, or dining while enhancing the beauty of gardens, patios or rooftops.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- CNC Panel -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <div class="lg:order-2">
+                            <label class="image-uploader-label min-h-[300px]">
+                                <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                                <span class="uploader-text">CNC Panel Image</span>
+                                <img class="uploaded-image" alt="Uploaded CNC Panel Image">
+                            </label>
+                        </div>
+                        <div class="lg:order-1">
+                            <h3 class="text-3xl font-bold text-main-primary mb-4"><span class="gradient-text">CNC Panel</span></h3>
+                            <p class="text-main-secondary text-lg mb-6 leading-relaxed">
+                                Discover precision-engineered CNC panels crafted with intricate designs to meet your architectural and decorative requirements. Our panels are ideal for adding a modern touch to interiors, exteriors and commercial spaces, ensuring unmatched quality and elegance.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Manhole & Gratings -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <label class="image-uploader-label min-h-[300px]">
+                            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                            <span class="uploader-text">Manhole & Gratings Image</span>
+                            <img class="uploaded-image" alt="Uploaded Manhole & Gratings Image">
+                        </label>
+                        <div>
+                            <h3 class="text-3xl font-bold text-main-primary mb-4"><span class="gradient-text">Manhole & Gratings</span></h3>
+                            <p class="text-main-secondary text-lg mb-6 leading-relaxed">
+                                We offer high-quality manhole covers and gratings designed for safety, durability, and performance. Perfect for industrial, commercial, and urban applications, our solutions withstand heavy loads while ensuring smooth functionality and compliance with industry standards.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Stainless Steel Work -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <div class="lg:order-2">
+                            <label class="image-uploader-label min-h-[300px]">
+                                <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                                <span class="uploader-text">Stainless Steel Image</span>
+                                <img class="uploaded-image" alt="Uploaded Stainless Steel Image">
+                            </label>
+                        </div>
+                        <div class="lg:order-1">
+                            <h3 class="text-3xl font-bold text-main-primary mb-4"><span class="gradient-text">Stainless Steel Work</span></h3>
+                            <p class="text-main-secondary text-lg mb-6 leading-relaxed">
+                                Elevate your spaces with our expert stainless steel fabrication services. From custom designs to robust industrial components, our stainless steel solutions combine strength, durability, and elegance, catering to a wide rangeof residential, commercial, and industrial projects.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Handrails -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <label class="image-uploader-label min-h-[300px]">
+                            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                            <span class="uploader-text">Handrails Image</span>
+                            <img class="uploaded-image" alt="Uploaded Handrails Image">
+                        </label>
+                        <div>
+                            <h3 class="text-3xl font-bold text-main-primary mb-4"><span class="gradient-text">Handrails</span></h3>
+                            <p class="text-main-secondary text-lg mb-6 leading-relaxed">
+                                Ensure safety and sophistication with our meticulously crafted handrails. Designed for durability and aesthetic appeal, our handrails are perfect for homes, offices and public spaces offering seamless integration with your architectural style.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Boundary Wall Fence -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <div class="lg:order-2">
+                            <label class="image-uploader-label min-h-[300px]">
+                                <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                                <span class="uploader-text">Fence Image</span>
+                                <img class="uploaded-image" alt="Uploaded Fence Image">
+                            </label>
+                        </div>
+                        <div class="lg:order-1">
+                            <h3 class="text-3xl font-bold text-main-primary mb-4"><span class="gradient-text">Boundary Wall Fence</span></h3>
+                            <p class="text-main-secondary text-lg mb-6 leading-relaxed">
+                                Enhance your property's safety and privacy with our durable boundary wall fencing solutions. Designed to be secure, long-lasting, and visually appealing, our fences are tailored to suit residential, commercial, and industrial needs blending functionality with aesthetics.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Car Parking Shades -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <label class="image-uploader-label min-h-[300px]">
+                            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                            <span class="uploader-text">Car Parking Shades Image</span>
+                            <img class="uploaded-image" alt="Uploaded Car Parking Shades Image">
+                        </label>
+                        <div>
+                            <h3 class="text-3xl font-bold text-main-primary mb-4"><span class="gradient-text">Car Parking Shades</span></h3>
+                            <p class="text-main-secondary text-lg mb-6 leading-relaxed">
+                                Protect vehicles from harsh weather with our durable and stylish car parking shades. Designed for maximum coverage and resilience, our shades are ideal for residential, commercial and public parking areas, blending utility with aesthetics.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PAGE: GLASS WORK (REVISED) ========== -->
+        <section id="page-glass-work" class="page-content page-hidden py-16 sm:py-24 bg-main-secondary">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Page Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16 fade-in">
+                    <span class="accent-color font-semibold uppercase tracking-wider">Our Services</span>
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-main-primary mt-2 mb-4">
+                        Glass Work Solutions
+                    </h1>
+                    <p class="text-lg text-main-secondary">
+                        Elevate your spaces with the elegance and versatility of glass. We specialize in custom glass solutions that combine functionality, style, and precision.
+                    </p>
+                </div>
+
+                <!-- Service Details -->
+                <div class="space-y-16">
+                    <!-- Glass Partitions -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <label class="image-uploader-label min-h-[300px]">
+                            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                            <span class="uploader-text">Glass Partitions Image</span>
+                            <img class="uploaded-image" alt="Uploaded Glass Partitions Image">
+                        </label>
+                        <div>
+                            <h3 class="text-3xl font-bold text-main-primary mb-4"><span class="gradient-text">Glass Partitions</span></h3>
+                            <p class="text-main-secondary text-lg mb-6 leading-relaxed">
+                                Transform your interiors with sleek and modern glass partitions. Ideal for offices, homes, and commercial spaces, our partitions create a sense of openness while maintaining privacy. With options ranging from frosted and tinted glass to frameless designs, we offer solutions that suit your aesthetic and functional requirements. Durable and easy to maintain, our glass partitions are designed to maximize natural light and enhance the visual appeal of your space.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Glass Pool Fence -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <div class="lg:order-2">
+                            <label class="image-uploader-label min-h-[300px]">
+                                <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                                <span class="uploader-text">Glass Pool Fence Image</span>
+                                <img class="uploaded-image" alt="Uploaded Glass Pool Fence Image">
+                            </label>
+                        </div>
+                        <div class="lg:order-1">
+                            <h3 class="text-3xl font-bold text-main-primary mb-4"><span class="gradient-text">Glass Pool Fence</span></h3>
+                            <p class="text-main-secondary text-lg mb-6 leading-relaxed">
+                                Ensure safety without compromising style with our glass pool fences. Crafted from toughened, high-grade glass, our fences provide a secure barrier around pools while maintaining an unobstructed view. The minimalist and transparent design adds a touch of elegance to your outdoor area. Our glass pool fences comply with safety standards, ensuring peace of mind while enhancing the beauty of your property.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Mirror Work -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <label class="image-uploader-label min-h-[300px]">
+                            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                            <span class="uploader-text">Mirror Work Image</span>
+                            <img class="uploaded-image" alt="Uploaded Mirror Work Image">
+                        </label>
+                        <div>
+                            <h3 class="text-3xl font-bold text-main-primary mb-4"><span class="gradient-text">Mirror Work</span></h3>
+                            <p class="text-main-secondary text-lg mb-6 leading-relaxed">
+                                Add sophistication and depth to your interiors with our custom mirror work. From decorative wall mirrors to functional bathroom and gym mirrors, we craft designs that reflect your style and meet your needs. Our mirrors are made from high-quality materials and come in a range of shapes, sizes, and finishes, making them perfect for enhancing light, creating the illusion of space, or serving as striking focal points.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- Glazing Work -->
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
+                        <div class="lg:order-2">
+                            <label class="image-uploader-label min-h-[300px]">
+                                <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Z" /></svg>
+                                <span class="uploader-text">Glazing Work Image</span>
+                                <img class="uploaded-image" alt="Uploaded Glazing Work Image">
+                            </label>
+                        </div>
+                        <div class="lg:order-1">
+                            <h3 class="text-3xl font-bold text-main-primary mb-4"><span class="gradient-text">Glazing Work</span></h3>
+                            <p class="text-main-secondary text-lg mb-6 leading-relaxed">
+                                Our glazing services offer innovative solutions for windows, doors, facades, and more. Whether you need double-glazing for energy efficiency or specialized glazing for acoustic control, we deliver expert craftsmanship and premium materials. With a focus on performance and aesthetics, our glazing work is perfect for modern architectural projects, adding durability, functionality, and a refined look to your spaces.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== PAGE: CONTACT US (REVISED) ========== -->
+        <section id="page-contact" class="page-content page-hidden py-16 sm:py-24 bg-main-primary">
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Page Header -->
+                <div class="text-center max-w-3xl mx-auto mb-16 fade-in">
+                    <span class="accent-color font-semibold uppercase tracking-wider">Contact Us</span>
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-main-primary mt-2 mb-4">
+                        Get In Touch
+                    </h1>
+                    <p class="text-lg text-main-secondary">
+                        Have a question or a project in mind? We'd love to hear from you.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                    <!-- Contact Form -->
+                    <div class="lg:col-span-7 fade-in fade-in-delay-1">
+                        <form action="#" method="POST" class="space-y-6">
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-main-secondary">Full Name</label>
+                                <input type="text" name="name" id="name" autocomplete="name" class="form-input mt-1 block w-full rounded-md shadow-sm py-3 px-4 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-main-secondary">Email</label>
+                                <input type="email" name="email" id="email" autocomplete="email" class="form-input mt-1 block w-full rounded-md shadow-sm py-3 px-4 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-main-secondary">Phone Number</label>
+                                <input type="text" name="phone" id="phone" autocomplete="tel" class="form-input mt-1 block w-full rounded-md shadow-sm py-3 px-4 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="subject" class="block text-sm font-medium text-main-secondary">Subject</label>
+                                <input type="text" name="subject" id="subject" class="form-input mt-1 block w-full rounded-md shadow-sm py-3 px-4 sm:text-sm">
+                            </div>
+                            <div>
+                                <label for="message" class="block text-sm font-medium text-main-secondary">Message</label>
+                                <textarea id="message" name="message" rows="4" class="form-input mt-1 block w-full rounded-md shadow-sm py-3 px-4 sm:text-sm"></textarea>
+                            </div>
+                            <div>
+                                <button type="submit" class="w-full px-8 py-3 rounded-md text-base font-medium bg-accent-color text-white hover:bg-accent-hover transition-colors duration-300 shadow-lg">
+                                    Send Message
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Contact Info (UPDATED from PDF) -->
+                    <div class="lg:col-span-5 fade-in fade-in-delay-2">
+                        <div class="service-card p-8 h-full">
+                            <h3 class="text-2xl font-bold text-main-primary mb-6">Our Contact Details</h3>
+                            <div class="space-y-6">
+                                <div class="flex items-start gap-4">
+                                    <div class="flex-shrink-0 w-10 h-10 bg-accent-color-light text-accent-color rounded-lg flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-main-primary">Address</h4>
+                                        <p class="text-main-secondary">[Company Name] L.L.C</p>
+                                        <p class="text-main-secondary">Shed# 3, Dry Docks</p>
+                                        <p class="text-main-secondary">Al Jaddaf – Dubai, UAE</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="flex-shrink-0 w-10 h-10 bg-accent-color-light text-accent-color rounded-lg flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.081l-3.03-.76a1.125 1.125 0 0 0-1.29.916l-.768 3.073c-.413.203-.83.39-1.255.55A13.5 13.5 0 0 1 3.372 6.962c.16-.425.347-.842.55-1.255l3.073-.768a1.125 1.125 0 0 0 .916-1.29l-.76-3.03c-.115-.499-.6-.851-1.08-.851H2.25A2.25 2.25 0 0 0 0 4.5v.75Z" /></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-main-primary">Phone</h4>
+                                        <p class="text-main-secondary">+971-555640267</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-start gap-4">
+                                    <div class="flex-shrink-0 w-10 h-10 bg-accent-color-light text-accent-color rounded-lg flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.625a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-lg font-semibold text-main-primary">Email</h4>
+                                        <p class="text-main-secondary">contact@company.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ========== FOOTER (REVISED) ========== -->
+    <footer class="bg-main-secondary border-t border-main-primary">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Footer About -->
+                <div class="col-span-1 md:col-span-2">
+                    <a href="#" class="flex items-center gap-2 mb-4" onclick="showPage('page-home', this)">
+                        <label class="image-uploader-label logo-uploader-label">
+                            <input type="file" accept="image/*" onchange="handleImageUpload(event)">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                            <span class="uploader-text">Logo</span>
+                            <img class="uploaded-image" alt="Uploaded Logo">
+                        </label>
+                        <span class="text-main-primary text-xl font-bold tracking-tight">[Company Name]</span>
+                    </a>
+                    <p class="text-main-secondary max-w-md">
+                        Your trusted partner for comprehensive Metal, Glass, and Glazing Solutions in the UAE.
+                    </p>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h5 class="text-main-primary font-semibold mb-4 uppercase tracking-wider">Quick Links</h5>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-main-secondary hover:text-accent-color transition-colors" onclick="showPage('page-home', this)">Home</a></li>
+                        <li><a href="#" class="text-main-secondary hover:text-accent-color transition-colors" onclick="showPage('page-metal-works', this)">Metal Works & Shades</a></li>
+                        <li><a href="#" class="text-main-secondary hover:text-accent-color transition-colors" onclick="showPage('page-glass-work', this)">Glass Work</a></li>
+                        <li><a href="#" class="text-main-secondary hover:text-accent-color transition-colors" onclick="showPage('page-about', this)">About Us</a></li>
+                        <li><a href="#" class="text-main-secondary hover:text-accent-color transition-colors" onclick="showPage('page-contact', this)">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info (UPDATED) -->
+                <div>
+                    <h5 class="text-main-primary font-semibold mb-4 uppercase tracking-wider">Contact Us</h5>
+                    <ul class="space-y-3 text-main-secondary">
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 mt-1 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" /></svg>
+                            <span>Shed# 3, Dry Docks, Al Jaddaf – Dubai, UAE</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 mt-1 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.081l-3.03-.76a1.125 1.125 0 0 0-1.29.916l-.768 3.073c-.413.203-.83.39-1.255.55A13.5 13.5 0 0 1 3.372 6.962c.16-.425.347-.842.55-1.255l3.073-.768a1.125 1.125 0 0 0 .916-1.29l-.76-3.03c-.115-.499-.6-.851-1.08-.851H2.25A2.25 2.25 0 0 0 0 4.5v.75Z" /></svg>
+                            <span>+971-555640267</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <svg class="w-5 h-5 mt-1 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.625a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" /></svg>
+                            <span>contact@company.com</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Copyright -->
+            <div class="mt-8 pt-8 border-t border-main-primary text-center text-gray-500 text-sm">
+                <p>&copy; 2025 [Company Name] L.L.C. All rights reserved. Designed & Rebuilt.</p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ========== JAVASCRIPT LOGIC ========== -->
+    <script>
+        let currentPage = 'page-home';
+        const pages = document.querySelectorAll('.page-content');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileNavLinks = document.querySelectorAll('.nav-link-mobile');
+        
+        // ===================================
+        // Image Upload Function
+        // ===================================
+        function handleImageUpload(event) {
+            const label = event.currentTarget.parentElement;
+            const file = event.target.files[0];
+            
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                
+                reader.onload = (e) => {
+                    const img = label.querySelector('.uploaded-image');
+                    img.src = e.target.result;
+                    label.classList.add('image-loaded');
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // ===================================
+        // Page Navigation Logic
+        // ===================================
+        function showPage(pageId, navElement = null) {
+            const targetPage = document.getElementById(pageId);
+            if (!targetPage) return;
+            
+            const currentVisiblePage = document.querySelector('.page-visible');
+            if (currentVisiblePage && currentVisiblePage.id === pageId) {
+                return;
+            }
+
+            pages.forEach(page => {
+                page.classList.add('page-hidden');
+                page.classList.remove('page-visible');
+            });
+
+            targetPage.classList.remove('page-hidden');
+            void targetPage.offsetWidth; 
+            targetPage.classList.add('page-visible');
+            currentPage = pageId;
+
+            // Active link styling
+            const isDarkMode = document.documentElement.classList.contains('dark');
+            const activeClass = isDarkMode ? 'nav-link-active-dark' : 'nav-link-active-light';
+            const mobileActiveClass = isDarkMode ? 'nav-link-mobile-active-dark' : 'nav-link-mobile-active-light';
+
+            navLinks.forEach(link => {
+                link.classList.remove('nav-link-active-light', 'nav-link-active-dark', 'border-b-2');
+                link.classList.add('hover:text-accent-color');
+            });
+            
+            mobileNavLinks.forEach(link => {
+                link.classList.remove('nav-link-mobile-active-light', 'nav-link-mobile-active-dark');
+                link.classList.add('hover:bg-main-secondary');
+            });
+
+            const activeNavLinks = document.querySelectorAll(`[onclick="showPage('${pageId}', this)"]`);
+            activeNavLinks.forEach(activeLink => {
+                if (activeLink.classList.contains('nav-link')) {
+                    activeLink.classList.add(activeClass, 'border-b-2');
+                } else if (activeLink.classList.contains('nav-link-mobile')) {
+                    activeLink.classList.add(mobileActiveClass);
+                }
+            });
+
+            window.scrollTo(0, 0);
+        }
+
+        // ===================================
+        // Mobile Menu Logic
+        // ===================================
+        const menuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const openIcon = menuButton.querySelector('svg:first-child');
+        const closeIcon = menuButton.querySelector('svg:last-child');
+
+        function closeMenu() {
+            mobileMenu.classList.add('hidden');
+            openIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+            menuButton.setAttribute('aria-expanded', 'false');
+        }
+
+        menuButton.addEventListener('click', () => {
+            const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+            if (isExpanded) {
+                closeMenu();
+            } else {
+                mobileMenu.classList.remove('hidden');
+                openIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+                menuButton.setAttribute('aria-expanded', 'true');
+            }
+        });
+
+        // ===================================
+        // DAY/NIGHT MODE SCRIPT
+        // ===================================
+        const themeToggleBtn = document.getElementById('theme-toggle-btn');
+        const themeToggleBtnMobile = document.getElementById('theme-toggle-btn-mobile');
+        
+        const darkIcon = document.getElementById('theme-icon-dark');
+        const lightIcon = document.getElementById('theme-icon-light');
+        const darkIconMobile = document.getElementById('theme-icon-dark-mobile');
+        const lightIconMobile = document.getElementById('theme-icon-light-mobile');
+
+        function updateIcons(isDark) {
+            if (isDark) {
+                darkIcon.classList.add('hidden');
+                lightIcon.classList.remove('hidden');
+                darkIconMobile.classList.add('hidden');
+                lightIconMobile.classList.remove('hidden');
+            } else {
+                darkIcon.classList.remove('hidden');
+                lightIcon.classList.add('hidden');
+                darkIconMobile.classList.remove('hidden');
+                lightIconMobile.classList.add('hidden');
+            }
+            // Re-style active nav link for new mode
+            showPage(currentPage);
+        }
+
+        function toggleTheme() {
+            const isDarkMode = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+            updateIcons(isDarkMode);
+        }
+
+        themeToggleBtn.addEventListener('click', toggleTheme);
+        themeToggleBtnMobile.addEventListener('click', toggleTheme);
+
+        // Check for saved theme on load
+        document.addEventListener('DOMContentLoaded', () => {
+            let savedTheme;
+            try {
+                savedTheme = localStorage.getItem('theme');
+            } catch (e) {
+                console.warn('localStorage is not available.');
+                savedTheme = 'light';
+            }
+            
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            let isDark;
+
+            if (savedTheme === 'dark') {
+                isDark = true;
+            } else if (savedTheme === 'light') {
+                isDark = false;
+            } else {
+                isDark = prefersDark;
+            }
+
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            }
+            
+            updateIcons(isDark);
+            showPage('page-home'); // Initialize page and active links
+        });
+    </script>
+
+</body>
+</html>

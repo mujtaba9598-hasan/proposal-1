@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services | [Company Name]</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+    <style>
+        .page-header {
+            background-color: var(--brand-dark);
+            color: white;
+            padding: 150px 0 80px;
+            text-align: center;
+        }
+
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding-bottom: 80px;
+        }
+
+        .bento-item {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid #e2e8f0;
+            transition: 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bento-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border-color: var(--brand-accent);
+        }
+
+        .bento-accent {
+            background: var(--brand-accent);
+            color: white;
+        }
+
+        .bento-accent h3,
+        .bento-accent p,
+        .bento-accent i {
+            color: white !important;
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            color: var(--brand-accent);
+        }
+    </style>
+    <link rel="stylesheet" href="css/theme-config.css">
+</head>
+
+<body>
+
+    <!-- WHATSAPP FLOAT -->
+    <a href="https://wa.me/971500000000" class="wa-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+
+    <!-- NAV (Duplicate from Index) -->
+    <header class="header-main" id="main-header">
+        <div class="container nav-wrapper">
+            <a href="index.html" class="logo">
+                <img src="images/logo_placeholder.svg" alt="[BRAND] Tech Logo" style="height: 50px; width: auto;">
+            </a>
+            <nav class="desktop-menu">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html" class="active" style="color:var(--brand-accent)">Services</a>
+                <a href="projects.html">Projects</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+            <a href="contact.html" class="btn btn-primary header-cta hidden-mobile">Get Quote</a>
+            <div class="mobile-toggle" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></div>
+        </div>
+    </header>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-nav-overlay" id="mobile-nav">
+        <div class="close-menu" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></div>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="projects.html">Projects</a>
+        <a href="contact.html">Contact</a>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+        <div class="container">
+            <h1 class="gsap-fade-up" style="color: white;">Our Services</h1>
+            <p class="gsap-fade-up" style="max-width: 600px; margin: 20px auto 0; color: rgba(255,255,255,0.7);">
+                From residential glass installations to industrial metal fabrication, we deliver excellence in every
+                detail.
+            </p>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="section-pad">
+        <div class="container">
+            <div class="bento-grid">
+
+                <!-- 1. GLASS -->
+                <div class="bento-item gsap-scale-in">
+                    <i class="fa-solid fa-layer-group service-icon"></i>
+                    <h3>Glass & Glazing</h3>
+                    <p style="color:var(--text-light); margin-top:15px;">
+                        Specialized in frameless glass partitions, shower enclosures, mirrors, and glass balustrades. We
+                        use tempered and laminated glass for maximum safety and style.
+                    </p>
+                </div>
+
+                <!-- 2. PERGOLAS -->
+                <div class="bento-item gsap-scale-in" style="padding: 20px;">
+                    <img src="images/modern_pergola.png" alt="Modern Pergola"
+                        style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 20px;">
+                    <h3 style="font-size: 1.5rem;">Pergolas & Gazebos</h3>
+                    <p style="color:var(--text-light); margin-top:10px;">
+                        Custom-designed aluminum and wood-finish pergolas. Modern outdoor living solutions for Dubai
+                        villas.
+                    </p>
+                </div>
+
+                <!-- 3. CAR PARKING (ACCENT) -->
+                <div class="bento-item bento-accent gsap-scale-in" style="padding: 20px;">
+                    <img src="images/car_shade.png" alt="Car Parking Shades"
+                        style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 20px;">
+                    <h3 style="color: white; font-size: 1.5rem;">Car Parking Shades</h3>
+                    <p style="color: rgba(255,255,255,0.9); margin-top:10px;">
+                        Heavy-duty cantilever and tensile fabric shades (HDPE/PVC) protecting vehicles from the harsh
+                        UAE sun.
+                    </p>
+                </div>
+
+                <!-- 4. CNC -->
+                <div class="bento-item gsap-scale-in" style="padding: 20px;">
+                    <img src="images/cnc_metal.png" alt="CNC Metal Work"
+                        style="width: 100%; height: 200px; object-fit: cover; border-radius: 12px; margin-bottom: 20px;">
+                    <h3 style="font-size: 1.5rem;">CNC Cutting</h3>
+                    <p style="color:var(--text-light); margin-top:10px;">
+                        Precision laser cutting for decorative metal panels, gates, and mashrabiya patterns. Gold and
+                        black finishes available.
+                    </p>
+                </div>
+
+                <!-- 5. STEEL -->
+                <div class="bento-item gsap-scale-in">
+                    <i class="fa-solid fa-gears service-icon"></i>
+                    <h3>Stainless Steel</h3>
+                    <p style="color:var(--text-light); margin-top:15px;">
+                        Fabrication of handrails, bollards, kitchen equipment, and structural components using
+                        high-grade SS 304/316.
+                    </p>
+                </div>
+
+                <!-- 6. MANHOLE -->
+                <div class="bento-item gsap-scale-in">
+                    <i class="fa-solid fa-road service-icon" style="color:#5c7c85"></i>
+                    <h3>Manholes & Gratings</h3>
+                    <p style="color:var(--text-light); margin-top:15px;">
+                        Supply and installation of recess covers, drainage gratings, and industrial access covers.
+                    </p>
+                </div>
+
+                <!-- 7. CIVIL WORKS -->
+                <div class="bento-item gsap-scale-in">
+                    <i class="fa-solid fa-building service-icon" style="color:var(--brand-accent)"></i>
+                    <h3>Civil Works</h3>
+                    <p style="color:var(--text-light); margin-top:15px;">
+                        Comprehensive civil engineering services including foundation works, road construction, and
+                        structural concrete for residential and commercial projects.
+                    </p>
+                </div>
+
+            </div>
+
+            <!-- Call to Action Footer -->
+            <div class="text-center" style="background: var(--brand-soft); padding: 60px; border-radius: 30px;">
+                <h2 style="margin-bottom: 20px;">Have a Custom Requirement?</h2>
+                <p style="margin-bottom: 30px;">We specialize in bespoke fabrication. Send us your drawings or ideas.
+                </p>
+                <a href="contact.html" class="btn btn-primary">Contact Our Engineers</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer style="background: #0b2d36; color: rgba(255,255,255,0.7); padding: 60px 0 30px;">
+        <div class="container">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-bottom: 40px;">
+                <!-- Brand -->
+                <div>
+                    <img src="images/logo_placeholder.svg" alt="[BRAND] Tech Logo"
+                        style="height: 60px; width: auto; margin-bottom: 15px;">
+                    <h3 style="color: white; margin-bottom: 15px;">[BRAND]</h3>
+                    <p>Leading provider of Aluminum, Glass, and Metal technical services in the UAE. Committed to
+                        quality and precision.</p>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 style="color: white; margin-bottom: 15px;">Quick Links</h4>
+                    <ul style="display: flex; flex-direction: column; gap: 10px;">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="services.html">Services</a></li>
+                        <li><a href="projects.html">Projects</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 style="color: white; margin-bottom: 15px;">Contact Info</h4>
+                    <ul style="display: flex; flex-direction: column; gap: 10px;">
+                        <li>
+                            <a href="tel:+971 50 000 0000"
+                                style="color: inherit; text-decoration: none; display: flex; align-items: center;">
+                                <i class="fa-solid fa-phone"
+                                    style="color: var(--brand-accent); margin-right: 10px;"></i> +971 50 000 0000
+                            </a>
+                        </li>
+                        <li><i class="fa-solid fa-location-dot"
+                                style="color: var(--brand-accent); margin-right: 10px;"></i> Shed# 3, Dry Docks Al
+                            Jaddaf, Dubai</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div
+                style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; text-align: center; font-size: 0.9rem;">
+                &copy; 2024 [Company Name]. All rights reserved.
+                <br>
+                <span style="opacity: 0.6; font-size: 0.85rem; margin-top: 8px; display: inline-block;">Crafted by
+                    Quartermasters</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        function toggleMenu() { document.getElementById('mobile-nav').classList.toggle('active'); }
+
+        // Header Scroll
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+        });
+
+        // Animations
+        document.addEventListener("DOMContentLoaded", (event) => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.to(".gsap-fade-up", { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out" });
+
+            gsap.utils.toArray('.gsap-scale-in').forEach(element => {
+                gsap.to(element, {
+                    scrollTrigger: { trigger: element, start: "top 85%" },
+                    opacity: 1, transform: "none", duration: 0.6, ease: "back.out(1.2)"
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
