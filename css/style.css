@@ -604,13 +604,50 @@ footer {
 }
 
 /* --- MOBILE RESPONSIVENESS (Poco X3 Pro & Others) --- */
+.hero-container {
+    position: relative;
+    z-index: 10;
+    padding: 4rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    max-width: 800px;
+}
+
 @media (max-width: 768px) {
+
+    /* Mobile adjustments */
     .container {
-        padding: 0 1.5rem;
+        padding: 0 1.25rem;
+    }
+
+    .hero-container {
+        padding: 1.5rem !important;
+        /* Reduce padding significantly */
+        justify-content: center;
+    }
+
+    .hero-title {
+        font-size: clamp(1.8rem, 8vw, 2.8rem) !important;
+        margin-bottom: 1.5rem;
     }
 
     h1 {
-        font-size: 2.5rem;
+        font-size: clamp(2rem, 10vw, 3rem) !important;
+        /* Force smaller size */
+        hyphens: auto;
+        word-wrap: break-word;
+    }
+
+    .hero-content h1 {
+        line-height: 1.1;
     }
 
     /* Stats Grid */
@@ -638,8 +675,19 @@ footer {
     /* Service Cards */
     .service-card-modern {
         min-width: 85vw;
-        /* Responsive width */
-        margin-right: 20px;
-        height: 400px;
+        height: auto;
+        /* Let content dictate height */
+        min-height: 400px;
+        margin-right: 15px;
+        padding: 1.5rem;
+    }
+
+    .service-card-modern h4 {
+        font-size: 1.5rem;
+    }
+
+    /* Ensure content isn't hidden behind bottom nav */
+    body {
+        padding-bottom: 80px;
     }
 }
